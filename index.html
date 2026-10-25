@@ -239,6 +239,16 @@ tr:last-child td{border-bottom:0}
 .cov{font-size:.74rem;padding:2px 8px;border-radius:6px;border:1px dashed var(--line);color:var(--muted)}
 .cov.on{border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--ink);font-weight:700}
 .pchosen{border-top:5px solid var(--c)}
+.how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
+.how dt{font-weight:700;font-size:.9rem}
+.how dd{margin:0;font-size:.92rem;min-width:0}
+@media (max-width:560px){.how dl{grid-template-columns:1fr}.how dd{margin-bottom:6px}}
+.step ol,.step ul{margin:.3em 0;padding-left:1.3em}
+.step p{margin:.3em 0}
+.codebox{display:grid;gap:8px;min-width:0}
+.sol{border:1px dashed var(--line);border-radius:8px;padding:8px 12px;min-width:0}
+.sol summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:.9rem}
+.sol[open] summary{margin-bottom:8px}
 .step.final{border:1.5px dashed var(--c);background:color-mix(in srgb,var(--c) 6%,var(--card))}
 textarea.notes{width:100%;min-height:340px;resize:vertical;font:inherit;font-size:.98rem;line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;background-image:linear-gradient(transparent calc(1.6em - 1px),var(--line) 1px);background-size:100% 1.6em;background-attachment:local}
 textarea.notes:focus{outline:2px solid var(--accent);outline-offset:1px}
@@ -658,33 +668,149 @@ P.info=[
  {id:"a",type:"bauen",title:"Deine eigene Playlist-App",pitch:"Du baust eine Mini-App, die genau die Bausteine der Klausur enthält. Statt Bücher in einer Bibliothek verwaltest du Songs in einer Playlist.",
   trains:"Klassen mit Konstruktor und Kapselung selbst schreiben, eine 1 : n-Beziehung als Liste umsetzen und eine Schleife als Struktogramm darstellen.",
   covers:["OOP","UML","Listen","Algorithmen"],effort:"klein · etwa 1 Stunde",
+  how:{wo:"<b>Auf Papier</b>, genau wie in der Klausur. Zum Testen am Laptop optional im Browser auf <a href=\"https://www.programiz.com/java-programming/online-compiler/\" target=\"_blank\" rel=\"noopener\">programiz.com (Online-Java)</a>. Kein Konto und keine Installation nötig, Schritt 5 erklärt jeden Klick.",
+   brauchst:"Karopapier, Stift, das Merkblatt Bibliothek als Vorbild. Für den Test: Laptop mit Internet.",
+   ergebnis:"Ein Blatt mit Klassendiagramm, deinem Java-Code für zwei Klassen und einem Struktogramm. Optional ein Programm, das wirklich läuft.",
+   zeigen:"Fotografiere dein Blatt und schick es im Chat mit „Feedback Info“. Claude prüft es auf Fehler wie in der Klausur."},
   steps:[
-   {t:"Klassendiagramm zeichnen",x:"Zwei Klassen: <code>Song</code> (titel: String, dauerSek: int) und <code>Playlist</code> (name: String, songs: ArrayList&lt;Song&gt;). Verbinde sie und schreibe 1 und n an die Linie. Attribute mit −, Methoden mit +."},
-   {t:"Klasse Song mit Konstruktor und Kapselung",x:"Konstruktor <code>Song(String t, int d)</code>, Getter für beide Attribute und ein Setter <code>setDauer</code>, der negative Werte ablehnt (Robustheit)."},
-   {t:"Klasse Playlist mit Liste",x:"Der Konstruktor legt die leere Liste an und erzeugt mit einer for-Schleife 5 Demo-Songs: <code>songs.add(new Song(\"Track \"+i, i*60));</code> Dann <code>gesamtdauer()</code> und <code>laengsterSong()</code> schreiben."},
-   {t:"Struktogramm für gesamtdauer()",x:"Zählschleife von 0 bis size()−1, darin die Summe erhöhen, am Ende Rückgabe."}],
-  check:{t:"Aufgabenblatt Bibliothek",x:"Aus dem Info-Ordner lösen und mit dem Erwartungshorizont vergleichen. Danach die Checkliste noch einmal ankreuzen."}},
- {id:"b",type:"spiel",title:"Code-Escape-Room",pitch:"Du baust 6 Rätselkarten, bei denen man einen Code-Schnipsel „knacken“ muss, um den nächsten Hinweis zu bekommen. Wer Rätsel baut, muss den Code genauer verstehen als jemand, der sie löst.",
+   {t:"Klassendiagramm zeichnen",x:"<p>Zeichne zwei Kästen, jeder hat drei Fächer: oben der Name, in der Mitte die Attribute, unten die Methoden.</p><ul><li><b>Song</b>: <code>- titel: String</code>, <code>- dauerSek: int</code>, darunter <code>+ Song(pTitel: String, pDauerSek: int)</code>, <code>+ getTitel(): String</code>, <code>+ getDauerSek(): int</code>, <code>+ setDauerSek(pDauerSek: int)</code></li><li><b>Playlist</b>: <code>- name: String</code>, <code>- songs: ArrayList&lt;Song&gt;</code>, darunter <code>+ Playlist(pName: String)</code>, <code>+ gesamtdauer(): int</code>, <code>+ laengsterSong(): Song</code></li></ul><p>Verbinde die Kästen mit einer Linie. An die Seite von Playlist schreibst du <b>1</b>, an die Seite von Song <b>n</b>. Bedeutet: Eine Playlist verwaltet viele Songs.</p><p class=\"small muted\">Merke: − heißt privat, + heißt öffentlich. Bei setDauerSek steht kein Rückgabetyp, also void.</p>"},
+   {t:"Klasse Song auf Papier schreiben",x:"<p>Schreib die Klasse von Hand. Orientiere dich am Merkblatt (Klasse Buch). Diese Teile brauchst du:</p><ol><li>Zwei <b>private</b> Attribute.</li><li>Den <b>Konstruktor</b>: gleicher Name wie die Klasse, <b>kein void</b>, er übernimmt die Parameter in die Attribute.</li><li>Zwei <b>Getter</b>, die den Wert zurückgeben.</li><li>Einen <b>Setter</b> <code>setDauerSek</code>, der den Wert nur übernimmt, wenn er größer als 0 ist. Das ist Robustheit.</li></ol><p>Erst selbst versuchen, dann aufklappen und vergleichen.</p>",
+    sol:`class Song {
+    private String titel;
+    private int dauerSek;
+
+    public Song(String pTitel, int pDauerSek) {
+        titel = pTitel;
+        dauerSek = pDauerSek;
+    }
+
+    public String getTitel() { return titel; }
+    public int getDauerSek() { return dauerSek; }
+
+    public void setDauerSek(int pDauerSek) {
+        if (pDauerSek > 0) {
+            dauerSek = pDauerSek;
+        }
+    }
+}`},
+   {t:"Klasse Playlist mit Liste schreiben",x:"<ol><li>Attribute: <code>name</code> und die Liste <code>songs</code> vom Typ <code>ArrayList&lt;Song&gt;</code>.</li><li>Im <b>Konstruktor</b> die leere Liste anlegen: <code>songs = new ArrayList&lt;Song&gt;();</code></li><li>Danach mit einer for-Schleife 5 Demo-Songs hinzufügen: <code>songs.add(new Song(\"Track \" + i, i * 60));</code> für i von 1 bis 5.</li><li>Methode <code>gesamtdauer()</code>: Summe auf 0 setzen, alle Songs durchlaufen, die Dauer aufaddieren, Summe zurückgeben.</li><li>Methode <code>laengsterSong()</code>: den ersten Song merken, die anderen damit vergleichen, den längsten zurückgeben.</li></ol><p class=\"small muted\">Typischer Fehler: <code>i &lt;= songs.size()</code>. Richtig ist <code>i &lt; songs.size()</code>, weil die Liste bei 0 anfängt.</p>",
+    sol:`class Playlist {
+    private String name;
+    private ArrayList<Song> songs;
+
+    public Playlist(String pName) {
+        name = pName;
+        songs = new ArrayList<Song>();
+        for (int i = 1; i <= 5; i++) {
+            songs.add(new Song("Track " + i, i * 60));
+        }
+    }
+
+    public int gesamtdauer() {
+        int summe = 0;
+        for (int i = 0; i < songs.size(); i++) {
+            summe = summe + songs.get(i).getDauerSek();
+        }
+        return summe;
+    }
+
+    public Song laengsterSong() {
+        Song best = songs.get(0);
+        for (int i = 1; i < songs.size(); i++) {
+            if (songs.get(i).getDauerSek() > best.getDauerSek()) {
+                best = songs.get(i);
+            }
+        }
+        return best;
+    }
+}`},
+   {t:"Struktogramm für gesamtdauer() zeichnen",x:"<p>Ein Struktogramm ist ein Kasten, in dem die Befehle von oben nach unten stehen. Zeichne:</p><ol><li>Einen Balken: <code>summe = 0</code></li><li>Einen Schleifenkasten mit Kopf: <code>für i von 0 bis songs.size() − 1</code>. Rechts ist der Kasten eingerückt, dort steht der Befehl, der wiederholt wird: <code>summe = summe + songs.get(i).getDauerSek()</code></li><li>Einen letzten Balken: <code>gib summe zurück</code></li></ol><p class=\"small muted\">Vergleiche mit dem Arbeitsblatt Struktogramm aus deinem Info-Ordner.</p>"},
+   {t:"Optional: am Laptop testen",x:"<p>So bringst du deinen Code zum Laufen, ganz ohne Vorwissen:</p><ol><li>Öffne <a href=\"https://www.programiz.com/java-programming/online-compiler/\" target=\"_blank\" rel=\"noopener\">programiz.com/java-programming/online-compiler</a>. Wenn ein Cookie-Hinweis kommt, wähle „Ablehnen“ oder nur Notwendige.</li><li>Links steht Beispielcode. Klick hinein, drück <b>Strg + A</b> und dann <b>Entf</b>. Das Feld ist jetzt leer.</li><li>Klick unten auf „Vorlage kopieren“ und füge sie links mit <b>Strg + V</b> ein.</li><li>Ersetze die beiden Klassen in der Vorlage durch das, was du auf Papier geschrieben hast (abtippen).</li><li>Klick oben auf den blauen Knopf <b>Run</b>. Rechts erscheint die Ausgabe. Richtig ist: <code>Gesamtdauer: 900 Sekunden</code> und <code>Laengster Song: Track 5</code>.</li><li>Steht rechts eine rote Fehlermeldung? Meist fehlt ein <code>;</code> oder eine <code>}</code>. Die Meldung nennt die Zeile. Kommst du nicht weiter, kopier die Meldung in den Chat zu Claude.</li></ol>",
+    code:`import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        Playlist p = new Playlist("Lernmusik");
+        System.out.println("Gesamtdauer: " + p.gesamtdauer() + " Sekunden");
+        System.out.println("Laengster Song: " + p.laengsterSong().getTitel());
+    }
+}
+
+// Hier deine Klasse Song einfügen
+
+// Hier deine Klasse Playlist einfügen
+`}],
+  check:{t:"Aufgabenblatt Bibliothek",x:"Das Blatt „Aufgabenblatt_Bibliothek_GK“ aus deinem Info-Ordner auf Papier lösen, mit dem Erwartungshorizont vergleichen und die Checkliste ankreuzen. Danach das Info-Quiz hier im Cockpit."}},
+ {id:"b",type:"spiel",title:"Code-Escape-Room",pitch:"6 Rätselkarten, bei denen du einen Code-Schnipsel „knacken“ musst. Die Schnipsel stehen schon hier, du schreibst sie auf Karteikarten und löst sie.",
   trains:"Fremden Quelltext analysieren (Was passiert hier, welche Werte entstehen?) und typische Fehler sofort erkennen. Genau das verlangt der Operator „analysieren“.",
   covers:["OOP","Listen","Grundlagen","Algorithmen"],effort:"mittel · etwa 1,5 Stunden",
+  how:{wo:"<b>Komplett auf Papier</b>. Keine Technik nötig.",
+   brauchst:"6 Karteikarten (oder ein A4-Blatt in 6 Felder geteilt), Stift, einen zweiten Stift in anderer Farbe für die Lösungen.",
+   ergebnis:"6 Karten: vorne der Code und die Frage, hinten deine Lösung mit kurzer Begründung.",
+   zeigen:"Fotografiere die Rückseiten und schick sie mit „Feedback Info“. Oder schick nur die Vorderseiten, dann löst Claude sie und du prüfst Claude."},
   steps:[
-   {t:"Karte 1: Konstruktor zählen",x:"Ein Konstruktor mit for-Schleife erzeugt Bücher. Frage: Wie viele Bücher, welche Seitenzahl hat das letzte? (Wie im Merkblatt: Durchläufe und Parameter aufschreiben.)"},
-   {t:"Karte 2 und 3: Fehler finden",x:"Baue in einen Code absichtlich je einen Fehler ein: <code>public void Buch(...)</code> als Konstruktor und <code>i &lt;= liste.size()</code>. Auf die Rückseite: Was passiert und wie geht es richtig?"},
-   {t:"Karte 4: Setter mit Prüfung",x:"Ein Setter lehnt ungültige Werte ab. Frage: Welchen Wert hat das Attribut nach drei Aufrufen mit 5, −3 und 12?"},
-   {t:"Karte 5: Datentypen und Strings",x:"Welcher Datentyp passt? Und warum ist <code>name == \"Krimi\"</code> riskant? (Lösung: equals.)"},
-   {t:"Karte 6: Theorie-Tresor",x:"Der Code für den Tresor sind die Anfangsbuchstaben der 5 Algorithmus-Eigenschaften. Dazu eine Frage: imperativ oder objektorientiert?"},
-   {t:"Selbst knacken",x:"Einen Tag später löst du deine Karten ohne Rückseite. Oder du schickst sie Claude, Claude löst sie, und du prüfst, ob die Lösung stimmt. Was du nicht erklären kannst, liest du im Spickzettel nach."}],
-  check:{t:"Aufgabenblatt Parkhaus",x:"Aus dem Info-Ordner lösen, besonders die Analyse-Aufgaben, und mit dem Erwartungshorizont vergleichen."}},
- {id:"c",type:"zeichnen",title:"Ein-Blatt-Poster „Java auf einen Blick“",pitch:"Ein A3-Poster am Beispiel Kino-Kartenverkauf (aus eurer Stillarbeit): in der Mitte das Klassendiagramm, außen herum Code, Struktogramm und eine Theorie-Ecke.",
+   {t:"Karte 1: Wie viele Bücher?",x:"<p>Schreib den Code auf die Vorderseite. Frage: <b>Wie viele Bücher entstehen, welche Seitenzahl hat das letzte?</b> Rechne mit, Durchlauf für Durchlauf, wie im Merkblatt.</p>",
+    code:`for (int i = 2; i < 8; i = i + 2) {
+    bestand.add(new Buch("Krimi", i * 50));
+}`,sol:"<p>i nimmt die Werte 2, 4 und 6 an (bei 8 bricht die Schleife ab). Also <b>3 Bücher</b>, das letzte hat 6 · 50 = <b>300 Seiten</b>.</p>"},
+   {t:"Karte 2: Fehler im Konstruktor",x:"<p>Frage: <b>Warum ist das kein Konstruktor?</b></p>",code:`public void Buch(String pGenre, int pSeitenzahl) {
+    genre = pGenre;
+    seitenzahl = pSeitenzahl;
+}`,sol:"<p>Ein Konstruktor hat <b>keinen Rückgabetyp, auch kein void</b>. Mit void ist es eine normale Methode, die zufällig Buch heißt. Richtig: <code>public Buch(String pGenre, int pSeitenzahl)</code>.</p>"},
+   {t:"Karte 3: Fehler in der Schleife",x:"<p>Frage: <b>Was passiert beim Ausführen, und wie geht es richtig?</b></p>",code:`for (int i = 0; i <= bestand.size(); i++) {
+    System.out.println(bestand.get(i).getGenre());
+}`,sol:"<p>Die Liste fängt bei 0 an. Bei 3 Büchern gibt es nur die Stellen 0, 1 und 2. Mit <code>&lt;=</code> wird auch Stelle 3 abgefragt, das Programm <b>stürzt ab</b> (IndexOutOfBoundsException). Richtig: <code>i &lt; bestand.size()</code>.</p>"},
+   {t:"Karte 4: Setter mit Prüfung",x:"<p>Frage: <b>Welchen Wert hat seitenzahl am Ende?</b> Am Anfang ist seitenzahl = 100.</p>",code:`public void setSeitenzahl(int p) {
+    if (p > 0) {
+        seitenzahl = p;
+    }
+}
+// Aufrufe nacheinander:
+b.setSeitenzahl(5);
+b.setSeitenzahl(-3);
+b.setSeitenzahl(12);`,sol:"<p>5 wird übernommen, −3 wird abgelehnt (nicht größer als 0), 12 wird übernommen. Ergebnis: <b>12</b>. Das ist Datenkapselung mit Robustheit: Von außen kommt man nur über den Setter ran, und der lässt keine falschen Werte rein.</p>"},
+   {t:"Karte 5: Datentypen und Strings",x:"<p>Zwei Fragen: <b>Welcher Datentyp passt zu den drei Werten?</b> Und <b>warum ist die letzte Zeile riskant?</b></p>",code:`??? preis = 4.99;
+??? ausgeliehen = true;
+??? anzahl = 12;
+
+if (genre == "Krimi") { ... }`,sol:"<p><code>double</code>, <code>boolean</code>, <code>int</code>. Strings vergleicht man mit <code>genre.equals(\"Krimi\")</code>. <code>==</code> prüft nur, ob es dasselbe Objekt ist, nicht ob der Text gleich ist.</p>"},
+   {t:"Karte 6: Theorie-Tresor",x:"<p>Schreib auf die Karte: <b>Der Tresor-Code sind die Anfangsbuchstaben der 5 Eigenschaften eines Algorithmus.</b> Zweite Frage: <b>Was ist der Unterschied zwischen imperativ und objektorientiert?</b> Löse beides aus dem Kopf, dann vergleichen.</p>",sol:"<p>Eigenschaften (wie im Spickzettel): <b>allgemeingültig, ausführbar, endlich, eindeutig, terminiert</b>. Code: A-A-E-E-T. Imperativ: Das Programm ist eine Folge von Befehlen, die Daten verändern. Objektorientiert: Daten und Methoden sind in Objekten gebündelt, die Klassen sind die Baupläne.</p>"},
+   {t:"Am nächsten Tag: alles noch mal ohne Rückseite",x:"Misch die Karten und löse sie erneut, ohne umzudrehen. Was du nicht mehr kannst, markierst du und liest im Spickzettel nach."}],
+  check:{t:"Aufgabenblatt Parkhaus",x:"Das Blatt „Aufgabenblatt_Parkhaus_GK“ aus deinem Info-Ordner auf Papier lösen, besonders die Analyse-Aufgaben, und mit dem Erwartungshorizont vergleichen. Danach das Info-Quiz."}},
+ {id:"c",type:"zeichnen",title:"Ein-Blatt-Poster „Java auf einen Blick“",pitch:"Ein Poster am Beispiel Kino-Kartenverkauf: in der Mitte das Klassendiagramm, außen herum Code, Struktogramm und eine Theorie-Ecke.",
   trains:"Den ganzen Stoff in einem Bild zusammenbringen. Gut für alle, die visuell lernen und für die Theoriefragen.",
   covers:["OOP","UML","Listen","Algorithmen","Theorie"],effort:"mittel · etwa 1,5 Stunden",
+  how:{wo:"<b>Auf Papier</b>. Keine Technik nötig, nur das Handy für eine Sprachmemo am Ende.",
+   brauchst:"Ein A3-Blatt (oder zwei A4-Blätter nebeneinander), Bleistift zum Vorzeichnen, zwei bis drei Farben.",
+   ergebnis:"Ein Poster mit vier Bereichen, das du in 3 Minuten erklären kannst.",
+   zeigen:"Foto vom Poster an Claude mit „Feedback Info“."},
   steps:[
-   {t:"Mitte: Klassendiagramm",x:"Klassen <code>Kino</code> und <code>Ticket</code> mit Attributen, Methoden und Kardinalität 1 : n."},
-   {t:"Links: Code-Ausschnitte",x:"Konstruktor von Kino (legt Liste an), ein Getter und ein Setter mit Prüfung, eine Methode, die alle Tickets durchläuft und den Umsatz berechnet."},
-   {t:"Rechts: Struktogramm",x:"Für die Umsatz-Methode, sauber mit Zählschleife."},
-   {t:"Unten: Theorie-Ecke",x:"Imperativ vs. objektorientiert, die 5 Algorithmus-Eigenschaften, die 4 Qualitätskriterien, Generationen der Programmiersprachen. Je ein Satz."},
-   {t:"Laut erklären",x:"Erkläre das Poster in 3 Minuten als Sprachmemo und hör es dir an. Wo du stockst, ergänzt du das Poster."}],
-  check:{t:"Aufgabenblatt Softwareprojekt + Checkliste",x:"Aus dem Info-Ordner lösen, besonders die Theoriefragen. Danach die Checkliste ankreuzen."}}
+   {t:"Blatt einteilen",x:"Mit Bleistift: ein großes Feld in der Mitte, links ein Streifen, rechts ein Streifen, unten ein Streifen. Oben die Überschrift „Java auf einen Blick: Kino“."},
+   {t:"Mitte: Klassendiagramm",x:"<ul><li><b>Kino</b>: <code>- name: String</code>, <code>- tickets: ArrayList&lt;Ticket&gt;</code>, <code>+ Kino(pName: String)</code>, <code>+ umsatz(): double</code></li><li><b>Ticket</b>: <code>- film: String</code>, <code>- preis: double</code>, <code>+ Ticket(pFilm: String, pPreis: double)</code>, <code>+ getPreis(): double</code>, <code>+ setPreis(pPreis: double)</code></li></ul><p>Linie dazwischen, 1 bei Kino, n bei Ticket. Daneben in Farbe: „1 : n wird in Java als ArrayList umgesetzt.“</p>"},
+   {t:"Links: drei Code-Schnipsel",x:"Schreib ab und markiere farbig, was Konstruktor, Getter und Setter ist.",code:`public Kino(String pName) {
+    name = pName;
+    tickets = new ArrayList<Ticket>();
+}
+
+public double getPreis() {
+    return preis;
+}
+
+public void setPreis(double pPreis) {
+    if (pPreis >= 0) { preis = pPreis; }
+}
+
+public double umsatz() {
+    double summe = 0;
+    for (int i = 0; i < tickets.size(); i++) {
+        summe = summe + tickets.get(i).getPreis();
+    }
+    return summe;
+}`},
+   {t:"Rechts: Struktogramm für umsatz()",x:"Drei Teile untereinander: Balken <code>summe = 0</code>, Schleifenkasten <code>für i von 0 bis tickets.size() − 1</code> mit eingerücktem <code>summe = summe + tickets.get(i).getPreis()</code>, Balken <code>gib summe zurück</code>."},
+   {t:"Unten: Theorie-Ecke",x:"Je ein Satz zu: imperativ vs. objektorientiert, die 5 Eigenschaften eines Algorithmus, die 4 Qualitätskriterien von Software, die Generationen der Programmiersprachen. Die Sätze findest du im Spickzettel, schreib sie in deinen eigenen Worten."},
+   {t:"Laut erklären",x:"Nimm mit der Sprachmemo-App deines Handys auf, wie du das Poster in 3 Minuten erklärst. Hör es dir an. Wo du stockst, ergänzt du das Poster."}],
+  check:{t:"Aufgabenblatt Softwareprojekt + Checkliste",x:"Das Blatt „Aufgabenblatt_Softwareprojekt_GK“ aus deinem Info-Ordner lösen, besonders die Theoriefragen. Danach die Checkliste ankreuzen und das Info-Quiz."}}
 ];
 
 P.sport=[
@@ -994,7 +1120,7 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T16:53:40.157349Z", "stand": {"choice": {}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T16:24:57.658Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T17:12:38.056150Z", "stand": {"choice": {}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T16:24:57.658Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
@@ -1254,12 +1380,23 @@ function rateRow(s,field,label,opts){
   const r=S.rate[s]||{};
   return `<div class="rate"><span class="small">${label}</span><div class="seg">${opts.map((o,i)=>`<button aria-pressed="${r[field]===i+1}" data-rate="${s}" data-f="${field}" data-v="${i+1}">${o}</button>`).join("")}</div></div>`;
 }
+function howBox(p){
+  if(!p.how) return "";
+  const r=[["Wo du es machst",p.how.wo],["Was du brauchst",p.how.brauchst],["Am Ende hast du",p.how.ergebnis],["So zeigst du es Claude",p.how.zeigen]];
+  return `<div class="card how"><div class="eyebrow">So setzt du es um</div><dl>${r.map(x=>`<dt>${x[0]}</dt><dd>${x[1]}</dd>`).join("")}</dl></div>`;
+}
+function stepExtra(st){
+  let h="";
+  if(st.code) h+=`<div class="codebox"><pre>${esc(st.code)}</pre><div class="row"><button class="btn" data-cc="1">Vorlage kopieren</button><span class="small muted cmsg"></span></div></div>`;
+  if(st.sol) h+=`<details class="sol"><summary>Lösung zum Vergleichen (erst selbst versuchen)</summary>${st.sol.trim().startsWith("<")?st.sol:`<pre>${esc(st.sol)}</pre>`}</details>`;
+  return h;
+}
 function viewProjekte(s){
   const p=proj(s); let h="";
   if(p&&!browse[s]){
     const d=projDone(s,p),tot=projTotal(p);
-    h+=`<div class="card prose pchosen"><div class="row"><div class="eyebrow">Dein Projekt · ${d} von ${tot} erledigt</div><span class="spacer"></span><button class="btn ghost" data-browse="${s}">vergleichen oder wechseln</button></div><h3>${esc(p.title)}</h3><p>${p.pitch}</p><p><b>Danach kannst du:</b> ${esc(p.trains)}</p>${coverChips(s,p)}<p class="small muted">Art: ${esc(TYPES[p.type])} · Umfang: ${esc(p.effort)}, frei einteilbar.</p></div><div class="steps">`;
-    p.steps.forEach((st,i)=>{const id=pid(s,p.id,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""} aria-label="Schritt erledigt"><div class="body"><div class="small muted">Schritt ${i+1}</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label><div class="small">${st.x}</div></div></div>`;});
+    h+=`<div class="card prose pchosen"><div class="row"><div class="eyebrow">Dein Projekt · ${d} von ${tot} erledigt</div><span class="spacer"></span><button class="btn ghost" data-browse="${s}">vergleichen oder wechseln</button></div><h3>${esc(p.title)}</h3><p>${p.pitch}</p><p><b>Danach kannst du:</b> ${esc(p.trains)}</p>${coverChips(s,p)}<p class="small muted">Art: ${esc(TYPES[p.type])} · Umfang: ${esc(p.effort)}, frei einteilbar.</p></div>${howBox(p)}<div class="steps">`;
+    p.steps.forEach((st,i)=>{const id=pid(s,p.id,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""} aria-label="Schritt erledigt"><div class="body"><div class="small muted">Schritt ${i+1}</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label><div class="small">${st.x}</div>${stepExtra(st)}</div></div>`;});
     const cid=pid(s,p.id,"check"),cdn=!!S.done[cid];
     h+=`<div class="step final ${cdn?"done":""}"><input type="checkbox" class="check" id="s-${cid}" data-id="${cid}" ${cdn?"checked":""} aria-label="Abschlusscheck erledigt"><div class="body"><div class="small muted">Abschlusscheck</div><label for="s-${cid}" style="font-weight:700">${esc(p.check.t)}</label><div class="small">${p.check.x}</div><div class="row"><button class="btn" data-stab="quiz" data-s="${s}">Zum Quiz</button><button class="btn ghost" data-stab="tipps" data-s="${s}">Typische Fehler</button></div></div></div></div>`;
     if(cdn){
@@ -1273,7 +1410,7 @@ function viewProjekte(s){
   h+=`<div class="stack"><p class="muted">${P[s].length} Projekte zur Auswahl. Jedes bereitet auf die ganze Klausur vor, nur auf unterschiedliche Art. Die Kästchen zeigen, welche Themen ein Projekt abdeckt, den Rest holst du dir aus dem Spickzettel.</p>${pl.st==="später"||pl.st==="bald"?`<div class="coach">Für diese Klausur ist noch Zeit. Empfohlener Start: <b>${fmt(addDays(pl.startIn))}</b>. Anschauen kannst du die Projekte schon jetzt.</div>`:""}${p?`<button class="btn ghost" data-browse="${s}" style="justify-self:start;padding-left:0">‹ zurück zu deinem Projekt</button>`:""}</div><div class="pgrid">`;
   P[s].forEach(o=>{const d=projDone(s,o),tot=projTotal(o),on=p&&p.id===o.id;
     const why=o===rec?(pl.n<=3?"Passt in die Zeit":bt&&o.type===bt?"Passt zu dir":"Empfohlen"):"";
-    h+=`<article class="pcard ${on?"on":""}"><div class="row"><span class="pletter">${o.id.toUpperCase()}</span>${why?`<span class="badge">${why}</span>`:""}<span class="spacer"></span><span class="tag">${esc(o.effort)}</span></div><h3>${esc(o.title)}</h3><p>${o.pitch}</p><p class="small"><b>Danach kannst du:</b> ${esc(o.trains)}</p>${coverChips(s,o)}<p class="small muted">Art: ${esc(TYPES[o.type])}</p>
+    h+=`<article class="pcard ${on?"on":""}"><div class="row"><span class="pletter">${o.id.toUpperCase()}</span>${why?`<span class="badge">${why}</span>`:""}<span class="spacer"></span><span class="tag">${esc(o.effort)}</span></div><h3>${esc(o.title)}</h3><p>${o.pitch}</p><p class="small"><b>Danach kannst du:</b> ${esc(o.trains)}</p>${coverChips(s,o)}<p class="small muted">Art: ${esc(TYPES[o.type])}</p>${o.how?`<p class="small"><b>Wo:</b> ${o.how.wo}</p>`:""}
       <details><summary>Ablauf ansehen (${o.steps.length} Schritte + Abschlusscheck)</summary><ol>${o.steps.map(st=>`<li>${esc(st.t)}</li>`).join("")}<li><b>${esc(o.check.t)}</b></li></ol></details>
       <div class="row"><button class="btn ${on?"":"primary"}" data-choose="${s}" data-p="${o.id}" ${on?"disabled":""}>${on?"Dein Projekt":d?"Weitermachen ("+d+"/"+tot+")":"Dieses Projekt starten"}</button></div></article>`;});
   return h+`</div>`;
@@ -1330,7 +1467,7 @@ let lastRoute=route();
 window.addEventListener("hashchange",()=>{const r=route();if(r!==lastRoute){lastRoute=r;render();window.scrollTo(0,0);}});
 
 document.addEventListener("click",async e=>{
-  const t=e.target.closest("[data-stab],[data-qa],[data-qnext],[data-qreset],[data-choose],[data-browse],[data-rate],[data-copy],a[data-tab]");
+  const t=e.target.closest("[data-stab],[data-qa],[data-qnext],[data-qreset],[data-choose],[data-browse],[data-rate],[data-copy],[data-cc],a[data-tab]");
   if(!t) return;
   if(t.matches("a[data-tab]")){const s=t.getAttribute("href").slice(1);subjTab[s]=t.dataset.tab;if(route()===s){render();window.scrollTo(0,0);}return;}
   if(t.dataset.stab){subjTab[t.dataset.s]=t.dataset.stab;render();return;}
@@ -1338,6 +1475,7 @@ document.addEventListener("click",async e=>{
   if(t.dataset.browse){const s=t.dataset.browse;browse[s]=!browse[s];render();return;}
   if(t.dataset.rate){const s=t.dataset.rate;const r=Object.assign({p:S.choice[s],check:0,gain:0,fun:0},S.rate[s]||{});r.p=S.choice[s];r[t.dataset.f]=Number(t.dataset.v);
     S.rate[s]=r; persist();render();return;}
+  if(t.dataset.cc){const b=t.closest(".codebox"),m=b.querySelector(".cmsg");try{await navigator.clipboard.writeText(b.querySelector("pre").textContent);m.textContent="Kopiert. Jetzt mit Strg + V einfügen.";}catch(err){m.textContent="Kopieren ging nicht, bitte den Code markieren und mit Strg + C kopieren.";}return;}
   if(t.dataset.copy){const m=document.getElementById("copymsg");try{await navigator.clipboard.writeText(standText());m.textContent="Kopiert. Jetzt im Chat einfügen.";}catch(err){m.textContent="Kopieren ging nicht, bitte von Hand markieren.";}return;}
   if(t.dataset.qa){const s=t.dataset.qa,st=quizState[s];st.ans[st.i]=Number(t.dataset.k);render();return;}
   if(t.dataset.qnext){const s=t.dataset.qnext,st=quizState[s];st.i++;
