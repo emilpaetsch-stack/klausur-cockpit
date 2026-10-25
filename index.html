@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cockpit">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2445c9">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>html,body{margin:0}</style>
+</head>
+<body>
+<title>Klausur-Cockpit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Karopapier wie im Hefter, eine schmale Lesespalte, oben die Navigation, Fächer als farbige Hefter-Reiter. Tinte = Akzent, Korrekturrot = Fehler. */
+:root{
+  --paper:#f5f6f2; --card:#ffffff; --ink:#1c2230; --muted:#5b6372; --line:#dde1dc; --grid:rgba(60,90,140,.07);
+  --accent:#2445c9; --accent-soft:rgba(36,69,201,.10); --red:#c8322a; --red-soft:rgba(200,50,42,.09); --ok:#1f8a4c; --ok-soft:rgba(31,138,76,.12); --warn:#b26b00;
+  --f-display:"Familjen Grotesk","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12161e; --card:#1a1f2a; --ink:#e7e9ee; --muted:#9aa2b1; --line:#2b3240; --grid:rgba(140,170,230,.05);
+  --accent:#8fa3ff; --accent-soft:rgba(143,163,255,.14); --red:#ff8b7e; --red-soft:rgba(255,139,126,.12); --ok:#5fd394; --ok-soft:rgba(95,211,148,.13); --warn:#f0b04a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12161e; --card:#1a1f2a; --ink:#e7e9ee; --muted:#9aa2b1; --line:#2b3240; --grid:rgba(140,170,230,.05);
+  --accent:#8fa3ff; --accent-soft:rgba(143,163,255,.14); --red:#ff8b7e; --red-soft:rgba(255,139,126,.12); --ok:#5fd394; --ok-soft:rgba(95,211,148,.13); --warn:#f0b04a; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--card)}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+h2{font-size:1.45rem} h3{font-size:1.12rem} h4{font-size:1rem}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--accent-soft);padding:.05em .35em;border-radius:5px}
+pre{font-family:var(--f-mono);font-size:.82rem;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;margin:0;line-height:1.5}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Kopf */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.top .wrap{padding-block:10px 0;display:grid;gap:8px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand h1{font-size:1.3rem;letter-spacing:-.01em}
+.brand h1 span{color:var(--accent)}
+.sync{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.sync.on i{background:var(--ok)} .sync.local i{background:var(--warn)}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--muted);font-family:var(--f-display);font-weight:600;padding:8px 12px 10px;border-bottom:3px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.overall{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted);padding-bottom:2px}
+.bar{flex:1;height:6px;border-radius:6px;background:var(--line);overflow:hidden;min-width:60px}
+.bar b{display:block;height:100%;background:var(--accent);border-radius:6px;transition:width .4s}
+
+main{display:grid;gap:22px;padding-top:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.eyebrow{font-family:var(--f-display);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.stack{display:grid;gap:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+
+/* Chips & Buttons */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;padding:2px 9px 2px 7px;border-radius:999px;background:color-mix(in srgb,var(--c,var(--accent)) 16%,transparent);color:var(--ink);white-space:nowrap}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--accent))}
+.chip.plain::before{display:none}
+.tag{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:700;font-size:.9rem;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding-inline:6px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Aufgaben */
+.task{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-left:5px solid var(--c,var(--accent));border-radius:var(--r);background:var(--card)}
+.task.done{opacity:.62}
+.task.done .ttl{text-decoration:line-through;text-decoration-color:var(--muted)}
+.task .body{min-width:0;display:grid;gap:4px}
+.task .ttl{font-weight:700}
+.task .det{font-size:.9rem;color:var(--muted)}
+.check{appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid var(--muted);border-radius:7px;cursor:pointer;display:grid;place-content:center;margin:1px 0 0;background:var(--card)}
+.check:checked{background:var(--ok);border-color:var(--ok)}
+.check:checked::after{content:"";width:7px;height:13px;border:solid var(--card);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.event{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--r);background:color-mix(in srgb,var(--c,var(--accent)) 12%,var(--card));border:1px solid color-mix(in srgb,var(--c,var(--accent)) 35%,transparent)}
+.event .k{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.event b{font-family:var(--f-display)}
+
+/* Heute */
+.dayhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dayhead h2{font-size:1.6rem}
+.daynav{display:flex;gap:6px;margin-left:auto}
+.mins{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.next{display:grid;gap:8px}
+.next .it{display:grid;grid-template-columns:66px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.next .it:last-child{border-bottom:0}
+.stack>*,.next .it>*,.grid>*{min-width:0}
+.next .it>*{overflow-wrap:anywhere}
+.cd{font-family:var(--f-display);font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.cd small{display:block;font-family:var(--f-body);font-weight:400;font-size:.72rem;color:var(--muted)}
+.timer{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.timer .clock{font-family:var(--f-mono);font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.coach{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--r) var(--r) 0;padding:12px 14px}
+
+/* Plan */
+.week h3{margin-bottom:8px}
+.pday{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.pday.today{background:var(--accent-soft);margin-inline:-10px;padding-inline:10px;border-radius:8px;border-top-color:transparent}
+.pday.past{opacity:.6}
+.pday .date{font-family:var(--f-display);font-weight:700;line-height:1.15}
+.pday .date small{display:block;font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:.78rem}
+.pday .items{display:grid;gap:6px;min-width:0}
+.mini{display:flex;gap:9px;align-items:flex-start}
+.mini .check{width:22px;height:22px;border-radius:6px;flex:0 0 auto}
+.mini .check:checked::after{width:6px;height:11px}
+.mini .txt{min-width:0;font-size:.93rem}
+.mini.done .txt{text-decoration:line-through;color:var(--muted)}
+.flag{font-size:.86rem;font-weight:700;display:flex;gap:8px;align-items:center}
+.flag::before{content:"";width:10px;height:10px;transform:rotate(45deg);background:var(--c,var(--accent));flex:0 0 auto}
+
+/* Fächer */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.subj{display:grid;gap:10px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:var(--r);padding:14px}
+.subj:hover{border-color:var(--c)}
+.subj h3{font-size:1.15rem}
+.subj .meta{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:.86rem;color:var(--muted)}
+.subj .bar b{background:var(--c)}
+
+/* Fachseite */
+.hero{border-radius:var(--r);padding:18px;background:color-mix(in srgb,var(--c) 14%,var(--card));border:1px solid color-mix(in srgb,var(--c) 40%,transparent);display:grid;gap:10px}
+.hero h2{font-size:1.75rem}
+.hero .facts{display:flex;gap:18px;flex-wrap:wrap;font-size:.9rem}
+.hero .facts div{display:grid}
+.hero .facts b{font-family:var(--f-display);font-size:1.05rem}
+.seg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.88rem;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose ul,.prose ol{margin:0;padding-left:1.25em;display:grid;gap:5px}
+.topics{display:grid;gap:10px}
+.topic{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.topic .n{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);padding-top:3px;min-width:4.6em}
+.gloss{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.gloss details{border-bottom:1px solid var(--line)}
+.gloss details:last-child{border-bottom:0}
+.gloss summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;display:flex;gap:10px;align-items:center}
+.gloss summary::-webkit-details-marker{display:none}
+.gloss summary::before{content:"+";font-family:var(--f-mono);color:var(--c,var(--accent));font-size:1.1rem;width:14px}
+.gloss details[open] summary::before{content:"–"}
+.gloss .in{padding:0 14px 14px 38px;display:grid;gap:8px;font-size:.95rem}
+.steps{display:grid;gap:10px;counter-reset:st}
+.step{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.step .body{min-width:0;display:grid;gap:6px}
+.step.done{opacity:.65}
+.mistakes{display:grid;gap:10px}
+.mistake{border-left:4px solid var(--red);background:var(--red-soft);padding:10px 14px;border-radius:0 var(--r) var(--r) 0;display:grid;gap:4px}
+.mistake b{color:var(--red)}
+.mistake .src{font-size:.78rem;color:var(--muted)}
+.ops{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.op{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:.92rem}
+.op b{font-family:var(--f-display);display:block}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);background:var(--paper)}
+tr:last-child td{border-bottom:0}
+
+/* Quiz */
+.quiz{display:grid;gap:14px}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qcard{display:grid;gap:12px}
+.qcard .q{font-weight:700;font-size:1.05rem}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:10px 12px;cursor:pointer;font-size:.95rem;display:flex;gap:10px;align-items:flex-start}
+.opt .l{font-family:var(--f-mono);font-weight:600;color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt:disabled{cursor:default}
+.expl{border-radius:9px;padding:10px 12px;background:var(--paper);border:1px solid var(--line);font-size:.93rem}
+.score{font-family:var(--f-display);font-size:2.2rem;font-weight:700}
+.pips{display:flex;gap:4px;flex-wrap:wrap}
+.pips i{width:18px;height:6px;border-radius:3px;background:var(--line)}
+.pips i.r{background:var(--ok)} .pips i.w{background:var(--red)} .pips i.c{background:var(--ink)}
+.questions{display:grid;gap:8px}
+.question{border:1px dashed var(--warn);border-radius:var(--r);padding:12px 14px;display:grid;gap:4px;background:var(--card)}
+.question b{color:var(--warn)}
+.foot{font-size:.8rem;color:var(--muted);text-align:center;padding-top:10px}
+@media (max-width:520px){
+  .pday{grid-template-columns:56px 1fr;gap:8px}
+  .hero h2{font-size:1.45rem}
+  .dayhead h2{font-size:1.35rem}
+  .daynav{margin-left:0}
+}
+/* v3: Erinnerungen, Projektwahl, Notizen */
+.big{font-size:1.6rem}
+.remind{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:var(--r);padding:14px 16px;display:grid;gap:12px}
+.rh{display:flex;gap:14px;align-items:center}
+.rh>div{min-width:0}
+.cdbig{font-family:var(--f-display);font-weight:700;font-size:2rem;line-height:1;color:var(--c);min-width:2.4em;text-align:center;font-variant-numeric:tabular-nums}
+.cdbig small{display:block;font-size:.72rem;font-family:var(--f-body);font-weight:400;color:var(--muted);margin-top:3px}
+.sugg{display:grid;gap:6px}
+.sugg a{display:block;text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:8px;background:color-mix(in srgb,var(--c) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c) 22%,transparent)}
+.sugg a.strong{font-weight:700;background:color-mix(in srgb,var(--c) 16%,var(--card))}
+.sugg a:hover{border-color:var(--c)}
+.stand{display:grid;gap:2px}
+.srow{display:grid;grid-template-columns:10px minmax(0,1fr) 90px auto;gap:10px;align-items:center;text-decoration:none;color:var(--ink);padding:7px 4px;border-bottom:1px dashed var(--line)}
+.srow:last-child{border-bottom:0}
+.srow.past{opacity:.55}
+.srow .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.srow .nm{min-width:0;display:grid}
+.srow .nm small{color:var(--muted);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .bar b{background:var(--c)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.pcard{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:var(--r);padding:16px;display:grid;gap:10px;align-content:start}
+.pcard.on{box-shadow:0 0 0 2px var(--c)}
+.pcard h3{font-size:1.1rem}
+.pcard details summary{cursor:pointer;font-size:.88rem;color:var(--accent);font-weight:700}
+.pcard ol{margin:8px 0 0;padding-left:1.25em;font-size:.9rem;display:grid;gap:3px}
+.pletter{font-family:var(--f-display);font-weight:700;width:28px;height:28px;border-radius:7px;display:grid;place-content:center;background:color-mix(in srgb,var(--c) 18%,var(--card));color:var(--ink)}
+.covers{display:flex;flex-wrap:wrap;gap:5px}
+.cov{font-size:.74rem;padding:2px 8px;border-radius:6px;border:1px dashed var(--line);color:var(--muted)}
+.cov.on{border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--ink);font-weight:700}
+.pchosen{border-top:5px solid var(--c)}
+.step.final{border:1.5px dashed var(--c);background:color-mix(in srgb,var(--c) 6%,var(--card))}
+textarea.notes{width:100%;min-height:340px;resize:vertical;font:inherit;font-size:.98rem;line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;background-image:linear-gradient(transparent calc(1.6em - 1px),var(--line) 1px);background-size:100% 1.6em;background-attachment:local}
+textarea.notes:focus{outline:2px solid var(--accent);outline-offset:1px}
+.note-row{display:grid;gap:6px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:var(--r);padding:12px 14px}
+.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+@media (max-width:520px){.srow{grid-template-columns:10px minmax(0,1fr) 60px}.srow .tag{display:none}.big{font-size:1.35rem}}
+/* v4: Fahrplan, Status, Bewertung, Feedback */
+.fplan{display:grid;gap:2px}
+.frow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;text-decoration:none;color:var(--ink);padding:8px 4px;border-bottom:1px dashed var(--line)}
+.frow:last-child{border-bottom:0}
+.frow .nm{display:grid;min-width:0}
+.frow .nm b{border-left:4px solid var(--c);padding-left:7px;line-height:1.2}
+.frow .nm small{color:var(--muted);font-size:.8rem;padding-left:11px}
+.cdm{font-family:var(--f-display);font-weight:700;font-size:1.25rem;text-align:center;line-height:1;font-variant-numeric:tabular-nums}
+.cdm small{display:block;font-family:var(--f-body);font-weight:400;font-size:.68rem;color:var(--muted)}
+.st{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap;border:1px solid var(--line);color:var(--muted)}
+.st-laeuft{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.st-fertig{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.st-jetzt{background:var(--red-soft);color:var(--red);border-color:transparent}
+.st-bald{color:var(--warn);border-color:var(--warn)}
+.newrow{display:flex;gap:10px;align-items:flex-start;text-decoration:none;color:var(--ink);padding:6px 0;border-bottom:1px dashed var(--line)}
+.newrow:last-child{border-bottom:0}
+.newrow>span:last-child{min-width:0}
+.tstats{display:grid;gap:6px}
+.trow{display:grid;grid-template-columns:minmax(0,1fr) 110px auto;gap:10px;align-items:center;font-size:.92rem}
+.badge{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--ok-soft);color:var(--ok)}
+.rate{display:grid;gap:4px}
+.rate .seg button[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.fb{border-left:5px solid var(--accent)}
+.stars{color:var(--warn);letter-spacing:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Klausur<span>-</span>Cockpit</h1>
+      <div class="sync" id="sync"><i></i><span>verbinde …</span></div>
+    </div>
+    <div class="overall"><span id="ovtxt">Fortschritt</span><div class="bar"><b id="ovbar" style="width:0%"></b></div><span id="ovpct">0 %</span></div>
+    <nav class="tabs" id="tabs">
+      <a href="#start" data-r="start">Start</a>
+      <a href="#lernen" data-r="lernen">Lernen</a>
+      <a href="#leistungen" data-r="leistungen">Leistungen</a>
+      <a href="#termine" data-r="termine">Termine</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap"><main id="app"></main><p class="foot">Erstellt aus deinen Unterlagen (Gesamtscan, Info-Ordner, Sport-Folien, Klausurplan). Stand 25.10.2026. Alles sind Vorschläge, du entscheidest. Feedback und Überarbeitung gibt es im Chat mit Claude.</p></div>
+
+<script>
+/* ============ DATEN ============ */
+const SUBJ = {
+ info:{n:"Informatik",k:"Kurs 2 · Grundkurs",c:"#0f8f8a",d:"2026-10-27",time:"5.–6. Stunde",kind:"Klausur"},
+ sport:{n:"Sport",k:"Kurs 2 · Theorie",c:"#e0731c",d:"2026-10-28",time:"7.–8. Stunde",kind:"Klausur"},
+ musik:{n:"Musik",k:"Kurs 1 · Grundkurs",c:"#8a45c9",d:"2026-11-02",time:"5.–6. Stunde",kind:"Klausur"},
+ mathe:{n:"Mathematik",k:"Kurs 1 · Grundkurs",c:"#2f6fdb",d:"2026-11-03",time:"1.–2. Stunde",kind:"Klausur"},
+ deutsch:{n:"Deutsch",k:"Leistungskurs",c:"#d23a3a",d:"2026-11-06",time:"3.–5. Stunde, 135 Min",kind:"Klausur"},
+ bio:{n:"Biologie",k:"Kurs 2 · Grundkurs",c:"#2e9a4f",d:"2026-11-09",time:"7.–8. Stunde",kind:"Klausur"},
+ religion:{n:"Religion",k:"Grundkurs · mit Projekt",c:"#c79a12",d:"2026-11-12",time:"1.–2. Stunde",kind:"Klausur"},
+ geschichte:{n:"Geschichte",k:"Leistungskurs",c:"#a0522d",d:"2026-11-13",time:"5.–6. Stunde",kind:"Klausur"},
+ englisch:{n:"Englisch",k:"Kurs 1 · Grundkurs",c:"#4b4fd1",d:"2026-11-16",time:"Komplexe Leistungsüberprüfung",kind:"Klausur"},
+ mann:{n:"Vortrag Thomas Mann",k:"Deutsch LK · Präsentation",c:"#e2557f",d:"2026-11-13",time:"Deutschstunde, ca. 15 Min",kind:"Vortrag"},
+ bm:{n:"Biomodell vorstellen",k:"Biologie · Präsentation",c:"#3aa17e",d:"2026-10-29",time:"Biostunde",kind:"Präsentation"},
+ relp:{n:"Religionsprojekt",k:"Gruppenarbeit · Mappe und Film",c:"#b07d00",d:"2026-11-05",time:"Mappe 05.11., Projektabend 12.11.",kind:"Gruppenprojekt"},
+ sozi:{n:"Sozi-Unterrichtsgespräch",k:"Sozialkunde · Gespräch zu deinem KI-Video",c:"#5f7d8c",d:"2026-10-28",time:"ab 28.10., Reihenfolge offen",kind:"Gespräch"}
+};
+const ORDER=["info","sport","musik","mathe","deutsch","bio","religion","geschichte","englisch","sozi","bm","relp","mann"];
+
+const EVENTS=[
+ {d:"2026-10-26",s:"musik",k:"Termin",t:"Klaviervorspiel (Musik)"},
+ {d:"2026-10-27",s:"info",k:"Klausur",t:"Informatik"},
+ {d:"2026-10-28",s:"sport",k:"Klausur",t:"Sport (Training und Kraft)"},
+ {d:"2026-10-28",s:"sozi",k:"Gespräch",t:"Sozi-Unterrichtsgespräche starten (KI-Video)"},
+ {d:"2026-10-29",s:"bm",k:"Präsentation",t:"Biomodell vorstellen"},
+ {d:"2026-11-02",s:"musik",k:"Klausur",t:"Musik"},
+ {d:"2026-11-03",s:"mathe",k:"Klausur",t:"Mathematik (Vektoren)"},
+ {d:"2026-11-05",s:"relp",k:"Abgabe",t:"Projektmappe Religion/Philosophie (Gruppe)"},
+ {d:"2026-11-06",s:"deutsch",k:"Klausur",t:"Deutsch LK (135 Min)"},
+ {d:"2026-11-09",s:"bio",k:"Klausur",t:"Biologie"},
+ {d:"2026-11-12",s:"religion",k:"Klausur",t:"Religion · abends Projektabend mit Filmen"},
+ {d:"2026-11-13",s:"geschichte",k:"Klausur",t:"Geschichte LK"},
+ {d:"2026-11-13",s:"mann",k:"Vortrag",t:"Deutschvortrag Thomas Mann (ca. 15 Min)"},
+ {d:"2026-11-16",s:"englisch",k:"Klausur",t:"Englisch (komplexe Leistungsüberprüfung)"}
+];
+
+/* ============ FACHINHALTE ============ */
+const C={};
+
+C.info={
+ src:"Gesamtscan S. 98–111, Ordner „Klausurvorbereitung 12 Info“ (Merkblatt, Checkliste, Aufgabenblätter mit Erwartungshorizont), Stillarbeit Kartenverkauf",
+ topics:[
+  ["OOP","Klasse und Objekt, Attribute und Methoden, Konstruktor, Datenkapselung mit get/set"],
+  ["UML","Klassendiagramm lesen und zeichnen, Assoziation mit Kardinalität 1 : n"],
+  ["Listen","ArrayList anlegen, add, get, size, remove, mit Schleife durchlaufen"],
+  ["Grundlagen","Datentypen, Operatoren, Typumwandlung, Zufallszahlen"],
+  ["Algorithmen","Algorithmusbegriff und Eigenschaften, Struktogramm"],
+  ["Theorie","Imperative vs. objektorientierte Programmierung, Generationen der Programmiersprachen, Qualitätskriterien"]],
+ spick:[
+  ["Klasse und Objekt","<p>Eine <b>Klasse</b> ist der Bauplan: Name, Attribute (Eigenschaften) und Methoden (Fähigkeiten). Ein <b>Objekt</b> ist ein konkretes Exemplar mit eigenen Werten, erzeugt mit <code>new</code>.</p><pre>Buch b = new Buch(\"Krimi\", 150);</pre>"],
+  ["Konstruktor","<p>Heißt genau wie die Klasse, hat <b>keinen Rückgabetyp</b> (auch kein void) und läuft einmal beim <code>new</code>. Er macht das Objekt startklar: Attribute bekommen Anfangswerte, Listen werden angelegt.</p><pre>public Playlist(String name){\n  this.name = name;\n  songs = new ArrayList&lt;Song&gt;();\n}</pre>"],
+  ["Datenkapselung","<p>Attribute sind <code>private</code>, Zugriff nur über <code>public</code>-Methoden: Getter lesen, Setter ändern und können prüfen.</p><pre>public void setDauer(int d){\n  if (d &gt; 0) dauer = d;\n}</pre><p>Vorteile: Schutz vor ungültigen Werten, interne Umsetzung änderbar, klare Schnittstelle.</p>"],
+  ["Assoziation 1 : n","<p>Eine Bibliothek verwaltet n Bücher. In Java: ein Attribut vom Typ Liste, z. B. <code>private ArrayList&lt;Buch&gt; bestand;</code></p>"],
+  ["ArrayList","<p>Geordnet, beliebig lang. Index startet bei <b>0</b>, letzter Index ist <code>size()-1</code>.</p><pre>for (int i = 0; i &lt; liste.size(); i++){\n  summe = summe + liste.get(i).getDauer();\n}</pre>"],
+  ["Datentypen","<p><code>int</code> ganze Zahl, <code>double</code> Kommazahl, <code>boolean</code> true/false, <code>char</code> ein Zeichen in einfachen Hochkommas, <code>String</code> Text in doppelten Anführungszeichen.</p>"],
+  ["Algorithmus","<p>Eindeutige Handlungsvorschrift zur Lösung eines Problems. Eigenschaften: <b>allgemeingültig</b> (für eine ganze Klasse von Problemen), <b>ausführbar</b>, <b>endlich</b> beschrieben, <b>eindeutig</b>, <b>terminiert</b> (endet nach endlich vielen Schritten).</p>"],
+  ["Imperativ vs. objektorientiert","<p><b>Imperativ</b>: Programm als Folge von Befehlen, Daten in Variablen (z. B. Pascal, Basic). <b>Objektorientiert</b>: Daten und Methoden in Objekten zusammengefasst, Kapselung, Objekte senden sich Nachrichten (z. B. Java).</p>"],
+  ["Qualitätskriterien","<p>Korrektheit, Robustheit (Fehleingaben abfangen), Wiederverwendbarkeit, Effizienz.</p>"]],
+ ops:[["nennen","Begriffe ohne Erklärung aufzählen."],["beschreiben","Sachverhalt in eigenen Worten wiedergeben, ohne Begründung."],["erläutern","Beschreiben und mit Beispielen oder Begründungen verständlich machen."],["implementieren","Lauffähigen Quelltext schreiben."],["darstellen","Z. B. als Klassendiagramm oder Struktogramm zeichnen."],["analysieren","Quelltext untersuchen: Was macht er, welche Werte entstehen?"]],
+ mistakes:[
+  ["Konstruktor mit void","<code>public void Song(...)</code> ist eine normale Methode, kein Konstruktor. Kostet Punkte in jeder Implementierungsaufgabe."],
+  ["Liste nicht angelegt","Wer im Konstruktor <code>new ArrayList&lt;&gt;()</code> vergisst, bekommt beim ersten add einen Fehler (NullPointerException)."],
+  ["Schleife bis size()","<code>i &lt;= size()</code> läuft einen Schritt zu weit. Richtig ist <code>i &lt; size()</code>."],
+  ["Strings mit == vergleichen","Texte vergleicht man mit <code>equals</code>, nicht mit ==."],
+  ["Konstruktor lesen ohne Zählen","Bei Aufgaben wie „Wie viele Bücher erzeugt der Konstruktor?“: Schleifendurchläufe zählen und Parameter je Durchlauf aufschreiben (Tipp aus dem Merkblatt)."]],
+ quiz:[
+  {q:"Was unterscheidet einen Konstruktor von einer normalen Methode?",o:["Er ist immer private","Er hat keinen Rückgabetyp und heißt wie die Klasse","Er gibt immer void zurück","Er darf keine Parameter haben"],a:1,e:"Konstruktoren heißen genau wie die Klasse und haben gar keinen Rückgabetyp, auch nicht void."},
+  {q:"Eine ArrayList hat 8 Elemente. Welcher Index gehört zum letzten Element?",o:["8","7","9","1"],a:1,e:"Der Index startet bei 0, also ist der letzte Index size()−1 = 7."},
+  {q:"Warum sind Attribute private?",o:["Damit das Programm schneller läuft","Damit andere Klassen sie nur über Methoden ändern können","Weil Java es verlangt","Damit man keine Getter braucht"],a:1,e:"Datenkapselung: Die Klasse kontrolliert selbst, wer ihre Daten wie benutzen darf. Ein Setter kann ungültige Werte ablehnen."},
+  {q:"for (int i = 1; i <= 8; i++) add(new Buch(\"Krimi\", i*50)); Welche Seitenzahl hat das letzte Buch?",o:["350","400","450","50"],a:1,e:"Letzter Durchlauf i = 8, also 8 · 50 = 400. Insgesamt 8 Bücher mit 50, 100, …, 400 Seiten."},
+  {q:"Was bedeutet die Kardinalität 1 : n zwischen Bibliothek und Buch?",o:["Ein Buch gehört zu n Bibliotheken","Eine Bibliothek verwaltet beliebig viele Bücher","Jede Bibliothek hat genau ein Buch","Bücher kennen keine Bibliothek"],a:1,e:"Eine Bibliothek verwaltet n Bücher. Umgesetzt wird das mit einem Listen-Attribut."},
+  {q:"Welche Eigenschaft bedeutet, dass ein Algorithmus nach endlich vielen Schritten endet?",o:["Allgemeingültigkeit","Eindeutigkeit","Terminiertheit","Ausführbarkeit"],a:2,e:"Terminiert heißt: Der Algorithmus kommt nach endlich vielen Schritten zu einem Ende."},
+  {q:"Welcher Datentyp passt für „Ist das Buch ausgeliehen?“",o:["int","String","boolean","double"],a:2,e:"Ja/Nein-Werte speichert man als boolean (true/false)."},
+  {q:"Was ist typisch für objektorientierte Programmierung?",o:["Nur eine lange Befehlsfolge","Daten und Methoden werden in Objekten gebündelt","Es gibt keine Variablen","Programme haben keine Klassen"],a:1,e:"OOP fasst Daten (Attribute) und Operationen (Methoden) zu Objekten zusammen und kapselt sie."}]
+};
+
+C.sport={
+ src:"Präsentation „Training und Kraft aus sportwissenschaftlicher Sicht“ (18 Folien)",
+ topics:[["Leistung","Sportliche Leistungsfähigkeit: Definition und Einflussfaktoren"],["Anpassung","Homöostase, Superkompensation, richtiger Belastungszeitpunkt"],["Gesetze","Gesetzmäßigkeiten des Trainings: wirksamer Reiz, Steigerung, Dosierung"],["Kraft","Definition, Maximal-, Schnell-, Reaktivkraft, Kraftausdauer"],["Muskel","Agonist und Antagonist, Arbeitsweisen: konzentrisch, exzentrisch, isometrisch"],["Bedeutung","Ziele, Nutzen und Risiken von Krafttraining"]],
+ spick:[
+  ["Sportliche Leistungsfähigkeit","<p>Die Fähigkeit, eine bestimmte Aufgabe in der höchsten erreichbaren Belastungsstufe zu erfüllen. Sie hängt von <b>Leistungsvermögen</b> und <b>Leistungsbereitschaft</b> ab, wird durch Lernen erworben und durch Training verbessert.</p><p>Einflussfaktoren: Kondition (Kraft, Schnelligkeit, Ausdauer, Beweglichkeit), koordinative Fähigkeiten, Technik, Taktik, psychische, soziale und konstitutionelle Faktoren.</p>"],
+  ["Homöostase","<p>Der Körper hält ein dynamisches Gleichgewicht zwischen aufbauenden und abbauenden Prozessen. Training stört dieses Gleichgewicht. Der Körper will es auf einem neuen Niveau wiederherstellen: das ist <b>Anpassung</b>.</p>"],
+  ["Superkompensation","<p>Belastung → Ermüdung (Leistung sinkt) → Erholung → <b>Superkompensation</b>: Die Leistung steigt kurz über das Ausgangsniveau → ohne neuen Reiz Rückkehr zum alten Niveau.</p><ul><li>Nächste Belastung <b>in der Superkompensation</b>: Leistungssteigerung.</li><li><b>Zu früh</b> (noch in der Ermüdung): Leistungsabfall, Gefahr von Übertraining.</li><li><b>Zu spät</b>: kein Trainingseffekt.</li></ul>"],
+  ["Gesetzmäßigkeiten des Trainings","<ul><li><b>Wirksamer Reiz</b>: Ein Reiz muss eine Schwelle überschreiten, sonst passiert nichts (zu schwach: keine Wirkung, zu stark: Schaden).</li><li><b>Steigerung</b>: Anpassung braucht immer stärkere Reize (progressive Belastung).</li><li><b>Dosierung</b> hängt ab von Alter, Leistungsstand, Geschlecht.</li><li>Leistungsentwicklung ist nicht linear: Je höher das Niveau, desto kleiner die Zuwächse.</li><li>Langfristig aufgebaute Leistung ist stabiler. Ohne Training bilden sich Anpassungen zurück.</li></ul>"],
+  ["Kraft","<p>Fähigkeit des Nerv-Muskel-Systems, Widerstände zu überwinden (<b>konzentrisch</b>), ihnen entgegenzuwirken (<b>exzentrisch</b>) oder sie zu halten (<b>statisch/isometrisch</b>).</p>"],
+  ["Kraftformen","<ul><li><b>Maximalkraft</b>: größte Kraft, die willkürlich gegen einen Widerstand aufgebracht werden kann. Basis der anderen Formen.</li><li><b>Schnellkraft</b>: Widerstände mit hoher Geschwindigkeit überwinden (Sprint-Start, Wurf, Sprung).</li><li><b>Reaktivkraft</b>: Kraft im Dehnungs-Verkürzungs-Zyklus, also erst abbremsen, dann sofort abdrücken (Niedersprünge, Sprungläufe).</li><li><b>Kraftausdauer</b>: Ermüdungswiderstand bei lang andauernden oder vielen Kraftleistungen (Rudern, Klettern).</li></ul>"],
+  ["Agonist und Antagonist","<p>Der <b>Agonist</b> führt die Bewegung aus (Bizeps beim Beugen), der <b>Antagonist</b> wirkt entgegen (Trizeps). Ihr Zusammenspiel heißt intermuskuläre Koordination. Wichtig: Beide gleich trainieren, sonst drohen Fehlhaltungen.</p>"],
+  ["Bedeutung des Krafttrainings","<p><b>Präventiv</b>: Haltung, Schutz vor Rückenschmerzen und Osteoporose, weniger Verletzungen. <b>Rehabilitativ</b>: nach Verletzungen. <b>Leistung</b>: Grundlage für fast alle Sportarten. <b>Psychisch</b>: Selbstbewusstsein.</p><p><b>Risiken</b>: Verletzungen durch falsche Technik, Übertraining, Suchtverhalten und Doping, Ungleichgewicht zwischen Agonist und Antagonist.</p>"]],
+ ops:[["definieren","Begriff exakt bestimmen, mit Fachsprache."],["erläutern","Mit Beispiel aus dem Sport erklären."],["skizzieren","Modell zeichnen und beschriften (Achsen!)."],["beurteilen","Nutzen und Risiken abwägen, eigenes begründetes Urteil."]],
+ mistakes:[
+  ["Kurve ohne Beschriftung","Beim Superkompensationsmodell immer Achsen (Leistungsfähigkeit, Zeit), Ausgangsniveau und die Phasen beschriften."],
+  ["Kraftformen ohne Beispiel","Eine Definition allein reicht bei „erläutern“ nicht. Immer eine Sportart dazu."],
+  ["Isometrisch verwechselt","Isometrisch = Muskel spannt an, Länge bleibt gleich (Halten). Exzentrisch = nachgebend, Muskel wird länger."]],
+ quiz:[
+  {q:"Was passiert, wenn die nächste Belastung in die Phase der Superkompensation fällt?",o:["Leistungsabfall","Leistungssteigerung","Nichts","Übertraining"],a:1,e:"Dann baut die neue Belastung auf dem erhöhten Niveau auf: Die Leistung steigt Schritt für Schritt."},
+  {q:"Was bedeutet Homöostase?",o:["Muskelkater","Dynamisches Gleichgewicht im Körper","Maximale Kraft","Training ohne Pause"],a:1,e:"Der Organismus hält ein Gleichgewicht zwischen Auf- und Abbau. Training stört es, daraus folgt Anpassung."},
+  {q:"Welche Kraftform braucht ein Hochspringer beim Absprung nach dem Anlauf am meisten?",o:["Kraftausdauer","Reaktivkraft","Isometrische Kraft","Keine"],a:1,e:"Abbremsen und sofort abdrücken ist ein Dehnungs-Verkürzungs-Zyklus, also Reaktivkraft (mit Schnellkraft)."},
+  {q:"Ein Kletterer hält sich lange an einer Leiste fest. Welche Arbeitsweise?",o:["Konzentrisch","Exzentrisch","Isometrisch","Reaktiv"],a:2,e:"Halten ohne Längenänderung des Muskels ist isometrisch (statisch)."},
+  {q:"Was gilt laut den Gesetzmäßigkeiten des Trainings?",o:["Gleiche Reize bringen immer gleichen Fortschritt","Die Leistung wächst linear","Mit steigendem Niveau werden die Zuwächse kleiner","Alter spielt keine Rolle"],a:2,e:"Leistungsentwicklung verläuft nicht linear. Gut Trainierte brauchen stärkere Reize für kleinere Zuwächse."},
+  {q:"Welche Kraftform gilt als Basis für die anderen?",o:["Maximalkraft","Kraftausdauer","Reaktivkraft","Schnellkraft"],a:0,e:"Die Maximalkraft ist die Grundlage. Krafttraining zielt deshalb vor allem auf ihre Verbesserung."},
+  {q:"Beim Bizeps-Curl ist der Trizeps der …",o:["Agonist","Antagonist","Synergist","Gegner im Wettkampf"],a:1,e:"Der Bizeps beugt (Agonist), der Trizeps wirkt entgegen (Antagonist)."},
+  {q:"Welches ist ein Risiko von Krafttraining?",o:["Bessere Haltung","Schutz vor Osteoporose","Verletzungen durch falsche Technik","Mehr Selbstbewusstsein"],a:2,e:"Die anderen drei sind Vorteile. Risiken: falsche Technik, Übertraining, Doping, Ungleichgewicht der Muskeln."}]
+};
+
+C.musik={
+ src:"Gesamtscan S. 131–135: Oratorium vs. Oper, Händel „Halleluja“ aus dem Messias, Dialog Bach/Händel, Lückentext Geschichte des Klaviers",
+ topics:[["Gattungen","Oratorium im Vergleich zur Oper"],["Werk","Händel: „Halleluja“ aus dem „Messias“ (1742)"],["Satztechnik","Homophonie und Polyphonie erkennen und beschreiben"],["Komponisten","Bach und Händel: Gemeinsamkeiten und Unterschiede"],["Instrument","Geschichte und Technik des Klaviers"],["Praxis","Klaviervorspiel am 26.10."]],
+ spick:[
+  ["Oratorium vs. Oper","<div class='tablewrap'><table><tr><th></th><th>Oratorium</th><th>Oper</th></tr><tr><td>Ort</td><td>Kirche, Konzertsaal</td><td>Theater</td></tr><tr><td>Texte</td><td>geistlich (Bibel)</td><td>weltlich</td></tr><tr><td>Aufführung</td><td>ohne Bühnenbild und Kostüm</td><td>szenisch, mehrere Akte</td></tr><tr><td>Teile</td><td>Rezitative, Arien, Chöre, Instrumentalsätze</td><td>Ouvertüre, Rezitativ, Arie, Zwischenspiele</td></tr><tr><td>Besetzung</td><td>Solisten, Chor, Orchester</td><td>Solisten, Chor, Orchester</td></tr></table></div><p><b>Rezitativ</b> = Sprechgesang, treibt die Handlung voran. <b>Arie</b> = kommentiert das Geschehen, zeigt Gefühle.</p>"],
+  ["Der „Messias“","<p>Oratorium von Georg Friedrich Händel, uraufgeführt <b>1742 in Dublin</b>. Text aus den Prophezeiungen zur Ankunft des Messias, Leben, Tod und Auferstehung Jesu. Ursprünglich klein besetzt (Streicher, Orgel, Chor mit nur 32 Sängern, Trompeten und Pauken an passenden Stellen). Später riesige Aufführungen, Mozart bearbeitete das Werk 1789.</p>"],
+  ["Halleluja: Gestaltungsmittel","<ul><li><b>Homophonie</b>: Alle Stimmen singen im gleichen Rhythmus, Melodie oben, die anderen begleiten (Anfang „Halleluja“, „King of Kings“).</li><li><b>Polyphonie</b>: Jede Stimme hat eigene Melodie, Einsätze nacheinander, kunstvoll verflochten (z. B. „And He shall reign for ever and ever“).</li><li>„For the Lord God omnipotent reigneth“: alle Stimmen im Unisono, <b>ein</b> Gott wird hörbar.</li><li>„King of Kings“: Tonwiederholungen, die Oberstimmen steigen Stufe für Stufe, Spannung bis zum Schluss.</li><li><b>Trompeten und Pauken</b> stehen für königlichen Glanz und Gottes Macht.</li></ul>"],
+  ["Bach und Händel","<p>Beide <b>1685</b> geboren. <b>Bach</b>: Eisenach, Organist und Kantor, ab 1723 Thomaskantor in Leipzig, Brandenburgische Konzerte, viele Kinder, reiste kaum. <b>Händel</b>: Halle, Opernmusiker in Hamburg, Italien, Hannover, dann <b>47 Jahre in London</b>, Opern und Oratorien, Wassermusik (1717), Feuerwerksmusik, Junggeselle.</p>"],
+  ["Geschichte des Klaviers","<ul><li>Wort von lat. <i>clavis</i> (Schlüssel, Taste).</li><li><b>Cembalo</b>: Saiten werden gezupft, keine Dynamik durch Anschlag.</li><li><b>Pianoforte</b>: Hammermechanik, leise (piano) und laut (forte) je nach Anschlagstärke. Erfunden um 1700 von <b>Bartolomeo Cristofori</b> in Florenz.</li><li><b>Gottfried Silbermann</b> baut deutsche Hammerflügel. <b>Bach</b> spielt 1747 in Potsdam vor Friedrich II. darauf.</li><li><b>Johann Andreas Stein</b> (Augsburg): verbesserte Prellmechanik, „Wiener Mechanik“ (leicht, heller Klang).</li><li>England: Tafelklavier wird Verkaufserfolg, Broadwood entwickelt die „englische Mechanik“ (schwerere Hämmer, mehr Kraft).</li><li><b>Érard</b> 1821: Repetitionsmechanik für schnelles Anschlagen desselben Tons.</li><li><b>Steinway</b> 1859: Gusseisenrahmen, heutige Flügelform. Das Pianino verdrängt das Tafelklavier als Hausinstrument.</li></ul>"]],
+ ops:[["beschreiben","Was hörst/siehst du? Ohne Deutung."],["analysieren","Gestaltungsmittel benennen und am Notentext belegen (Takt)."],["deuten/erläutern","Wirkung und Bedeutung der Mittel erklären, z. B. Bezug zum Text."],["vergleichen","Gemeinsamkeiten und Unterschiede nach Kriterien gegenüberstellen."]],
+ mistakes:[["Homophonie und Polyphonie vertauscht","Merkhilfe: <b>homo</b> = gleich (gleicher Rhythmus), <b>poly</b> = viele (viele eigene Stimmen)."],["Nur beschreiben, nicht deuten","Bei „erläutern“ immer die Wirkung nennen: Warum setzt Händel hier Pauken ein?"],["Cembalo als Klavier","Beim Cembalo werden die Saiten gezupft, beim Pianoforte angeschlagen."]],
+ quiz:[
+  {q:"Wo wurde Händels „Messias“ 1742 uraufgeführt?",o:["London","Leipzig","Dublin","Halle"],a:2,e:"Die Uraufführung war 1742 in Dublin (Irland)."},
+  {q:"Was ist typisch für ein Oratorium?",o:["Weltliche Texte und Kostüme","Geistliche Texte, ohne szenische Darstellung","Nur Instrumente, kein Chor","Aufführung nur im Theater"],a:1,e:"Oratorien haben meist geistlichen Inhalt und werden ohne Bühnenbild in Kirche oder Konzertsaal aufgeführt."},
+  {q:"Alle Stimmen singen im gleichen Rhythmus. Das nennt man …",o:["Polyphonie","Homophonie","Rezitativ","Fuge"],a:1,e:"Homophonie: gleicher Rhythmus in allen Stimmen."},
+  {q:"Wofür stehen Trompeten und Pauken im „Halleluja“?",o:["Für Trauer","Für königlichen Glanz und Gottes Macht","Für die Natur","Für den Tanz"],a:1,e:"Trompeten und Pauken waren Instrumente der Könige. Im Halleluja zeigen sie Gott als „King of Kings“."},
+  {q:"Was ist ein Rezitativ?",o:["Ein Chorsatz","Sprechgesang, der die Handlung vorantreibt","Ein Orchestervorspiel","Eine wiederkehrende Instrumentalformel"],a:1,e:"Das Rezitativ erzählt die Handlung in sprechnahem Gesang. Die Arie kommentiert dagegen Gefühle."},
+  {q:"Wer gilt als Erfinder des Hammerklaviers (um 1700)?",o:["Gottfried Silbermann","Bartolomeo Cristofori","Johann Sebastian Bach","Henri Steinway"],a:1,e:"Cristofori baute um 1700 in Florenz das erste Pianoforte."},
+  {q:"Warum heißt das Instrument „Pianoforte“?",o:["Es ist sehr groß","Man kann je nach Anschlag leise und laut spielen","Es wurde in Italien gebaut","Es hat zwei Tastaturen"],a:1,e:"Anders als beim Cembalo kann man die Lautstärke über den Anschlag stufenlos verändern."},
+  {q:"Was haben Bach und Händel gemeinsam?",o:["Beide lebten in London","Beide wurden 1685 geboren","Beide waren Thomaskantor","Beide schrieben nur Opern"],a:1,e:"Beide 1685 geboren, beide aus Mitteldeutschland. Danach verliefen ihre Leben sehr verschieden."},
+  {q:"Wie lange lebte Händel in England?",o:["7 Jahre","17 Jahre","47 Jahre","Gar nicht"],a:2,e:"Laut dem Dialog aus dem Unterricht blieb Händel insgesamt 47 Jahre in London."}]
+};
+
+C.mathe={
+ src:"Ordner „Klausurvorbereitung (3.11.2026)“ (Übungen mit Lösungen), Gesamtscan S. 112–129, Test Vektorrechnung vom 16.09.",
+ topics:[["Raum","Punkte im 3D-Koordinatensystem darstellen und ablesen"],["Vektoren","Ortsvektor, Verbindungsvektor, Gegenvektor"],["Rechnen","Addition, Subtraktion, Vielfache"],["Länge","Betrag eines Vektors, Abstand zweier Punkte, Mittelpunkt"],["Lage","Kollinear, komplanar, lineare (Un-)Abhängigkeit"],["Skalarprodukt","Orthogonalität und Winkel zwischen Vektoren"]],
+ spick:[
+  ["Verbindungsvektor","<p>Spitze minus Fuß: <b>AB = B − A</b>.</p><p>A(1|2|3), B(4|6|3) → AB = (3, 4, 0). Der Gegenvektor ist BA = −AB = (−3, −4, 0).</p>"],
+  ["Länge (Betrag)","<p>|a| = √(a₁² + a₂² + a₃²). Abstand von A und B = |AB|. Beispiel oben: √(9+16+0) = √25 = <b>5 LE</b>.</p><p><b>Abstand zum Ursprung</b> = Länge des Ortsvektors |OA|. (Im Test vom 16.09. war das die Aufgabe mit 0 von 2 Punkten.)</p>"],
+  ["Mittelpunkt","<p>M = ½ · (A + B). Für A(1|2|3), B(5|6|7): M(3|4|5).</p>"],
+  ["Vielfache und Kollinearität","<p>Zwei Vektoren sind <b>kollinear</b> (parallel), wenn a = r · b für eine Zahl r gilt. Prüfen: Für jede Koordinate r ausrechnen. Kommt überall dasselbe r heraus, sind sie kollinear.</p><p>(2, −4, 6) = 2 · (1, −2, 3) → kollinear.</p>"],
+  ["Lineare Abhängigkeit","<p>Drei Vektoren sind linear <b>abhängig</b> (komplanar, liegen in einer Ebene), wenn sich einer als Kombination der anderen schreiben lässt: c = r·a + s·b. Ansonsten linear unabhängig.</p><p>Vorgehen: Gleichungssystem für r und s aufstellen, aus zwei Zeilen r und s bestimmen, mit der dritten Zeile prüfen.</p>"],
+  ["Skalarprodukt","<p>a · b = a₁b₁ + a₂b₂ + a₃b₃. Ergebnis ist eine <b>Zahl</b>, kein Vektor.</p><p><b>Orthogonal</b> (rechter Winkel) genau dann, wenn a · b = 0.</p>"],
+  ["Winkel zwischen Vektoren","<p>cos γ = (a · b) / (|a| · |b|), danach γ mit cos⁻¹ berechnen.</p><p>Rechter Winkel im Dreieck ABC bei B prüfen: BA · BC = 0?</p>"]],
+ ops:[["bestimmen/berechnen","Rechenweg vollständig hinschreiben."],["prüfen","Rechnen und eine klare Aussage formulieren (Antwortsatz!)."],["zeigen/nachweisen","Behauptung allgemein begründen."],["zeichnen","Sauber im Koordinatensystem, Achsen beschriften."]],
+ mistakes:[["Fuß minus Spitze","AB ist B − A, nicht A − B. Merke: „Spitze minus Fuß“."],["Kein Antwortsatz","Bei „prüfen“ gibt es Punkte für die Aussage: „Die Vektoren sind orthogonal, da …“."],["Vielfaches nur in einer Koordinate geprüft","r muss in allen drei Koordinaten gleich sein (Test 16.09.: 0 von 3 Punkten)."],["Wurzel vergessen","|a| = √(…), nicht nur die Summe der Quadrate."]],
+ quiz:[
+  {q:"A(1|2|3), B(4|6|3). Wie lautet AB?",o:["(5, 8, 6)","(3, 4, 0)","(−3, −4, 0)","(4, 12, 9)"],a:1,e:"B − A = (4−1, 6−2, 3−3) = (3, 4, 0)."},
+  {q:"Wie lang ist der Vektor (3, 4, 0)?",o:["7","25","5","12"],a:2,e:"√(9 + 16 + 0) = √25 = 5."},
+  {q:"Wie weit ist P(2|3|6) vom Ursprung entfernt?",o:["11","7","49","√11"],a:1,e:"|OP| = √(4 + 9 + 36) = √49 = 7."},
+  {q:"Sind (1, 2, −1) und (3, −1, 1) orthogonal?",o:["Ja, Skalarprodukt = 0","Nein, Skalarprodukt = 2","Nein, sie sind parallel","Kann man nicht berechnen"],a:0,e:"1·3 + 2·(−1) + (−1)·1 = 3 − 2 − 1 = 0, also orthogonal."},
+  {q:"Sind (2, −4, 6) und (1, −2, 3) kollinear?",o:["Ja, r = 2","Nein","Nur in x-Richtung","Ja, r = −2"],a:0,e:"(2, −4, 6) = 2 · (1, −2, 3), in allen Koordinaten r = 2."},
+  {q:"Was ist das Skalarprodukt?",o:["Ein Vektor","Eine Zahl","Ein Punkt","Ein Winkel"],a:1,e:"a · b = a₁b₁ + a₂b₂ + a₃b₃ ergibt eine Zahl."},
+  {q:"Mittelpunkt von A(1|2|3) und B(5|6|7)?",o:["(6|8|10)","(3|4|5)","(2|2|2)","(4|4|4)"],a:1,e:"M = ½(A + B) = ½(6, 8, 10) = (3|4|5)."},
+  {q:"Drei Vektoren liegen in einer Ebene. Sie sind dann …",o:["linear unabhängig","linear abhängig (komplanar)","orthogonal","gleich lang"],a:1,e:"Komplanare Vektoren lassen sich ineinander darstellen, also sind sie linear abhängig."},
+  {q:"Formel für den Winkel γ zwischen a und b?",o:["cos γ = |a| + |b|","cos γ = (a·b) / (|a|·|b|)","sin γ = a·b","γ = a·b"],a:1,e:"Kosinusformel: cos γ = (a·b) / (|a|·|b|)."}]
+};
+
+C.deutsch={
+ src:"Gesamtscan S. 14–33: Epochenreferate (Expressionismus, Symbolismus, Benn, Heym, Kafka, Weimarer Republik, Kästner), Kafka „Gibs auf!“, Test zur „Verwandlung“, Vorabhinweise Abitur",
+ topics:[["Epochen","Symbolismus (1880–1910), Expressionismus (1905–1925), Literatur der Weimarer Republik und Neue Sachlichkeit (1919–1933)"],["Autoren","Kafka, Benn, Heym, van Hoddis, Kästner, Brecht"],["Epik","Kafka „Die Verwandlung“ (1915), „Gibs auf!“ (1922): Ausgrenzung, Entfremdung, Vater-Sohn"],["Lyrik","„Weltende“, „Kleine Aster“, „Schöne Jugend“, „Der Gott der Stadt“"],["Erzähltechnik","Zeitgestaltung, Erzählperspektive, Satzbau"],["Methode","Interpretation literarischer Texte, auch vergleichend"]],
+ spick:[
+  ["Expressionismus (1905–1925)","<p><b>Hintergrund</b>: Industrialisierung, Großstadt, soziale Spannungen, Erster Weltkrieg, Protest gegen Fortschrittsglauben und Bürgerlichkeit.</p><p><b>Themen</b>: Großstadt und Anonymität, Krieg und Weltuntergang, Ich-Zerfall, Verfall, Tod, Wahnsinn, Sehnsucht nach dem „neuen Menschen“.</p><p><b>Stil</b>: Reihungsstil, Simultanstil (gleichzeitige, unverbundene Bilder), grelle Farben, Neologismen, Satzfragmente, Ästhetik des Hässlichen.</p><p>Beispiel: Jakob van Hoddis „Weltende“ (1911).</p>"],
+  ["Symbolismus (1880–1910)","<p>Sucht hinter der sichtbaren Wirklichkeit eine tiefere Bedeutung, ausgedrückt in Symbolen und kunstvoller, musikalischer Sprache. Themen: Traum, Mystik, Vergänglichkeit, Schönheit. Merkmale: Synästhesien, Mehrdeutigkeit, Stimmung statt Handlung.</p>"],
+  ["Gottfried Benn","<p>Arzt und Dichter (1886–1956). Gedichtzyklus <b>„Morgue“ (1912)</b>: „Kleine Aster“, „Schöne Jugend“. Nüchterne, medizinische Sicht auf Tod und Verwesung, das Hässliche wird ästhetisiert, keine Sentimentalität, kein festes Reimschema.</p>"],
+  ["Franz Kafka","<p>Prag, 1883–1924. Schwieriges Verhältnis zum übermächtigen Vater. Typisch „kafkaesk“: rätselhafte, bedrohliche Situationen, Ohnmacht des Einzelnen, Entfremdung, nüchterne Sprache für absurde Ereignisse.</p><p><b>„Die Verwandlung“</b> (1915): Gregor Samsa, Handelsreisender, erwacht als Käfer. Er ernährt die Familie und wird nach der Verwandlung abhängig von ihr. Der Vater gewinnt wieder Macht, die Familie grenzt Gregor aus, er stirbt, die Familie ist erleichtert.</p><p><b>„Gibs auf!“</b> (entstanden 1922): Ich-Erzähler, Uhrenvergleich, Orientierungslosigkeit, Schutzmann als Autorität verweigert Hilfe.</p>"],
+  ["Neue Sachlichkeit","<p>Weimarer Republik. Nüchtern, realitätsnah, leicht verständliche Alltagssprache, distanzierte Beobachterhaltung. Themen: Großstadt, Arbeitslosigkeit, Inflation, Kriegsfolgen, „Neue Frau“.</p><p>Kästner „Fabian“ (1931), „Kennst du das Land, wo die Kanonen blühn?“, Brecht „Dreigroschenoper“ (1928), Fallada „Kleiner Mann – was nun?“, Keun „Das kunstseidene Mädchen“.</p>"],
+  ["Zeitgestaltung","<ul><li><b>Erzählzeit</b>: Zeit, die du zum Lesen brauchst. <b>Erzählte Zeit</b>: Zeitraum der Handlung.</li><li><b>Zeitdeckung</b>: beide gleich, z. B. Dialoge.</li><li><b>Zeitraffung</b>: Erzählzeit kürzer, z. B. „Jahre vergingen“.</li><li><b>Zeitdehnung</b>: Erzählzeit länger, Spannung, Zeitlupe, Gedanken.</li></ul>"],
+  ["Aufbau einer Interpretation","<ol><li><b>Einleitung</b>: Autor, Titel, Textsorte, Entstehungsjahr, Epoche und <b>Thema</b> in einem Satz.</li><li>Kurze Inhaltsangabe (Präsens, keine Zitate).</li><li><b>Analyse</b>: Aufbau, Erzähler, Zeit, Sprache. Immer: Mittel benennen → Zitat mit Zeile → Wirkung/Deutung.</li><li>Epochenbezug.</li><li><b>Schluss</b>: Deutungshypothese bestätigen, eigene Stellungnahme.</li></ol>"]],
+ ops:[["interpretieren","Textverständnis begründet erschließen, Inhalt und Form im Zusammenhang deuten."],["analysieren","Form, Sprache, Aufbau untersuchen und die Wirkung erklären."],["vergleichen","Nach Aspekten gegenüberstellen (z. B. Ausgrenzung bei Gregor und im „Gibs auf!“)."],["erörtern/Stellung nehmen","These prüfen, Pro und Contra abwägen, eigenes Urteil mit Textbezug."],["einordnen","In Epoche oder Werkzusammenhang stellen, mit Begründung."]],
+ mistakes:[
+  ["Einleitung ohne Thema","Deine Lehrerin hat am Rand „Thema“ notiert. Die Einleitung braucht einen Satz, worum es eigentlich geht, z. B. „… thematisiert die Orientierungslosigkeit des modernen Menschen.“","Test „Verwandlung“, Aufgabe 7"],
+  ["„Lyrisches Ich“ in Prosa","In „Gibs auf!“ schreibst du „lyrisches Ich“. In Erzähltexten heißt es <b>Ich-Erzähler</b>. Lyrisches Ich gibt es nur in Gedichten.","Analyse „Gibs auf!“"],
+  ["Rechtschreibung: Familie, Tod","Du schreibst oft „Famillie“. Richtig: <b>Familie</b>. Und „meinen Tod“ (Nomen) statt „Tot“. Im LK zählt die Darstellungsleistung mit.","mehrere Texte"],
+  ["Nacherzählen statt deuten","Jede Beobachtung braucht einen „Das zeigt …“-Satz. Sonst bleibt es Inhaltsangabe."],
+  ["Stellungnahme zu dünn","Bei der These zur „Verwandlung“ gab es 1,5 von 4 Punkten. Mindestens zwei Argumente mit Textbeleg, ein Gegenargument, klares Fazit."]],
+ quiz:[
+  {q:"Welches Mittel ist typisch für den Expressionismus?",o:["Strenge Sonettform mit Liebesmotiv","Reihungsstil mit unverbundenen Bildern","Idyllische Naturbeschreibung","Heitere Kalendergeschichten"],a:1,e:"Reihungs- bzw. Simultanstil zeigt die zerrissene Wahrnehmung der modernen Welt, z. B. in „Weltende“."},
+  {q:"Ein Dialog wird Wort für Wort wiedergegeben. Welche Zeitgestaltung?",o:["Zeitraffung","Zeitdehnung","Zeitdeckung","Rückblende"],a:2,e:"Erzählzeit und erzählte Zeit sind ungefähr gleich lang: Zeitdeckung."},
+  {q:"Wie heißt die Erzählinstanz in „Gibs auf!“?",o:["Lyrisches Ich","Ich-Erzähler","Auktorialer Erzähler","Sprecher"],a:1,e:"Prosa hat einen Erzähler. „Lyrisches Ich“ nur in Gedichten."},
+  {q:"Welcher Gedichtzyklus stammt von Gottfried Benn?",o:["„Morgue“","„Weltende“","„Der Gott der Stadt“","„Fabian“"],a:0,e:"„Morgue“ (1912) mit „Kleine Aster“ und „Schöne Jugend“."},
+  {q:"Welche Abhängigkeit kehrt sich in der „Verwandlung“ um?",o:["Gregor ernährt erst die Familie, dann ist er auf sie angewiesen","Der Vater wird krank","Die Schwester verlässt die Familie","Gregor wird befördert"],a:0,e:"Erst finanziert Gregor die Familie, nach der Verwandlung muss sie ihn versorgen. Der Vater gewinnt seine Macht zurück."},
+  {q:"Was gehört zwingend in die Einleitung einer Interpretation?",o:["Eine Zusammenfassung des Schlusses","Autor, Titel, Textsorte, Jahr und Thema","Deine Lieblingsstelle","Mindestens drei Zitate"],a:1,e:"Ohne Thema fehlt der Kern der Einleitung (Randnotiz deiner Lehrerin)."},
+  {q:"Was kennzeichnet die Neue Sachlichkeit?",o:["Rausch und Ekstase","Nüchterne, alltagsnahe Sprache und beobachtende Distanz","Traumwelten und Mystik","Lobpreis des Krieges"],a:1,e:"Realitätsnah, präzise, Gesellschaftskritik, z. B. Kästner."},
+  {q:"Im Text: „Jahre vergingen.“ Welche Zeitgestaltung?",o:["Zeitraffung","Zeitdehnung","Zeitdeckung","Vorausdeutung"],a:0,e:"Eine lange erzählte Zeit in sehr kurzer Erzählzeit: Zeitraffung."},
+  {q:"Was bedeutet der Operator „interpretieren“?",o:["Nur den Inhalt wiedergeben","Inhalt und Form im Zusammenhang begründet deuten","Den Text abschreiben","Eine Fortsetzung schreiben"],a:1,e:"Interpretieren heißt: Form und Inhalt untersuchen und daraus eine begründete Deutung entwickeln."}]
+};
+
+C.bio={
+ src:"Gesamtscan S. 1–13: Proteinbiosynthese, genetischer Code, Replikation und Meselson-Stahl, Ökosystem Wald, ökologische Nische, LEK Ökologie (21.09.), dein 3D-Modell „Transkription“",
+ topics:[["Ökologie","Abiotische und biotische Faktoren, Biotop, Biozönose, Population, Habitat"],["Toleranz","Toleranzkurve, euryök und stenök"],["Nische","Fundamentalnische, Realnische, Konkurrenz, Konkurrenzausschluss"],["Wald","Stockwerke, Nahrungskette, Trophiestufen, Energiefluss, Pyramiden"],["DNA","Griffith, Avery, Chargaff, Doppelhelix, semikonservative Replikation, Meselson-Stahl"],["Proteinbiosynthese","Transkription, Translation, genetischer Code"]],
+ spick:[
+  ["Toleranzkurve","<p>Zeigt die Lebensaktivität einer Art in Abhängigkeit von einem Umweltfaktor. Beschriften: <b>Minimum</b> und <b>Maximum</b> (Grenzen), <b>Optimum</b> (höchste Aktivität), <b>Pessima</b> (Überleben ohne Fortpflanzung), <b>Toleranzbereich</b>, Präferendum.</p><p><b>Euryök</b>: weiter Toleranzbereich. <b>Stenök</b>: enger Toleranzbereich. Achsen immer beschriften (Umweltfaktor mit Einheit, Aktivität).</p>"],
+  ["Ökologische Nische","<p>Gesamtheit der Ansprüche einer Art an ihre biotische und abiotische Umwelt.</p><p><b>Fundamentalnische</b> (physiologische Potenz): was eine Art ohne Konkurrenz nutzen könnte, z. B. im Labor. <b>Realnische</b> (ökologische Potenz): was sie mit Konkurrenz tatsächlich nutzt.</p><p>Beispiel Waldkiefer: Ihr Optimum liegt bei mittlerer Bodenfeuchte. In der Natur wächst sie aber vor allem auf trockenen, sauren Böden, weil andere Bäume sie im Optimum verdrängen.</p>"],
+  ["Konkurrenz","<p><b>Intraspezifisch</b>: innerhalb einer Art. <b>Interspezifisch</b>: zwischen Arten. <b>Konkurrenzausschlussprinzip</b>: Zwei Arten mit gleicher Nische können nicht dauerhaft zusammenleben. <b>Konkurrenzvermeidung</b>: Arten nutzen unterschiedliche Nischen (andere Nahrung, Zeit, Ort).</p>"],
+  ["Ökosystem Wald","<p>Stockwerke: Baumschicht (bis ca. 40 m), Strauchschicht (bis 5 m), Krautschicht (bis 1 m), Moosschicht (bis 0,2 m), Wurzelschicht.</p><p>Nahrungskette: Produzent (Eichenblatt) → Primärkonsument (Raupe) → Sekundärkonsument (Meise) → Tertiärkonsument (Sperber). Destruenten zersetzen totes Material.</p>"],
+  ["Stoff- und Energieumwandlung","<p><b>Energie</b>: Pflanzen wandeln Lichtenergie per Fotosynthese in chemische Energie (Glucose) um. Auf jeder Trophiestufe wird nur ca. <b>10 %</b> weitergegeben. Der Rest wird für Bewegung, Wachstum und Körperwärme genutzt und geht als <b>Wärme</b> verloren. Energie fließt, sie kreist nicht.</p><p><b>Stoffe</b> (z. B. Kohlenstoff) kreisen: CO₂ → Glucose in Pflanzen → Konsumenten → Zellatmung und Destruenten → CO₂.</p>"],
+  ["DNA als Erbsubstanz","<ul><li><b>Griffith 1928</b>: Transformation bei Bakterien.</li><li><b>Avery 1944</b>: DNA ist die Erbsubstanz.</li><li><b>Chargaff 1950</b>: A = T und G = C (Mengenverhältnis).</li><li><b>Watson und Crick 1953</b>: Doppelhelix-Modell.</li></ul>"],
+  ["Replikation und Meselson-Stahl","<p>Die DNA verdoppelt sich <b>semikonservativ</b>: Jede neue Doppelhelix besteht aus einem alten und einem neuen Strang.</p><p>Meselson-Stahl (1958): Bakterien in schwerem ¹⁵N, dann in leichtem ¹⁴N. Dichtegradientenzentrifugation: nach 0 Min eine schwere Bande, nach 1 Generation eine mittlere (Hybrid-DNA), nach 2 Generationen eine mittlere und eine leichte Bande.</p>"],
+  ["Transkription (Zellkern)","<ol><li>RNA-Polymerase bindet an den <b>Promotor</b>.</li><li>Sie trennt die Wasserstoffbrücken, die DNA wird entwunden.</li><li>Sie baut die mRNA komplementär zum <b>codogenen Strang</b> auf, Uracil statt Thymin.</li><li>Die <b>Terminatorsequenz</b> beendet die Synthese, die mRNA löst sich.</li></ol>"],
+  ["Translation (Ribosom)","<ol><li>tRNA mit passendem <b>Anticodon</b> trägt immer dieselbe Aminosäure.</li><li>Die mRNA wird ins Ribosom eingefädelt, Start bei <b>AUG</b> (Methionin).</li><li>Anticodon paart mit dem komplementären Codon.</li><li>Die Aminosäure wird an die wachsende Kette geknüpft (Peptidbindung).</li><li>Die leere tRNA verlässt das Ribosom und belädt sich neu.</li><li>Stopp bei UAA, UAG oder UGA.</li></ol>"],
+  ["Genetischer Code","<p>Triplett-Code (3 Basen = 1 Codon, 4³ = 64 Codons), <b>eindeutig</b> (ein Codon = eine Aminosäure), <b>degeneriert</b> (mehrere Codons für eine Aminosäure), <b>kommafrei</b>, <b>nicht überlappend</b>, nahezu <b>universell</b>. Ablesen mit der Codesonne von innen nach außen (5' → 3').</p>"]],
+ ops:[["nennen","Aufzählen ohne Erklärung."],["skizzieren/zeichnen","Mit Achsen, Einheiten und allen Fachbegriffen."],["erklären","Ursachen und Zusammenhänge darstellen."],["erläutern","Erklären und mit Beispiel aus dem Material veranschaulichen."],["auswerten","Daten aus Material beschreiben und deuten."]],
+ mistakes:[
+  ["Toleranzkurve ohne Fachbegriffe","Randnotiz in der LEK: „Fachbegriffe fehlen“. Optimum, Pessimum, Minimum, Maximum, Toleranzbereich gehören an die Kurve.","LEK Ökologie, Aufgabe 2 (2/8)"],
+  ["Energie nicht erklärt","Randnotiz: „Was passiert mit der Energie?“ Immer sagen: Lichtenergie → chemische Energie, je Stufe ca. 10 % weiter, Rest als Wärme.","LEK Ökologie, Aufgabe 4 (1/5)"],
+  ["Material nicht konkret genutzt","Bei Fundamental- und Realnische die Werte aus dem Diagramm konkret benennen.","LEK Ökologie, Aufgabe 3 (5/6)"],
+  ["Thymin in der mRNA","In RNA steht Uracil (U) statt Thymin (T)."],
+  ["Codesonne von außen gelesen","Immer von innen nach außen lesen, mit der mRNA, nicht mit der DNA."]],
+ quiz:[
+  {q:"Was bedeutet „stenök“?",o:["Weiter Toleranzbereich","Enger Toleranzbereich","Keine Toleranz","Lebt nur im Wasser"],a:1,e:"Stenök: enge Toleranz gegenüber einem Umweltfaktor. Euryök: weite Toleranz."},
+  {q:"Was ist die Realnische?",o:["Die Nische im Labor ohne Konkurrenz","Die tatsächlich genutzte Nische mit Konkurrenz","Der Wohnort einer Art","Die Nahrungskette"],a:1,e:"Die Realnische ist durch Konkurrenz eingeschränkt. Ohne Konkurrenz spricht man von der Fundamentalnische."},
+  {q:"Wie viel Energie wird ungefähr an die nächste Trophiestufe weitergegeben?",o:["100 %","50 %","10 %","1 %"],a:2,e:"Etwa 10 %. Der Rest geht vor allem als Wärme verloren."},
+  {q:"Codogener DNA-Strang: TAC. Welches mRNA-Codon entsteht?",o:["ATG","AUG","UAC","TAC"],a:1,e:"Komplementär: T→A, A→U, C→G, also AUG (Start, Methionin)."},
+  {q:"mRNA: AUG UUU GGC. Welche Aminosäuren?",o:["Met-Phe-Gly","Met-Leu-Ala","Stopp-Phe-Gly","Ile-Phe-Gly"],a:0,e:"AUG = Met, UUU = Phe, GGC = Gly."},
+  {q:"Was zeigt das Meselson-Stahl-Experiment nach einer Generation in ¹⁴N?",o:["Eine schwere Bande","Eine mittlere Bande (Hybrid-DNA)","Zwei leichte Banden","Keine Bande"],a:1,e:"Jede Doppelhelix hat einen alten (¹⁵N) und einen neuen (¹⁴N) Strang: semikonservativ."},
+  {q:"Wo bindet die RNA-Polymerase zu Beginn der Transkription?",o:["Am Terminator","Am Promotor","Am Ribosom","An der tRNA"],a:1,e:"Die Transkription startet mit der Bindung der RNA-Polymerase an den Promotor."},
+  {q:"„Degeneriert“ beim genetischen Code heißt …",o:["Der Code ist kaputt","Mehrere Codons codieren dieselbe Aminosäure","Jedes Codon codiert mehrere Aminosäuren","Der Code gilt nur beim Menschen"],a:1,e:"Es gibt 64 Codons für 20 Aminosäuren, also oft mehrere Codons pro Aminosäure."},
+  {q:"Wer fand heraus, dass A = T und G = C?",o:["Avery","Chargaff","Griffith","Meselson"],a:1,e:"Erwin Chargaff (1950): Basenpaar-Regel."},
+  {q:"Zwei Arten mit exakt gleicher Nische leben dauerhaft im selben Gebiet. Laut Konkurrenzausschlussprinzip …",o:["geht das problemlos","wird eine Art verdrängt","werden beide größer","entsteht eine neue Art sofort"],a:1,e:"Auf Dauer setzt sich eine Art durch, außer sie weichen in unterschiedliche Nischen aus."}]
+};
+
+C.religion={
+ src:"Gesamtscan S. 136–144: Historischer Jesus, außerbiblische Quellen, Evangelien, Reich Gottes, Dekalog, Fromm und Zenger zu Ex 3,14, Projektblatt Philosophie/Religion",
+ topics:[["Jesus","Historischer Jesus und Christus des Glaubens, außerbiblische Quellen"],["Evangelien","Quellenproblem, Synoptiker, Zwei-Quellen-Theorie, Absicht der Evangelisten"],["Forschung","Leben-Jesu-Forschung: liberale Theologie, Bultmann, New Quest, Third Quest"],["Reich Gottes","Schon jetzt und noch nicht"],["Ethik","Dekalog: Aufbau und Bedeutung"],["Gottesbilder","Ex 3,14, Erich Fromm, Erich Zenger"]],
+ spick:[
+  ["Außerbiblische Quellen","<div class='tablewrap'><table><tr><th>Quelle</th><th>Zeit</th><th>Aussage</th></tr><tr><td>Flavius Josephus</td><td>um 93 n. Chr.</td><td>Steinigung des Jakobus, „Bruder Jesu, der Christus genannt wird“</td></tr><tr><td>Tacitus</td><td>um 116 n. Chr.</td><td>Prokurator Pontius Pilatus ließ Christus hinrichten, Christen unter Nero</td></tr><tr><td>Plinius d. J.</td><td>um 112 n. Chr.</td><td>Christen verehren Christus „wie einen Gott“</td></tr><tr><td>Talmud</td><td>2.–6. Jh.</td><td>Jesus am Vorabend des Pessachfestes hingerichtet</td></tr></table></div><p>Sie belegen: Jesus hat gelebt, wurde unter Pilatus hingerichtet und hatte Anhänger.</p>"],
+  ["Historischer Jesus vs. Christus des Glaubens","<p><b>Historischer Jesus</b>: Jesus von Nazareth als geschichtliche Person, rekonstruiert mit historisch-kritischer Methode. Jude, Wanderprediger, Anhänger, gekreuzigt.</p><p><b>Christus des Glaubens</b> (verkündigter Jesus): Jesus aus der Sicht des Glaubens nach Ostern, als Sohn Gottes und Auferstandener. Merksatz aus dem Unterricht: Ostern verändert nicht die Vergangenheit Jesu, aber die <b>Deutung</b> seiner Vergangenheit.</p>"],
+  ["Quellenproblem und Synoptiker","<p>Großer zeitlicher Abstand (ca. 40 Jahre), erst mündliche, dann schriftliche Überlieferung. <b>Markus</b> ist das älteste Evangelium (um 70). <b>Matthäus und Lukas</b> nutzen Markus, eine Spruchquelle <b>Q</b> (Logienquelle) und eigenes Sondergut: <b>Zwei-Quellen-Theorie</b>. Mk, Mt, Lk = Synoptiker (ähnlicher Aufbau).</p>"],
+  ["Absicht der Evangelien","<p>Evangelium = frohe Botschaft. Kein neutrales Protokoll. Lk 1,1–4: geordneter Bericht für Theophilus, damit er die Zuverlässigkeit der Lehre erkennt. Joh 20,30f.: geschrieben, „damit ihr glaubt, dass Jesus der Christus ist“. Sie verbinden Erinnerung und Glaubensdeutung.</p>"],
+  ["Leben-Jesu-Forschung","<ul><li>19. Jh.: liberale Theologie sucht den Menschen Jesus hinter dem Dogma.</li><li>Rudolf Bultmann: Historisches kaum erreichbar, wichtig ist der verkündigte Christus.</li><li>ab 1950er: „New Quest“, Anhaltspunkte im historischen Kontext.</li><li>ab 1970er/80er: „Third Quest“, Jesus in seinem jüdischen Umfeld.</li></ul>"],
+  ["Reich Gottes","<p>Zentrum der Botschaft Jesu. Kein Ort, sondern Gottes Herrschaft, wo Menschen nach Gottes Willen miteinander umgehen. Es beginnt <b>schon jetzt</b> (Heilungen, Gemeinschaft mit Ausgegrenzten), ist aber <b>noch nicht</b> vollendet.</p>"],
+  ["Dekalog","<p>Zehn Worte (Ex 20, Dtn 5), über Jahrhunderte entstanden. Ordnung des <b>Bundes</b> zwischen Gott und Israel, Ethos zur freiwilligen Annahme statt Rechtssätze. Gebote 1–3 betreffen Gott (theozentrisch), 4–10 den Mitmenschen (anthropozentrisch). Gott befreit zuerst („der dich aus Ägypten geführt hat“), dann folgen die Gebote.</p>"],
+  ["Gottesbilder: Fromm und Zenger","<p><b>Ex 3,14</b>: Gott offenbart sich Mose als „Ich bin, der ich bin“ bzw. „Ich bin da“.</p><p><b>Erich Fromm</b>: Gott ist namenlos. Ein Name macht Gott greifbar wie ein Ding, das widerspricht dem Bilderverbot. Gott ist Symbol für das, was im Menschen angelegt ist, wie ein Horizont, den man nie erreicht. Folge: Niemand darf behaupten, seine Gottesvorstellung sei die einzig richtige, sonst religiöse Intoleranz und „Götzendienst in Worten“.</p><p><b>Erich Zenger</b>: Die Bibel ist „Gotteswort in Menschenwörtern“. Viele Bilder (Quelle, Sonne, Burg, Vogel, Löwe, Frau Weisheit) sind gleichwertig und zeigen verschiedene Seiten Gottes. Ex 3,14 bedeutet: Gott ist da in der <b>Geschichte</b>, in <b>Treue</b> und in <b>Lebendigkeit</b>, die alle Festlegungen überschreitet.</p><p>Vergleich: Beide lehnen ein festgelegtes Gottesbild ab. Fromm betont die Namenlosigkeit, Zenger die Vielfalt der Bilder.</p>"]],
+ ops:[["wiedergeben","Gedankengang eines Textes in eigenen Worten, mit Konjunktiv."],["herausarbeiten","Aus dem Text Aussagen erschließen, die nicht direkt dastehen."],["vergleichen","Gemeinsamkeiten und Unterschiede nach Aspekten."],["Stellung nehmen / eigene Interpretation","Eigene begründete Position, mit Bezug zu den Texten."]],
+ mistakes:[["Wiedergabe ohne Konjunktiv","„Fromm meint, Gott sei namenlos.“ Nicht „Gott ist namenlos“."],["Vergleich nebeneinander statt miteinander","Nicht erst Fromm, dann Zenger. Besser nach Aspekten: Name Gottes, Bilder, Konsequenzen."],["Historisch und geglaubt vermischt","Klar trennen: Was ist historisch belegbar, was ist Glaubensaussage?"]],
+ quiz:[
+  {q:"Welches ist das älteste Evangelium?",o:["Matthäus","Markus","Lukas","Johannes"],a:1,e:"Markus, um 70 n. Chr. Matthäus und Lukas haben es als Quelle benutzt."},
+  {q:"Was besagt die Zwei-Quellen-Theorie?",o:["Es gab zwei Jesusse","Mt und Lk nutzen Markus und die Spruchquelle Q","Johannes nutzt zwei Evangelien","Das AT hat zwei Teile"],a:1,e:"Mt und Lk schöpfen aus Markus, aus Q und aus eigenem Sondergut."},
+  {q:"Welcher römische Historiker berichtet, dass Pilatus Christus hinrichten ließ?",o:["Plinius","Tacitus","Josephus","Cicero"],a:1,e:"Tacitus in seinen Annalen (um 116 n. Chr.)."},
+  {q:"Was meint „Christus des Glaubens“?",o:["Jesus als rein historische Person","Jesus aus der Sicht des Osterglaubens","Einen anderen Propheten","Den Talmud"],a:1,e:"Der verkündigte Christus, gedeutet im Licht der Auferstehung."},
+  {q:"Wie deutet Erich Fromm Ex 3,14?",o:["„Mein Name ist Jahwe, der Starke“","„Mein Name ist Namenlos“","Gott ist ein Bild aus Stein","Gott hat viele Namen"],a:1,e:"Fromm: Gott drückt lebendiges Sein und Werden aus, nichts Begrenztes. Sinngemäß: „Mein Name ist Namenlos.“"},
+  {q:"Was betont Erich Zenger?",o:["Nur ein Gottesbild ist richtig","Viele gleichwertige Gottesbilder zeigen verschiedene Seiten Gottes","Die Bibel ist wörtlich zu nehmen","Gott hat keine Geschichte"],a:1,e:"Pluralität und Multiperspektivität: Gott ist da in Geschichte, Treue und Lebendigkeit."},
+  {q:"Worum geht es in den Geboten 1–3 des Dekalogs?",o:["Um das Verhältnis zu Gott","Um Eigentum","Um die Familie","Um Lügen"],a:1,e:"1–3 sind theozentrisch (Gott), 4–10 betreffen den Mitmenschen."},
+  {q:"„Reich Gottes“ bedeutet laut Unterricht …",o:["Ein Land im Himmel","Gottes Herrschaft, die schon beginnt, aber noch nicht vollendet ist","Die Kirche als Gebäude","Das Paradies vor dem Sündenfall"],a:1,e:"Kein abgegrenzter Raum: schon jetzt erfahrbar, noch nicht vollendet."}]
+};
+
+C.geschichte={
+ src:"Gesamtscan S. 52–97: Weimarer Republik von der Revolution bis 1933, Parteien, Krisen, Gumbel-Statistik, Karikaturen, NS-Ideologie, Propaganda, Gleichschaltung, Stundenarbeit (09.10.) und Test (10.09.)",
+ topics:[["1918/19","Kriegsende, Dolchstoßlegende, Novemberrevolution, Ausrufung der Republik, Versailler Vertrag"],["Republik","Parteien und Verfassung (Art. 25, 48, 54)"],["Krisen","1919–1923: politische Morde, Putsche, Ruhrbesetzung, Inflation, Justiz"],["Stabilität","1924–1929: Stresemann, Dawes-Plan, Locarno, Völkerbund"],["Ende","Weltwirtschaftskrise, Präsidialkabinette, 30. Januar 1933"],["NS-Staat","Ideologie, Propaganda, Gleichschaltung"],["Methode","Quellen-, Karikatur- und Plakatanalyse"]],
+ spick:[
+  ["1918: Kriegsende und Revolution","<ul><li>29.09.1918: OHL (Hindenburg, Ludendorff) fordert Waffenstillstand, Regierung Max von Baden.</li><li>Ende Oktober/Anfang November: Matrosenaufstand in Kiel, Novemberrevolution, Arbeiter- und Soldatenräte.</li><li><b>09.11.1918</b>: Kaiser dankt ab, Scheidemann (SPD) ruft die Republik aus, Liebknecht die „sozialistische Republik“.</li><li>11.11.1918: Waffenstillstand (Erzberger unterschreibt).</li></ul>"],
+  ["Dolchstoßlegende","<p>Behauptung (Hindenburg 1919 vor dem Untersuchungsausschuss): Das „im Felde unbesiegte“ Heer sei von der Heimat (Revolutionäre, Demokraten, Juden) verraten worden. Falsch, die OHL selbst hatte den Waffenstillstand verlangt. Folge: Demokraten als „Novemberverbrecher“ diffamiert, Sündenbock, Gefahr für die Republik.</p>"],
+  ["Versailler Vertrag (28.06.1919)","<p>Gebietsverluste (Elsass-Lothringen, Westpreußen und Posen, Danzig wird Freie Stadt, Memelgebiet, Kolonien), Saargebiet unter Völkerbund, Art. 231 Kriegsschuld, Reparationen, Heer auf 100.000 Mann. Von vielen als „Diktatfrieden“ empfunden. <b>Belastung</b> für die Republik, weil Demokraten unterschreiben mussten.</p>"],
+  ["Parteien","<p>Von links nach rechts: <b>KPD</b> (Räterepublik), <b>SPD</b> (demokratische Republik), <b>DDP</b> (liberal), <b>Zentrum</b> (katholisch), <b>DVP</b> (nationalliberal, Stresemann), <b>DNVP</b> (Monarchie, gegen Republik), <b>NSDAP</b> (Diktatur, Führerprinzip, Antisemitismus). Die „Weimarer Koalition“ aus SPD, DDP, Zentrum verlor schon 1920 ihre Mehrheit.</p>"],
+  ["Krisenjahre 1919–1923","<ul><li>Politische Morde: Luxemburg und Liebknecht 1919, Erzberger 1921, Rathenau 1922.</li><li>Kapp-Lüttwitz-Putsch 1920, Hitler-Putsch 09.11.1923.</li><li>Aufstände von links (Sachsen, Thüringen) werden von der Reichswehr niedergeschlagen.</li><li>Ruhrbesetzung 1923, passiver Widerstand, Hyperinflation. Ende durch Rentenmark (Nov. 1923).</li><li><b>Justiz „auf dem rechten Auge blind“</b>: Gumbel-Statistik (1919–1922): rund 350 Morde von rechts, 22 von links. Rechte Täter wurden viel milder bestraft.</li></ul>"],
+  ["Stabilisierung 1924–1929","<p>Gustav Stresemann (DVP): Außenminister, Verständigungspolitik. Dawes-Plan 1924 (Reparationen, US-Kredite), <b>Locarno 1925</b> (Westgrenzen anerkannt, Rheinland entmilitarisiert), <b>Völkerbund 1926</b>, Friedensnobelpreis 1926. Stabilität aber nur scheinbar: abhängig von US-Krediten, Republikfeinde blieben stark.</p>"],
+  ["Präsidialkabinette und Ende","<p>Weltwirtschaftskrise ab Oktober 1929, Massenarbeitslosigkeit. Ab 1930 Kanzler Brüning, dann von Papen, dann von Schleicher. Regieren mit <b>Notverordnungen nach Art. 48</b>. Widerspricht der Reichstag (Art. 54), löst der Reichspräsident ihn nach <b>Art. 25</b> auf: 60 Tage Regieren ohne Parlament, ein offener Verfassungsbruch. <b>30.01.1933</b>: Hindenburg ernennt Hitler zum Reichskanzler.</p>"],
+  ["NS-Ideologie","<ul><li><b>Führerprinzip</b>: militärische Befehlsstruktur, absoluter Gehorsam, Führer als „Ersatzmessias“, ersetzt die Verfassung.</li><li><b>Volksgemeinschaft</b>: Einheit von Volk und Staat, „deutsches Blut“, Ausgrenzung aller anderen.</li><li><b>Rassismus und Antisemitismus</b>: Sozialdarwinismus, „Recht des Stärkeren“, Rassenhierarchie.</li><li><b>Nationalismus</b>: Überhöhung der eigenen Nation, <b>Lebensraum im Osten</b>.</li></ul>"],
+  ["Propaganda","<p>Ziel: Masse lenken, Anhänger gewinnen, Ideologie verbreiten. Mittel: Rundfunk (Volksempfänger „VE 301“, Plakat „Ganz Deutschland hört den Führer“), Presse, Plakate, Reden, Massenveranstaltungen, Olympia 1936, Lieder. Goebbels wird am 13.03.1933 Reichsminister für Volksaufklärung und Propaganda und nennt den Rundfunk den „ersten und einflussreichsten Mittler zwischen Bewegung und Volk“. Hitler in „Mein Kampf“: an Gefühle statt Verstand wenden, einfach, ständig wiederholen.</p>"],
+  ["Gleichschaltung","<p>Ein NS-Begriff (deshalb „umstritten“): Anpassung aller politischen und gesellschaftlichen Einrichtungen an die Ideologie. Reichstagsbrandverordnung 28.02.1933, <b>Ermächtigungsgesetz 23.03.1933</b>, Gleichschaltung der Länder, Zerschlagung der Gewerkschaften 02.05.1933, Verbot aller anderen Parteien 14.07.1933.</p>"],
+  ["Quellenanalyse: Schema","<ol><li><b>Einleitung</b>: Art der Quelle, Verfasser, Adressat, Ort, <b>Datum</b>, Anlass, Thema.</li><li><b>Inhalt</b>: Kernaussagen im Konjunktiv, mit Zeilenangaben.</li><li><b>Einordnung</b>: historischer Kontext, Absicht des Verfassers.</li><li><b>Beurteilung</b>: Sachurteil und Werturteil, begründet.</li></ol><p>Karikatur: Beschreiben (Figuren, Symbole, Text) → Deuten (Bedeutung der Symbole, Aussage) → Einordnen → Bewerten.</p>"]],
+ ops:[["nennen/wiedergeben","Informationen aus Material in eigenen Worten, Konjunktiv."],["beschreiben/darstellen","Sachverhalt strukturiert wiedergeben."],["analysieren","Material nach Kriterien untersuchen (Schema!)."],["erläutern","Mit Beispielen und Kontextwissen verständlich machen."],["einordnen","In den historischen Zusammenhang stellen."],["beurteilen","Sachurteil: Aussage begründet prüfen, ohne eigene Werte."],["bewerten","Werturteil: mit eigenen, offengelegten Wertmaßstäben."]],
+ mistakes:[
+  ["Kein Datum in der Einleitung","Randnotiz im Test: „kein Datum“. Jede Einleitung braucht das genaue Datum.","Test 10.09."],
+  ["Thema ungenau","„Thema ungenau“. Formuliere präzise, worum es der Quelle geht.","Test 10.09."],
+  ["Kein Konjunktiv","Randnotiz: „Konj. nutzen“. „Scheidemann sagt, die Regierung sei …“","Test 10.09."],
+  ["Fakten ohne Zusammenhang","„einzelne Fakten, aber kontextlos“. Jede Info braucht ein „Das bedeutet für die Republik …“.","Test 10.09."],
+  ["Belege fehlen","„Belege fehlen“, „konkrete Aussagen zu Aufgaben fehlen“. Immer Zeilenangaben (Z. 7–8).","Stundenarbeit 09.10."],
+  ["Ideologieelemente fehlen","Bei Propaganda immer benennen: Führerkult, Volksgemeinschaft, Nationalismus, Antisemitismus.","Stundenarbeit 09.10."],
+  ["Fachwörter zu passiv","Dein eigener Merkzettel: „Fachwörter aktiver nutzen!“ Präsidialkabinett, Notverordnung, Gleichschaltung, Dolchstoßlegende."]],
+ quiz:[
+  {q:"Wer rief am 09.11.1918 die „Deutsche Republik“ aus?",o:["Friedrich Ebert","Philipp Scheidemann","Karl Liebknecht","Max von Baden"],a:1,e:"Scheidemann (SPD) vom Reichstagsgebäude. Liebknecht rief am selben Tag die sozialistische Republik aus."},
+  {q:"Was behauptet die Dolchstoßlegende?",o:["Deutschland habe den Krieg gewonnen","Das unbesiegte Heer sei von der Heimat verraten worden","Frankreich habe den Krieg begonnen","Die Monarchie sei schuld"],a:1,e:"Eine Lüge der Rechten. Die OHL selbst hatte den Waffenstillstand gefordert."},
+  {q:"Welcher Artikel erlaubte dem Reichspräsidenten Notverordnungen?",o:["Art. 25","Art. 48","Art. 54","Art. 231"],a:1,e:"Art. 48. Art. 25: Reichstag auflösen. Art. 54: Reichstag kann Aufhebung verlangen. Art. 231 (Versailles): Kriegsschuld."},
+  {q:"Was zeigt die Gumbel-Statistik?",o:["Die Inflation 1923","Rechte Morde wurden viel milder bestraft als linke","Die Wahlergebnisse 1932","Die Arbeitslosenzahlen"],a:1,e:"Die Justiz war „auf dem rechten Auge blind“."},
+  {q:"Was wurde in Locarno 1925 vereinbart?",o:["Die Reparationen wurden gestrichen","Deutschland erkannte seine Westgrenzen an","Deutschland verließ den Völkerbund","Die Rentenmark wurde eingeführt"],a:1,e:"Westgrenzen anerkannt, Rheinland entmilitarisiert. Ein Erfolg Stresemanns."},
+  {q:"In welcher Reihenfolge regierten die Präsidialkabinette?",o:["Papen, Brüning, Schleicher","Brüning, Papen, Schleicher","Schleicher, Brüning, Papen","Stresemann, Brüning, Papen"],a:1,e:"Brüning (1930–32), Papen (1932), Schleicher (Dez. 1932 – Jan. 1933)."},
+  {q:"Was gehört NICHT zur NS-Ideologie?",o:["Führerprinzip","Volksgemeinschaft","Gewaltenteilung","Lebensraum im Osten"],a:2,e:"Gewaltenteilung ist ein Prinzip der Demokratie. Der NS-Staat schaffte sie ab."},
+  {q:"Wann wurde das Ermächtigungsgesetz beschlossen?",o:["30.01.1933","28.02.1933","23.03.1933","02.05.1933"],a:2,e:"23.03.1933. 28.02. war die Reichstagsbrandverordnung, 02.05. die Zerschlagung der Gewerkschaften."},
+  {q:"Wie nannte Goebbels den Rundfunk 1933?",o:["Ein Spielzeug","Den ersten und einflussreichsten Mittler zwischen Bewegung und Volk","Eine Gefahr für den Staat","Eine Erfindung der Republik"],a:1,e:"Aus seiner Rede zur Rundfunkausstellung am 18.08.1933 (dein Material M1)."},
+  {q:"Was unterscheidet Sachurteil und Werturteil?",o:["Kein Unterschied","Sachurteil prüft begründet aus der Zeit heraus, Werturteil nutzt eigene offengelegte Werte","Werturteil braucht keine Begründung","Sachurteil ist immer negativ"],a:1,e:"Beurteilen = Sachurteil. Bewerten = Werturteil mit heutigen, offengelegten Maßstäben."}]
+};
+
+C.englisch={
+ src:"Gesamtscan S. 34–51: Globalization (TB p. 176–190), Thomas L. Friedman, fast fashion, global citizen, discussion and interview skills, DiCaprio’s UN speech (2016), climate change vocabulary, IQB criteria for mediation",
+ topics:[["Globalization","Definition, drivers, Friedman’s three eras, McWorld, multinationals, outsourcing, brain drain"],["Society","Fast fashion, food waste, global citizenship"],["Climate","Climate change vocabulary, DiCaprio’s speech at the UN (2016)"],["Technology","AI, digital shadow workers, self-driving cars dilemma"],["Skills","Speech analysis, discussion phrases, interviews, mediation"]],
+ spick:[
+  ["Globalization in one sentence","<p>Globalization is the growing connection between countries and people around the world. It affects the economy, politics and culture. Goods and services are produced and sold internationally, multinational corporations operate in many countries, and modern communication and cheap transport speed up the process.</p>"],
+  ["Thomas L. Friedman: three eras","<ol><li>Globalization 1.0: driven by <b>countries</b>.</li><li>Globalization 2.0: driven by <b>companies</b>.</li><li>Globalization 3.0: driven by <b>individuals and small groups</b> via digital platforms and the internet.</li></ol>"],
+  ["Key vocabulary","<div class='tablewrap'><table><tr><th>English</th><th>Deutsch</th></tr><tr><td>interdependent</td><td>voneinander abhängig</td></tr><tr><td>multinational corporation</td><td>internationaler Konzern</td></tr><tr><td>tariff / trade barrier</td><td>Zoll / Handelshemmnis</td></tr><tr><td>to outsource</td><td>auslagern</td></tr><tr><td>brain drain</td><td>Abwanderung von Fachkräften</td></tr><tr><td>unprecedented</td><td>beispiellos</td></tr><tr><td>to jeopardize</td><td>gefährden</td></tr><tr><td>irreversible</td><td>unumkehrbar</td></tr><tr><td>repercussion</td><td>Auswirkung</td></tr><tr><td>drought / crop failure</td><td>Dürre / Missernte</td></tr><tr><td>malnutrition</td><td>Mangelernährung</td></tr><tr><td>biodegradable</td><td>biologisch abbaubar</td></tr></table></div>"],
+  ["DiCaprio at the UN (2016)","<p>Leonardo DiCaprio spoke at the signing of the Paris Climate Agreement at the UN in New York (April 2016) to world leaders. Message: climate change is the main problem of our time. The agreement gives hope, but countries must act now and stop making excuses. He calls the politicians “the last best hope of Earth”, echoing Abraham Lincoln.</p><p>Devices to look for: <b>direct address</b> (“you”), <b>contrast</b> (hope vs. danger), <b>repetition/anaphora</b>, <b>appeal</b> to responsibility, <b>quotations</b> of authority, <b>emotive language</b>.</p>"],
+  ["Speech analysis: one paragraph","<p><b>Device → quote (line) → effect.</b> Example: “DiCaprio uses direct address (‘You are the last best hope of Earth’, l. x) to make the politicians feel personally responsible.”</p>"],
+  ["Discussion phrases","<ul><li>Giving opinion: <i>In my view …, I’m convinced that …</i></li><li>Agreeing: <i>That’s a good point, and …</i></li><li>Disagreeing politely: <i>I see your point, but …</i></li><li>Adding: <i>What’s more …, Apart from that …</i></li><li>Concluding: <i>All in all …, To sum up …</i></li></ul>"],
+  ["Mediation (Sprachmittlung)","<p>Not a translation. Focus on what the <b>addressee</b> needs (situation, text type). Leave out details, explain culture-specific things, keep a clear structure. Graded with the IQB criteria: task fulfilment, focus on relevant aspects, addressee, structure.</p>"]],
+ ops:[["outline / summarize","Main points only, own words, present tense."],["analyse","Devices + quotes + effect, structured."],["discuss","Pros and cons, then your own conclusion."],["comment","Your opinion with arguments and examples."],["mediate","Adapt content for an addressee in another language."]],
+ mistakes:[["Language mark low","Your test: content 12/22, language 05. Many grammar marks (G). Check every verb: tense and 3rd person -s."],["German word order","„Otherwise there will not be any …“ English: subject – verb – object. No verb at the end."],["Device without effect","Naming a device gives few points. Always add “in order to …” or “which makes the audience …”."],["Mediation = translation","Never translate sentence by sentence. Select, shorten, explain."]],
+ quiz:[
+  {q:"“unprecedented” means …",o:["unbedeutend","beispiellos","unvorbereitet","unbegründet"],a:1,e:"unprecedented = never happened before = beispiellos."},
+  {q:"According to Friedman, Globalization 3.0 is driven by …",o:["countries","companies","individuals and small groups","the UN"],a:2,e:"Digital platforms let individuals connect and work together worldwide."},
+  {q:"What is “brain drain”?",o:["Too much homework","Skilled workers leaving their country","A medical condition","Fast food"],a:1,e:"Highly qualified people emigrate, often from developing countries."},
+  {q:"At which event did DiCaprio give his UN speech in 2016?",o:["Olympic Games","Signing of the Paris Climate Agreement","Oscar ceremony","G20 summit"],a:1,e:"The signing ceremony of the Paris Agreement at the UN."},
+  {q:"Best structure for a speech-analysis paragraph?",o:["Quote only","Device → quote → effect","Summary of the whole speech","Your opinion first"],a:1,e:"Name the device, prove it with a quote and line, explain the effect."},
+  {q:"In a mediation task you should …",o:["translate word for word","select what the addressee needs and adapt it","add your opinion everywhere","write in German"],a:1,e:"Focus on relevant aspects and the addressee (IQB criteria)."},
+  {q:"“to jeopardize” means …",o:["gefährden","verbessern","unterschreiben","verschwenden"],a:0,e:"to jeopardize = to put in danger."},
+  {q:"Which phrase disagrees politely?",o:["You’re totally wrong.","I see your point, but …","Whatever.","That’s stupid."],a:1,e:"Acknowledge, then contrast: “I see your point, but …”."}]
+};
+
+C.mann={
+ src:"Deine PowerPoint „Bürger oder Künstler?“ (15 Folien mit Sprechernotizen) und dein Handout. Beides ist fertig, jetzt geht es nur noch ums Vortragen.",
+ topics:[["Leitfrage","Bürger oder Künstler: wie prägte dieser Zwiespalt Leben und Werk?"],["Einstieg","Fiktiver Tagebucheintrag Arosa, März 1933"],["Kern","„Buddenbrooks“: Verfall der Familie, Geschäftssinn sinkt, Sensibilität steigt"],["Politik","Vom „Unpolitischen“ (1918) zum Demokraten (1922) und Mahner im Exil"],["Fazit","Bürger UND Künstler"]],
+ spick:[
+  ["Dein roter Faden in 9 Sätzen","<ol><li><b>Einstieg</b> (Folie 2): Arosa 1933, „Was bin ich eigentlich?“ Danach auflösen: erfunden, aber die Situation ist echt.</li><li><b>Leitfrage</b> (3): Bürger = Ordnung, Pflicht, Ansehen. Künstler = Fantasie, Empfindsamkeit, Außenseiter.</li><li><b>Herkunft</b> (4): Vater Kaufmann und Senator, Mutter musisch. Der Zwiespalt beginnt in der Familie.</li><li><b>Aufbruch</b> (5): 1891 stirbt der Vater, die Firma wird aufgelöst. Der Weg zur Kunst ist frei.</li><li><b>Werk</b> (6): In fast jedem Werk steht ein Mensch zwischen Ordnung und Leidenschaft.</li><li><b>Buddenbrooks</b> (7–9): Vier Generationen, mit jeder sinkt der Geschäftssinn und steigt die Sensibilität. Thomas ist der Bürger, Hanno der Künstler, Mann trägt beides in sich.</li><li><b>Leben ab 1905</b> (10): außen Bürger, innen Künstler.</li><li><b>Politik und Exil</b> (11–12): Der Künstler übernimmt bürgerliche Verantwortung, „Deutsche Hörer!“.</li><li><b>Fazit</b> (14): „Ein Bürger, der Künstler wurde – und als Künstler das Bürgertum verteidigte.“</li></ol>"],
+  ["Zeitplan und Kürzen","<p>Deine Notizen laufen von 0:00 bis 20:00. Für <b>15 Minuten</b> kannst du so kürzen, ohne den roten Faden zu verlieren:</p><ul><li><b>Folie 6</b> Werküberblick: nur Tonio Kröger und Zauberberg je ein Satz (spart ca. 1 Min).</li><li><b>Folie 8</b> Besonderheiten: nur Leitmotive und ironischer Erzähler (spart ca. 1 Min).</li><li><b>Folie 11</b> Politik: nur 1918 → 1922 als Kehrtwende (spart ca. 1 Min).</li><li><b>Folie 13</b> Nachwirkung: nur „seit 2026 gemeinfrei“ und Ehrenbürger Lübecks (spart ca. 1 Min).</li><li>Folie 15 Quellen nur zeigen, nicht vortragen (steht schon so in deinen Notizen).</li></ul><p><b>Nicht kürzen</b>: Einstieg, Leitfrage, Folie 9 (Kern der Leitfrage) und Fazit. Das ist dein Bogen.</p>"],
+  ["Mögliche Rückfragen","<ul><li><b>Leitmotiv?</b> Wiederkehrendes Kennzeichen einer Figur, z. B. Hannos bläuliche Augenschatten. Mann übernimmt die Technik von Richard Wagner.</li><li><b>Décadence?</b> Verfall bei gleichzeitiger Verfeinerung. Genau das passiert den Buddenbrooks.</li><li><b>Warum der Bruch mit Heinrich?</b> 1918 verteidigt Thomas die deutsche „Kultur“ gegen Demokratie, Heinrich ist Demokrat. Versöhnung nach 1922.</li><li><b>Warum die Kehrtwende 1922?</b> Nach dem Mord an Außenminister Rathenau wirbt er in „Von deutscher Republik“ für Weimar.</li><li><b>Warum schwieg er 1933–1936?</b> Rücksicht auf Verlag und Leser in Deutschland. 1936 öffentliche Absage an den NS, dann Ausbürgerung.</li><li><b>Warum gemeinfrei seit 2026?</b> Urheberrecht endet 70 Jahre nach dem Tod (1955 + 70), ab dem folgenden 1. Januar.</li><li><b>Bezug zur Exilliteratur?</b> Mann ist ein Hauptvertreter: Schreiben und Reden aus dem Ausland gegen das NS-Regime.</li></ul>"]],
+ ops:[["präsentieren","Frei sprechen, Blickkontakt, die Folien stützen nur."],["einordnen","Leben und Werk in die Zeit stellen: Kaiserreich, Weimar, NS, Exil."],["beurteilen","Leitfrage im Fazit begründet beantworten, auf drei Ebenen (Leben, Werk, Politik)."]],
+ mistakes:[["Zu lang","Die Notizen sind auf 20 Minuten geplant. Unbedingt einmal mit Uhr proben."],["Einstieg nicht aufgelöst","Den Tagebucheintrag klar als erfunden kennzeichnen, sonst wirkt er wie eine echte Quelle."],["Ablesen","Karteikarten mit Stichworten statt der vollen Notizen."],["Fazit verschenkt","Kernsatz langsam sprechen und ausdrücklich auf die Leitfrage antworten."],["Handout ohne Datum","Im Kopf steht noch „DATUM: ____“."]],
+ quiz:[
+  {q:"Wie lautet die Leitfrage deines Vortrags?",o:["Warum ging Mann ins Exil?","Bürger oder Künstler: wie prägte dieser Zwiespalt sein Leben und Werk?","Ist „Buddenbrooks“ ein Bestseller?","Wer war Heinrich Mann?"],a:1,e:"Auf die Leitfrage antwortet dein Fazit: Bürger UND Künstler."},
+  {q:"Was passiert in „Buddenbrooks“ von Generation zu Generation?",o:["Die Familie wird reicher","Geschäftssinn sinkt, Sensibilität steigt","Alle werden Künstler","Die Firma zieht nach München"],a:1,e:"Vom tatkräftigen Johann d. Ä. bis zu Hanno, der Musik liebt und jung stirbt."},
+  {q:"Was ist ein Leitmotiv?",o:["Das Hauptthema eines Romans","Ein wiederkehrendes Kennzeichen einer Figur","Der erste Satz","Ein Zitat im Vorwort"],a:1,e:"Zum Beispiel Hannos bläuliche Augenschatten oder Tonys zitternde Oberlippe."},
+  {q:"Was löste 1922 Manns Bekenntnis zur Republik aus?",o:["Der Nobelpreis","Der Mord an Walther Rathenau","Die Inflation","Hitlers Machtübernahme"],a:1,e:"Danach hielt er die Rede „Von deutscher Republik“."},
+  {q:"Was waren die „Deutsche Hörer!“-Reden?",o:["Vorlesungen in Princeton","Radioansprachen über die BBC 1940–45","Zeitungsartikel","Reden im Reichstag"],a:1,e:"Rund 55–60 Ansprachen, in Deutschland heimlich gehört."},
+  {q:"Warum sind Manns Werke seit 2026 gemeinfrei?",o:["Der Verlag hat sie freigegeben","Das Urheberrecht endet 70 Jahre nach dem Tod","Lübeck hat sie gekauft","Wegen des Nobelpreises"],a:1,e:"Tod 1955, plus 70 Jahre, frei ab 1. Januar 2026."}]
+};
+
+C.sozi={
+ src:"Dein Video (ca. 10 Min, als fiktive Tagesschau vom 11.10.2035) zur Frage nach KI-Regulierung. Den Ton konnte ich hier nicht auswerten, die Inhalte stammen aus den Bildern und Grafiken im Video. Deine eigenen Aussagen ergänzt du auf Karte 1.",
+ topics:[["Leitfrage","Wie viel KI-Regulierung kann sich Deutschland leisten, ohne seine internationale Wettbewerbsfähigkeit zu gefährden?"],["Daten","ifo-Umfrage Mai 2026: KI in deutschen Unternehmen"],["Regeln","EU AI Act mit vier Risikostufen"],["Welt","Konkurrenz mit USA und China, Verhandlungen EU–USA"],["Risiken","Cyberangriffe durch KI, Arbeitsplätze, Verluste"],["Theorie","Realismus, Institutionalismus, Gefangenendilemma auf KI übertragen"]],
+ spick:[
+  ["Dein Video in 6 Stationen","<ol><li><b>Rahmen</b>: Tagesschau-Ausgabe vom 11. Oktober 2035, ein Blick aus der Zukunft zurück.</li><li><b>Leitfrage</b>: Regulierung gegen Wettbewerbsfähigkeit.</li><li><b>Ist-Zustand</b>: ifo-Grafik, wie viele Unternehmen KI schon nutzen.</li><li><b>Regeln</b>: die Risikopyramide des EU AI Act.</li><li><b>Wettbewerb</b>: Bilder von Shanghai und einer Weltkarte aus Münzen: Wer gewinnt das Geld und die Technologie?</li><li><b>Risiken und Lösungen</b>: Meldung über einen eigenständigen KI-Hackerangriff, wirtschaftliche Verluste, Arbeitsplätze, Verhandlungen zwischen EU und USA.</li></ol><p>Im Gespräch: nicht nacherzählen, sondern zu jeder Station sagen, <b>was sie für die Leitfrage bedeutet</b>.</p>"],
+  ["Die ifo-Zahlen (Mai 2026)","<div class='tablewrap'><table><tr><th>Bereich</th><th>KI im Einsatz</th><th>kein Thema</th></tr><tr><td>Gesamtwirtschaft</td><td>54,5 %</td><td>7,9 %</td></tr><tr><td>Verarbeitendes Gewerbe</td><td>58,7 %</td><td>4,1 %</td></tr><tr><td>Dienstleistungen</td><td>56,2 %</td><td>8,0 %</td></tr><tr><td>Handel</td><td>45,1 %</td><td>11,2 %</td></tr><tr><td>Bauhauptgewerbe</td><td>39,8 %</td><td>17,9 %</td></tr></table></div><p><b>Deutung</b>: Mehr als die Hälfte nutzt KI schon, in der Industrie am meisten. Regeln treffen also nicht ein paar Tech-Firmen, sondern die halbe Wirtschaft. Quelle nennen: ifo Konjunkturumfragen, Mai 2026.</p>"],
+  ["EU AI Act: vier Risikostufen","<div class='tablewrap'><table><tr><th>Stufe</th><th>Beispiele</th><th>Folge</th></tr><tr><td><b>Unannehmbar</b></td><td>Social Scoring, manipulative KI</td><td>verboten</td></tr><tr><td><b>Hoch</b></td><td>Bewerberauswahl, Kreditprüfung, kritische Infrastruktur, Bildung</td><td>strenge Pflichten: Prüfung, Dokumentation, menschliche Aufsicht</td></tr><tr><td><b>Begrenzt</b></td><td>Chatbots, Deepfakes</td><td>Transparenz: KI muss erkennbar sein</td></tr><tr><td><b>Minimal</b></td><td>Spamfilter, Videospiele</td><td>keine Pflichten</td></tr></table></div><p>Grundidee: Je größer das Risiko für Menschen, desto strenger die Regeln. Das Gesetz trat 2024 in Kraft und gilt schrittweise.</p>"],
+  ["Pro und Contra Regulierung","<div class='tablewrap'><table><tr><th>Für strenge Regeln</th><th>Gegen strenge Regeln</th></tr><tr><td>Schutz von Grundrechten und Daten</td><td>Kosten und Bürokratie, vor allem für kleine Firmen</td></tr><tr><td>Sicherheit, z. B. gegen KI-Cyberangriffe</td><td>Start-ups wandern in die USA ab</td></tr><tr><td>Vertrauen der Menschen: „KI made in Europe“</td><td>USA und China entwickeln schneller</td></tr><tr><td>Brüssel-Effekt: Wer in die EU verkaufen will, muss die Regeln einhalten, so setzt die EU weltweite Standards</td><td>Abhängigkeit von fremder Technik wächst</td></tr></table></div>"],
+  ["Durch die Theorie-Brille","<ul><li><b>Realismus</b>: KI ist Macht. Jeder Staat will vorne liegen, Regeln schwächen im Wettlauf. Daraus folgt: wenig regulieren.</li><li><b>Institutionalismus</b>: Weil alle voneinander abhängig sind (Interdependenz), lohnen gemeinsame Regeln über EU und Abkommen, z. B. EU–USA. Daraus folgt: gemeinsam regulieren.</li><li><b>Gefangenendilemma</b>: Beide Seiten würden von sicheren Regeln profitieren. Weil keiner dem anderen traut, deregulieren beide, ein KI-Wettrüsten mit schlechterem Ergebnis für alle.</li><li><b>Erweiterter Sicherheitsbegriff</b>: Sicherheit heißt auch Cybersicherheit und wirtschaftliche Sicherheit.</li></ul>"]],
+ ops:[["vorstellen","Inhalt und Aufbau des Videos knapp und geordnet wiedergeben."],["erläutern","Mit Beispiel und Zahl verständlich machen, z. B. die Risikostufen."],["erörtern","Pro und Contra abwägen, dann zu einem Ergebnis kommen."],["Stellung nehmen / beurteilen","Eigene Position begründen. Sachurteil (Was wirkt?) von Werturteil (Was ist richtig?) trennen."]],
+ mistakes:[["Nacherzählen statt einordnen","Zu jeder Station sagen, was sie für die Leitfrage bedeutet."],["Zahlen ohne Quelle","„Laut ifo-Umfrage vom Mai 2026 …“"],["Nur eine Seite","Gegenargumente ernst nehmen und kontern, das zeigt Urteilskraft."],["Keine Fachbegriffe","Regulierung, Wettbewerbsfähigkeit, Standortfaktor, Interdependenz, Risikoklassen."],["Theorien vermischt","Klar sagen, aus welcher Sicht du argumentierst."]],
+ quiz:[
+  {q:"Was ist die Grundidee des EU AI Act?",o:["Alle KI ist verboten","Je höher das Risiko, desto strenger die Regeln","Nur US-Firmen werden reguliert","KI ist frei, solange sie Geld bringt"],a:1,e:"Ein risikobasierter Ansatz mit vier Stufen."},
+  {q:"In welche Stufe fällt Social Scoring?",o:["Minimales Risiko","Begrenztes Risiko","Hohes Risiko","Unannehmbares Risiko, also verboten"],a:3,e:"Die Bewertung von Menschen nach ihrem Verhalten ist in der EU verboten."},
+  {q:"Was müssen Chatbots laut AI Act vor allem erfüllen?",o:["Nichts","Transparenz: Nutzer müssen wissen, dass sie mit KI sprechen","Sie sind verboten","Sie brauchen eine staatliche Lizenz"],a:1,e:"Begrenztes Risiko bedeutet Transparenzpflichten."},
+  {q:"Wie viele deutsche Unternehmen nutzten im Mai 2026 laut ifo bereits KI?",o:["etwa 8 %","etwa 25 %","etwa 55 %","etwa 90 %"],a:2,e:"54,5 % in der Gesamtwirtschaft, 58,7 % in der Industrie."},
+  {q:"Wie argumentiert ein Realist zur KI-Regulierung?",o:["Gemeinsame Regeln nutzen allen","KI ist Machtfaktor, strenge Regeln schwächen im Wettlauf","Demokratien regulieren nie","Staaten sind unwichtig"],a:1,e:"Realismus: Macht und Konkurrenz zwischen Staaten."},
+  {q:"Was meint der „Brüssel-Effekt“?",o:["Die EU zieht nach Brüssel um","EU-Regeln werden weltweit Standard, weil Firmen in der EU verkaufen wollen","Brüssel verbietet KI","Firmen verlassen Europa"],a:1,e:"Ein Argument dafür, dass Regulierung auch ein Wettbewerbsvorteil sein kann."}]
+};
+
+C.bm={
+ src:"Dein 3D-Modell „Transkription“ (Transkription-3D-offline.html) und der Bio-Stoff zur Proteinbiosynthese",
+ topics:[["Schritte","Promotor, Entwindung, mRNA-Aufbau, Terminator"],["Begriffe","RNA-Polymerase, codogener Strang, komplementär, Uracil statt Thymin"],["Einordnung","Zellkern, danach Translation am Ribosom"]],
+ spick:[
+  ["Transkription in 4 Schritten","<ol><li>RNA-Polymerase bindet an den <b>Promotor</b>.</li><li>Sie trennt die Wasserstoffbrücken, die DNA wird entwunden.</li><li>Sie baut die mRNA komplementär zum <b>codogenen Strang</b> auf, Uracil statt Thymin.</li><li>Die <b>Terminatorsequenz</b> beendet die Synthese, die mRNA löst sich.</li></ol>"],
+  ["Mögliche Rückfragen","<ul><li><b>Warum Uracil?</b> RNA enthält Uracil statt Thymin, U paart mit A.</li><li><b>Wo passiert das?</b> Bei Eukaryoten im Zellkern, die mRNA wandert danach ins Cytoplasma zum Ribosom.</li><li><b>Welcher Strang wird abgelesen?</b> Der codogene Strang, die mRNA ist komplementär zu ihm.</li><li><b>Was kommt danach?</b> Die Translation: tRNAs bringen Aminosäuren, das Ribosom knüpft die Kette.</li></ul>"]],
+ ops:[["präsentieren","Frei sprechen, das Modell aktiv zeigen und erklären."],["erläutern","Jeden Schritt mit Fachbegriff und Bezug zum Modell."]],
+ mistakes:[["Nur zeigen, nicht erklären","Zu jedem Dreh am Modell ein Satz mit Fachbegriff."],["Thymin in der mRNA","In RNA steht Uracil (U) statt Thymin (T)."]],
+ quiz:[
+  {q:"Wo bindet die RNA-Polymerase zu Beginn?",o:["Am Terminator","Am Promotor","Am Ribosom","An der tRNA"],a:1,e:"Die Transkription startet am Promotor."},
+  {q:"Welche Base steht in der mRNA statt Thymin?",o:["Adenin","Guanin","Uracil","Cytosin"],a:2,e:"RNA enthält Uracil."},
+  {q:"Zu welchem Strang ist die mRNA komplementär?",o:["Zum codierenden Strang","Zum codogenen Strang","Zu beiden","Zu keinem"],a:1,e:"Abgelesen wird der codogene Strang."},
+  {q:"Was beendet die Transkription?",o:["Das Startcodon","Die Terminatorsequenz","Die tRNA","Der Promotor"],a:1,e:"An der Terminatorsequenz löst sich die mRNA."}]
+};
+C.relp={
+ src:"Projektblatt Philosophie/Religion (Gesamtscan): Gruppenarbeit mit Mappe und Film",
+ topics:[["Gruppe","Du und vier andere"],["Abgabe","Mappe am Donnerstag, 05.11."],["Präsentation","Film am Projektabend, 12.11."]],
+ spick:[],ops:[],mistakes:[],quiz:[]
+};
+
+/* ============ KREATIVE PROJEKTE: pro Klausur 2–3 zur Wahl ============
+   id, title, pitch (worum es geht), trains (was du danach kannst), covers (Themen aus „Was drankommt“),
+   effort (grobe Größe, frei einteilbar), steps (abhakbar), check (Abschlusscheck im Klausurformat), show (optional: vorzeigen) */
+const P={};
+
+P.info=[
+ {id:"a",type:"bauen",title:"Deine eigene Playlist-App",pitch:"Du baust eine Mini-App, die genau die Bausteine der Klausur enthält. Statt Bücher in einer Bibliothek verwaltest du Songs in einer Playlist.",
+  trains:"Klassen mit Konstruktor und Kapselung selbst schreiben, eine 1 : n-Beziehung als Liste umsetzen und eine Schleife als Struktogramm darstellen.",
+  covers:["OOP","UML","Listen","Algorithmen"],effort:"klein · etwa 1 Stunde",
+  steps:[
+   {t:"Klassendiagramm zeichnen",x:"Zwei Klassen: <code>Song</code> (titel: String, dauerSek: int) und <code>Playlist</code> (name: String, songs: ArrayList&lt;Song&gt;). Verbinde sie und schreibe 1 und n an die Linie. Attribute mit −, Methoden mit +."},
+   {t:"Klasse Song mit Konstruktor und Kapselung",x:"Konstruktor <code>Song(String t, int d)</code>, Getter für beide Attribute und ein Setter <code>setDauer</code>, der negative Werte ablehnt (Robustheit)."},
+   {t:"Klasse Playlist mit Liste",x:"Der Konstruktor legt die leere Liste an und erzeugt mit einer for-Schleife 5 Demo-Songs: <code>songs.add(new Song(\"Track \"+i, i*60));</code> Dann <code>gesamtdauer()</code> und <code>laengsterSong()</code> schreiben."},
+   {t:"Struktogramm für gesamtdauer()",x:"Zählschleife von 0 bis size()−1, darin die Summe erhöhen, am Ende Rückgabe."}],
+  check:{t:"Aufgabenblatt Bibliothek",x:"Aus dem Info-Ordner lösen und mit dem Erwartungshorizont vergleichen. Danach die Checkliste noch einmal ankreuzen."}},
+ {id:"b",type:"spiel",title:"Code-Escape-Room",pitch:"Du baust 6 Rätselkarten, bei denen man einen Code-Schnipsel „knacken“ muss, um den nächsten Hinweis zu bekommen. Wer Rätsel baut, muss den Code genauer verstehen als jemand, der sie löst.",
+  trains:"Fremden Quelltext analysieren (Was passiert hier, welche Werte entstehen?) und typische Fehler sofort erkennen. Genau das verlangt der Operator „analysieren“.",
+  covers:["OOP","Listen","Grundlagen","Algorithmen"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Karte 1: Konstruktor zählen",x:"Ein Konstruktor mit for-Schleife erzeugt Bücher. Frage: Wie viele Bücher, welche Seitenzahl hat das letzte? (Wie im Merkblatt: Durchläufe und Parameter aufschreiben.)"},
+   {t:"Karte 2 und 3: Fehler finden",x:"Baue in einen Code absichtlich je einen Fehler ein: <code>public void Buch(...)</code> als Konstruktor und <code>i &lt;= liste.size()</code>. Auf die Rückseite: Was passiert und wie geht es richtig?"},
+   {t:"Karte 4: Setter mit Prüfung",x:"Ein Setter lehnt ungültige Werte ab. Frage: Welchen Wert hat das Attribut nach drei Aufrufen mit 5, −3 und 12?"},
+   {t:"Karte 5: Datentypen und Strings",x:"Welcher Datentyp passt? Und warum ist <code>name == \"Krimi\"</code> riskant? (Lösung: equals.)"},
+   {t:"Karte 6: Theorie-Tresor",x:"Der Code für den Tresor sind die Anfangsbuchstaben der 5 Algorithmus-Eigenschaften. Dazu eine Frage: imperativ oder objektorientiert?"},
+   {t:"Selbst knacken",x:"Einen Tag später löst du deine Karten ohne Rückseite. Oder du schickst sie Claude, Claude löst sie, und du prüfst, ob die Lösung stimmt. Was du nicht erklären kannst, liest du im Spickzettel nach."}],
+  check:{t:"Aufgabenblatt Parkhaus",x:"Aus dem Info-Ordner lösen, besonders die Analyse-Aufgaben, und mit dem Erwartungshorizont vergleichen."}},
+ {id:"c",type:"zeichnen",title:"Ein-Blatt-Poster „Java auf einen Blick“",pitch:"Ein A3-Poster am Beispiel Kino-Kartenverkauf (aus eurer Stillarbeit): in der Mitte das Klassendiagramm, außen herum Code, Struktogramm und eine Theorie-Ecke.",
+  trains:"Den ganzen Stoff in einem Bild zusammenbringen. Gut für alle, die visuell lernen und für die Theoriefragen.",
+  covers:["OOP","UML","Listen","Algorithmen","Theorie"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Mitte: Klassendiagramm",x:"Klassen <code>Kino</code> und <code>Ticket</code> mit Attributen, Methoden und Kardinalität 1 : n."},
+   {t:"Links: Code-Ausschnitte",x:"Konstruktor von Kino (legt Liste an), ein Getter und ein Setter mit Prüfung, eine Methode, die alle Tickets durchläuft und den Umsatz berechnet."},
+   {t:"Rechts: Struktogramm",x:"Für die Umsatz-Methode, sauber mit Zählschleife."},
+   {t:"Unten: Theorie-Ecke",x:"Imperativ vs. objektorientiert, die 5 Algorithmus-Eigenschaften, die 4 Qualitätskriterien, Generationen der Programmiersprachen. Je ein Satz."},
+   {t:"Laut erklären",x:"Erkläre das Poster in 3 Minuten als Sprachmemo und hör es dir an. Wo du stockst, ergänzt du das Poster."}],
+  check:{t:"Aufgabenblatt Softwareprojekt + Checkliste",x:"Aus dem Info-Ordner lösen, besonders die Theoriefragen. Danach die Checkliste ankreuzen."}}
+];
+
+P.sport=[
+ {id:"a",type:"zeichnen",title:"Trainer-Comic + Kraft-Sammelkarten",pitch:"Du erklärst den Stoff so, dass ein Achtklässler ihn versteht. Ein Comic für die Superkompensation, Sammelkarten für die Kraftformen.",
+  trains:"Das Superkompensationsmodell frei zeichnen und erläutern, jede Kraftform mit Sportbeispiel und Arbeitsweise nennen.",
+  covers:["Anpassung","Gesetze","Kraft","Muskel"],effort:"mittel · etwa 1 Stunde",
+  steps:[
+   {t:"Comic in 6 Bildern: Superkompensation",x:"Eine Figur trainiert dreimal: zu früh, zu spät, genau richtig. Unter jedes Bild die passende Kurve. Begriffe: Homöostase, Ermüdung, Erholung, Superkompensation."},
+   {t:"4 Sammelkarten für die Kraftformen",x:"Wie Pokémon-Karten: Name, Definition in einem Satz, Lieblingssportart, Trainingsübung, „Spezialattacke“. Rückseite: konzentrisch, exzentrisch oder isometrisch?"},
+   {t:"Karte „Gesetze des Trainings“",x:"Fünf Regeln, die dein Comic-Trainer seinem Schützling beibringt."}],
+  check:{t:"Modell aus dem Kopf + Quiz",x:"Superkompensationsmodell mit beschrifteten Achsen aus dem Kopf zeichnen, dann das Sport-Quiz."}},
+ {id:"b",type:"anwenden",title:"Trainingsplan für eine echte Person",pitch:"Du schreibst einen 4-Wochen-Kraftplan für jemanden, den du kennst (z. B. einen Basketballer, der höher springen will). Jede Entscheidung im Plan begründest du sportwissenschaftlich.",
+  trains:"Theorie anwenden statt auswendig lernen: genau das, was bei „erläutern“ und „beurteilen“ Punkte bringt.",
+  covers:["Leistung","Anpassung","Gesetze","Kraft","Muskel","Bedeutung"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Steckbrief der Person",x:"Sportart, Ziel, Leistungsstand. Welche Einflussfaktoren der Leistungsfähigkeit sind bei ihr wichtig?"},
+   {t:"Kraftform wählen",x:"Welche Kraftform braucht sie vor allem? Begründe mit der Definition. Warum ist Maximalkraft trotzdem die Basis?"},
+   {t:"Plan mit Pausen",x:"4 Wochen, 2–3 Einheiten pro Woche. Die Pausen begründest du mit der Superkompensation, die Steigerung mit den Gesetzmäßigkeiten (wirksamer Reiz, Steigerung, Dosierung)."},
+   {t:"Übungen beschriften",x:"Jede Übung: Agonist, Antagonist, Arbeitsweise. Achte darauf, dass beide Seiten trainiert werden."},
+   {t:"Risiko-Check",x:"Drei Risiken für genau diese Person und wie dein Plan sie vermeidet."}],
+  check:{t:"Klausurfrage schreiben",x:"„Erläutern Sie am Beispiel Ihres Plans das Modell der Superkompensation.“ Eine halbe Seite, mit Skizze. Dann das Quiz."}},
+ {id:"c",type:"schreiben",title:"Selbstversuch-Reportage",pitch:"Du machst drei kleine Übungen selbst, beobachtest deinen Körper bis zum nächsten Tag und schreibst darüber eine Reportage mit Fachbegriffen.",
+  trains:"Arbeitsweisen der Muskulatur, Agonist und Antagonist sowie Ermüdung und Erholung wirklich spüren und dadurch sicher erklären.",
+  covers:["Anpassung","Kraft","Muskel","Leistung"],effort:"klein · etwa 45 Minuten, verteilt auf zwei Tage",
+  steps:[
+   {t:"Drei Übungen",x:"Liegestütz hoch (konzentrisch), langsam absenken (exzentrisch), Wandsitz halten (isometrisch). Notiere direkt, was du spürst und welcher Muskel arbeitet."},
+   {t:"Agonist und Antagonist ertasten",x:"Arm beugen und strecken, dabei Bizeps und Trizeps fühlen. Wer ist wann Agonist?"},
+   {t:"Am nächsten Tag",x:"Muskelkater? Ordne ihn ins Superkompensationsmodell ein: Wo stehst du gerade, wann wäre die nächste Einheit sinnvoll?"},
+   {t:"Reportage schreiben",x:"Eine Seite wie für eine Schülerzeitung, mit mindestens 8 Fachbegriffen."}],
+  check:{t:"Quiz + Modell zeichnen",x:"Sport-Quiz, dann das Modell aus dem Kopf zeichnen und beschriften."}}
+];
+
+P.musik=[
+ {id:"a",type:"sprechen",title:"Radio-Sendung „Barock-Battle“",pitch:"Du moderierst eine kurze Radiosendung mit drei Beiträgen. Den Dialog zwischen Bach und Händel hast du schon als Material.",
+  trains:"Bach und Händel vergleichen, das Halleluja mit Fachbegriffen beschreiben und die Klaviergeschichte erzählen.",
+  covers:["Gattungen","Werk","Satztechnik","Komponisten","Instrument"],effort:"mittel · etwa 1 Stunde",
+  steps:[
+   {t:"Beitrag 1: Bach gegen Händel",x:"Anmoderation wie bei einem Boxkampf: „In der linken Ecke, geboren 1685 in Eisenach …“. Je Komponist 4 Fakten. Am Ende: Was haben beide gemeinsam?"},
+   {t:"Beitrag 2: Das Halleluja live kommentiert",x:"Hör das Halleluja und kommentiere wie ein Sportreporter: „Jetzt alle im gleichen Rhythmus, das ist Homophonie!“ Mindestens 5 Gestaltungsmittel."},
+   {t:"Beitrag 3: Vom Cembalo zum Steinway",x:"Eine Zeitreise in 6 Stationen, je ein Satz."},
+   {t:"Sendepausen-Rätsel: Oratorium oder Oper?",x:"Fünf Rätselfragen für die Hörer, Lösungen aus der Tabelle."}],
+  check:{t:"Lückentext + Quiz",x:"Lückentext Klavier aus dem Unterricht ohne Hilfe ausfüllen, dann das Musik-Quiz."}},
+ {id:"b",type:"zeichnen",title:"Hörkarte zum Halleluja",pitch:"Du malst eine Landkarte des Stücks: Jeder Abschnitt bekommt eine Farbe (blau = homophon, rot = polyphon, grün = unisono), dazu Symbole für Trompeten und Pauken.",
+  trains:"Satztechniken hörend und im Notentext erkennen und ihre Wirkung mit dem Text verbinden. Das ist der Kern der Analyseaufgabe.",
+  covers:["Werk","Satztechnik","Gattungen"],effort:"mittel · etwa 1 Stunde",
+  steps:[
+   {t:"Abschnitte finden",x:"Mit Notentext und Aufnahme: Schreibe für jeden Textabschnitt den Takt und die Satztechnik auf."},
+   {t:"Karte malen",x:"Eine Zeitleiste, Abschnitte farbig, Instrumente als Symbole, Höhepunkte markieren."},
+   {t:"Wort-Ton-Tabelle",x:"Drei Spalten: Textstelle → musikalisches Mittel → Wirkung. Z. B. „King of Kings“ → Tonwiederholung, Oberstimmen steigen → Spannung, Gottes Macht."},
+   {t:"Einordnen",x:"Warum ist das Halleluja ein Chor aus einem Oratorium und keine Opernszene? Drei Sätze."}],
+  check:{t:"Analyseabsatz schreiben",x:"Ein Absatz wie in der Klausur: Mittel benennen, mit Takt belegen, Wirkung deuten. Dann das Quiz."}},
+ {id:"c",type:"zeichnen",title:"Insta-Karussell „Vom Cembalo zum Steinway“",pitch:"Du gestaltest 8 Slides wie einen Instagram-Post: Klaviergeschichte, dazu ein Vergleichs-Slide Oratorium gegen Oper und einen über Bach und Händel.",
+  trains:"Die vielen Namen und Daten sicher zuordnen, kurz und klar formulieren.",
+  covers:["Instrument","Komponisten","Gattungen"],effort:"klein · etwa 45 Minuten",
+  steps:[
+   {t:"Slides 1–5: Klaviergeschichte",x:"clavis, Cembalo (gezupft), Cristofori um 1700, Silbermann und Bach 1747, Stein und Wiener Mechanik, Broadwood, Érard 1821, Steinway 1859."},
+   {t:"Slide 6: Oratorium vs. Oper",x:"Als Vergleichstabelle oder Meme."},
+   {t:"Slide 7: Bach vs. Händel",x:"Steckbriefe nebeneinander."},
+   {t:"Slide 8: Quizfrage an die Follower",x:"Eine kniffelige Frage mit Auflösung."}],
+  check:{t:"Lückentext + Quiz",x:"Lückentext Klavier ohne Hilfe, dann das Quiz."}}
+];
+
+P.mathe=[
+ {id:"a",type:"anwenden",title:"Drohnen-Mission in deinem Zimmer",pitch:"Dein Zimmer wird zum Koordinatensystem: eine Ecke am Boden ist der Ursprung, 1 LE = 1 Meter. Du planst eine Drohnenroute und schreibst eine Missionskarte zum Nachrechnen.",
+  trains:"Punkte, Verbindungsvektoren, Längen, Skalarprodukt und Kollinearität an einem Beispiel, das du dir vorstellen kannst.",
+  covers:["Raum","Vektoren","Rechnen","Länge","Lage","Skalarprodukt"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Wegpunkte festlegen",x:"4 Punkte: Start (Schreibtisch), Lampe, Schrankecke, Landeplatz (Bett). Koordinaten aufschreiben und im 3D-System zeichnen."},
+   {t:"Flugvektoren und Strecken",x:"Die drei Verbindungsvektoren und ihre Längen. Wie lang ist die Route? Wie weit ist jeder Punkt vom Ursprung entfernt?"},
+   {t:"Kurven prüfen",x:"Biegt die Drohne an der Lampe im rechten Winkel ab? Skalarprodukt! Falls nicht: Winkel berechnen."},
+   {t:"Abkürzung gesucht",x:"Liegen drei Punkte auf einer Linie? Mit Vielfachen prüfen. Bonus: Mittelpunkt zwischen Start und Landeplatz."}],
+  check:{t:"Übungsblätter",x:"Je ein Blatt aus deinem Mathe-Ordner (Länge, Orthogonalität, lineare Abhängigkeit) lösen und mit der Lösung vergleichen. Dann das Quiz."}},
+ {id:"b",type:"spiel",title:"Schatzsuche-Kette",pitch:"Du baust eine Rätselkette aus 6 Stationen. Die Lösung jeder Aufgabe ist die Koordinate oder Zahl, die zur nächsten Station führt. Am Ende versteckst du etwas Echtes.",
+  trains:"Jeden Aufgabentyp der Klausur einmal selbst konstruieren. Wer Aufgaben baut, versteht, worauf es ankommt.",
+  covers:["Vektoren","Länge","Lage","Skalarprodukt","Rechnen"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Station 1–2: Länge und Abstand",x:"„Der nächste Hinweis liegt so viele Schritte entfernt, wie der Punkt P vom Ursprung.“ Wähle Zahlen, bei denen eine glatte Wurzel herauskommt."},
+   {t:"Station 3: Mittelpunkt",x:"Die nächste Koordinate ist der Mittelpunkt zweier Punkte."},
+   {t:"Station 4: Orthogonal?",x:"Nur wer prüft, ob zwei Vektoren senkrecht sind, weiß, ob er links oder rechts weitergeht."},
+   {t:"Station 5–6: Kollinear und linear abhängig",x:"Ein Code ergibt sich aus dem Faktor r bzw. aus r und s im Gleichungssystem."},
+   {t:"Lösungsheft",x:"Zu jeder Station der vollständige Rechenweg mit Antwortsatz. Zwei Tage später löst du die Kette selbst ohne Lösungsheft."}],
+  check:{t:"Übungsblätter",x:"Je ein Blatt aus deinem Mathe-Ordner mit Lösung vergleichen. Dann das Quiz."}},
+ {id:"c",type:"ueben",title:"Fehler-Lexikon + eigene Probeklausur",pitch:"Du sammelst alle Fehlerarten aus deinem Test vom 16.09. und den Übungsblättern in einem kleinen Lexikon und baust danach deine eigene Probeklausur.",
+  trains:"Genau die Stellen reparieren, die dich Punkte gekostet haben (Abstand zum Ursprung, Vielfache), und Klausurformat üben.",
+  covers:["Raum","Vektoren","Rechnen","Länge","Lage","Skalarprodukt"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"Fehler sammeln",x:"Test 16.09. und Übungsblätter durchgehen. Jeder Fehler bekommt eine Karte: falsch, richtig, Merksatz."},
+   {t:"Lexikon ordnen",x:"Nach Themen sortieren. Mindestens 6 Einträge (z. B. Spitze minus Fuß, Wurzel vergessen, r nur in einer Koordinate geprüft, kein Antwortsatz)."},
+   {t:"Probeklausur bauen",x:"6 Aufgaben, eine pro Thema, mit Operatoren (berechnen, prüfen, zeigen) und Punktzahlen."},
+   {t:"Musterlösung",x:"Vollständig, mit Antwortsätzen."}],
+  check:{t:"Probeklausur lösen",x:"Ein paar Tage später deine eigene Probeklausur am Stück lösen, dann das Quiz."}}
+];
+
+P.deutsch=[
+ {id:"a",type:"schreiben",title:"Gregors Zeitlupe",pitch:"Du wirst kurz selbst zum Autor. Wer Erzählmittel einmal selbst benutzt hat, erkennt sie in jedem Klausurtext.",
+  trains:"Zeitgestaltung und Epochenmerkmale sicher erkennen und benennen, plus eine Probe-Interpretation.",
+  covers:["Epochen","Epik","Erzähltechnik","Methode"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"Drei Epochen als Social-Media-Profile",x:"Expressionismus, Symbolismus, Neue Sachlichkeit: Profilbild (typisches Motiv), Bio (Lebenszeit), 3 Posts im typischen Stil, „Freunde“ (Autoren) und „blockiert“."},
+   {t:"Eine Szene, drei Versionen",x:"Gregors Erwachen als Käfer: zeitdeckend (Dialog durch die Tür), gerafft (drei Wochen in zwei Sätzen), gedehnt (die Sekunde, in der er seinen Körper sieht)."},
+   {t:"Regiebuch für eine Verfilmung",x:"„Gibs auf!“ oder eine Stelle aus der „Verwandlung“: zu 5 Stellen Kamera, Tempo, Ton und welche sprachliche Stelle das rechtfertigt."}],
+  check:{t:"Probe-Interpretation",x:"„Gibs auf!“: Einleitung mit Thema, kurze Inhaltsangabe, zwei Analyseabsätze, Epochenbezug. Danach mit der Fehlerliste vergleichen."}},
+ {id:"b",type:"schreiben",title:"Literarisches Gericht: Der Fall Familie Samsa",pitch:"Ist die Familie schuld an Gregors Tod? Du schreibst Anklage und Verteidigung, beide mit Textbelegen, und am Ende das Urteil.",
+  trains:"Argumentieren mit Zitaten und eine ausgewogene Stellungnahme schreiben. Genau dort hast du im Test Punkte verloren (1,5 von 4).",
+  covers:["Epik","Autoren","Epochen","Methode"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Beweismittel sammeln",x:"8 Zitate mit Seitenangabe: Wie behandeln Vater, Mutter und Grete Gregor vor und nach der Verwandlung?"},
+   {t:"Anklageschrift",x:"Drei Argumente, je mit Zitat und Deutung („Das zeigt …“). Bezug: Umkehrung der Abhängigkeit, Macht des Vaters."},
+   {t:"Verteidigungsrede",x:"Drei Gegenargumente: Überforderung, Geldsorgen, Gregors eigene Selbstaufgabe. Auch mit Zitaten."},
+   {t:"Gutachter: Kafka und seine Zeit",x:"Ein Absatz: Was hat der Fall mit Kafkas Vaterbeziehung und dem Expressionismus zu tun (Entfremdung, Ohnmacht)?"},
+   {t:"Urteil",x:"Dein begründetes Fazit, das beide Seiten abwägt."}],
+  check:{t:"Stellungnahme im Klausurformat",x:"Zu einer These über die „Verwandlung“: zwei Argumente mit Beleg, ein Gegenargument, klares Fazit. Plus eine Einleitung mit Thema für „Gibs auf!“. Dann das Quiz."}},
+ {id:"c",type:"sprechen",title:"Gedicht-Galerie",pitch:"Du richtest ein kleines Museum ein: 4 Gedichte als Ausstellungsstücke, jedes mit Schild, dazu ein Vergleichsraum Expressionismus gegen Neue Sachlichkeit.",
+  trains:"Lyrik analysieren und vergleichend interpretieren, mit Epochenbezug. Das kann als Vergleichsaufgabe drankommen.",
+  covers:["Epochen","Lyrik","Autoren","Methode"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Exponate wählen",x:"„Weltende“ (van Hoddis), „Kleine Aster“ (Benn), „Der Gott der Stadt“ (Heym), ein Kästner-Gedicht."},
+   {t:"Museumsschilder",x:"Pro Gedicht: Epoche, Thema in einem Satz, 3 Stilmittel mit Zitat und Wirkung."},
+   {t:"Vergleichsraum",x:"Eine Tafel: Wie sieht der Expressionismus die Großstadt, wie die Neue Sachlichkeit? Sprache, Haltung, Bilder."},
+   {t:"Audioguide",x:"Sprich für jedes Exponat einen 1-Minuten-Audioguide ein. Beim Anhören merkst du, wo die Deutung noch dünn ist."}],
+  check:{t:"Vergleichende Einleitung + Vergleichsabsatz",x:"Einleitung für einen Gedichtvergleich mit Thema, dann ein Absatz, der nach Aspekten vergleicht (nicht nacheinander). Dann das Quiz."}}
+];
+
+P.bio=[
+ {id:"a",type:"zeichnen",title:"Proteinfabrik + Geheimcode",pitch:"Dein 3D-Modell zeigt Teil 1, die Transkription. Jetzt baust du Teil 2 als Storyboard und trainierst die Ökologie-Stellen, die in der LEK Punkte gekostet haben.",
+  trains:"Proteinbiosynthese komplett erklären, die Codesonne sicher nutzen, Toleranzkurve und Energiefluss mit allen Fachbegriffen.",
+  covers:["Proteinbiosynthese","Toleranz","Wald"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Storyboard „Die Proteinfabrik“",x:"6 Bilder: Das Ribosom ist eine Fabrikhalle, die tRNAs sind Lieferwagen mit Aminosäuren, das Anticodon ist der Lieferschein. Jedes Bild bekommt einen Fachbegriff."},
+   {t:"Geheimcode",x:"Verschlüssele ein Wort als Aminosäure-Kette (z. B. MET = Met-Glu-Thr) und schreibe den codogenen DNA-Strang dazu. Ein paar Tage später übersetzt du selbst zurück, oder du schickst Claude den DNA-Strang und vergleichst."},
+   {t:"Ökologie-Reparatur",x:"Toleranzkurve der Schwarzerle für Bodenfeuchte mit allen Fachbegriffen (LEK: 2 von 8). Dann in 5 Sätzen erklären, was mit der Energie in einer Nahrungskette passiert (LEK: 1 von 5)."}],
+  check:{t:"LEK-Aufgaben neu + Quiz",x:"Aufgaben 2 und 4 aus der LEK Ökologie neu lösen, dann das Bio-Quiz."}},
+ {id:"b",type:"schreiben",title:"Doku-Skript „Ein Tag im Wald“ + DNA-Detektivakte",pitch:"Teil 1: Du schreibst das Skript für eine 5-Minuten-Doku im Stil von Terra X über einen Wald. Teil 2: eine Detektivakte, wie Forscher herausfanden, dass DNA die Erbsubstanz ist.",
+  trains:"Ökologie als zusammenhängende Geschichte erklären (Stockwerke, Nischen, Energie) und die DNA-Experimente in der richtigen Reihenfolge mit ihrer Beweiskraft.",
+  covers:["Ökologie","Toleranz","Nische","Wald","DNA"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"Szene 1: Die Stockwerke",x:"Kamerafahrt von der Moosschicht zur Baumschicht. Abiotische Faktoren: Licht, Feuchte, Temperatur in jedem Stockwerk."},
+   {t:"Szene 2: Wer frisst wen",x:"Nahrungskette Eichenblatt → Raupe → Meise → Sperber, Destruenten. Der Sprecher erklärt, warum nur ca. 10 % Energie weiterfließen."},
+   {t:"Szene 3: Kampf um den Platz",x:"Schwarzerle und Waldkiefer: Fundamental- und Realnische, Konkurrenz, Konkurrenzvermeidung. Eine Toleranzkurve als Einblendung."},
+   {t:"Detektivakte DNA",x:"5 Fallakten: Griffith 1928, Avery 1944, Chargaff 1950, Watson und Crick 1953, Meselson-Stahl 1958. Pro Akte: Versuch, Beobachtung, was damit bewiesen ist."},
+   {t:"Meselson-Stahl skizzieren",x:"Die Zentrifugenröhrchen nach 0, 1 und 2 Generationen zeichnen und semikonservativ erklären."}],
+  check:{t:"LEK-Aufgaben neu + Quiz",x:"Aufgaben 2–4 aus der LEK Ökologie neu lösen, dann das Bio-Quiz."}},
+ {id:"c",type:"spiel",title:"Lernkarten-Spiel „Vom Gen zum Wald“",pitch:"Du baust 30 Spielkarten aus allen Themen und spielst sie allein im Karteikasten-Prinzip: Was sitzt, wandert nach hinten, was nicht sitzt, kommt wieder. Das Schreiben der Karten ist das Lernen, das Spielen die Wiederholung.",
+  trains:"Den gesamten Stoff in kleine prüfbare Fragen zerlegen und sicher beantworten.",
+  covers:["Ökologie","Toleranz","Nische","Wald","DNA","Proteinbiosynthese"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"Kasten mit 3 Fächern",x:"Fach 1: neu, Fach 2: fast sicher, Fach 3: sitzt. Drei Kartenfarben: Ökologie, Genetik, Aktion (zeichnen oder laut erklären)."},
+   {t:"10 Ökologie-Karten",x:"Z. B. „Was ist der Unterschied zwischen Fundamental- und Realnische?“, „Zeichne eine Toleranzkurve für einen stenöken Organismus.“"},
+   {t:"10 Genetik-Karten",x:"Codesonnen-Aufgaben, Transkriptionsschritte, Eigenschaften des Codes, DNA-Forscher."},
+   {t:"10 Aktionskarten",x:"„Erkläre in 30 Sekunden den Energiefluss.“ „Zeichne Meselson-Stahl.“"},
+   {t:"Drei Spielrunden",x:"An drei verschiedenen Tagen alle Karten aus Fach 1 und 2 ziehen. Richtig: ein Fach weiter. Falsch: zurück in Fach 1. Ziel: alle Karten in Fach 3."}],
+  check:{t:"Quiz",x:"Bio-Quiz bis mindestens 8 von 10."}}
+];
+
+P.religion=[
+ {id:"a",type:"spiel",title:"Detektivbüro „Jesus von Nazareth“",pitch:"Du ermittelst wie ein Detektiv: Was ist über Jesus historisch belegt, was ist Glaubensaussage? Zeugen sind die außerbiblischen Quellen und die vier Evangelisten.",
+  trains:"Historischen Jesus und Christus des Glaubens klar trennen, Quellen bewerten und die Zwei-Quellen-Theorie erklären.",
+  covers:["Jesus","Evangelien","Forschung"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Zeugenkarten",x:"Josephus, Tacitus, Plinius, Talmud: Wann, wer, was sagt er, wie glaubwürdig (ein Christ oder ein Gegner)?"},
+   {t:"Die vier Reporter",x:"Markus, Matthäus, Lukas, Johannes: Wann geschrieben, für wen, mit welcher Absicht (Lk 1,1–4, Joh 20,30f.)?"},
+   {t:"Wer hat von wem abgeschrieben?",x:"Die Zwei-Quellen-Theorie als Ermittlungsskizze: Markus, Q, Sondergut, Matthäus, Lukas."},
+   {t:"Ermittlungsgeschichte",x:"Wie haben Forscher gesucht? Liberale Theologie, Bultmann, New Quest, Third Quest, je ein Satz."},
+   {t:"Abschlussbericht",x:"Zwei Spalten: historisch gesichert und Glaubensaussage. Dazu der Merksatz: Ostern verändert die Deutung, nicht die Vergangenheit."}],
+  check:{t:"Klausurfrage + Quiz",x:"„Erläutern Sie den Unterschied zwischen historischem Jesus und Christus des Glaubens.“ Eine halbe Seite. Dann das Quiz."}},
+ {id:"b",type:"sprechen",title:"Podcast „Wie heißt Gott?“",pitch:"Zwei Stimmen, Erich Fromm und Erich Zenger, streiten über Ex 3,14 und die Frage, ob man sich ein Bild von Gott machen darf. Du schreibst das Skript und bist am Ende der Moderator mit eigener Meinung.",
+  trains:"Positionen im Konjunktiv wiedergeben, nach Aspekten vergleichen und Stellung nehmen. Das sind die Operatoren, die in Religion oft drankommen.",
+  covers:["Gottesbilder","Ethik","Reich Gottes"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Intro: Der brennende Dornbusch",x:"Was passiert in Ex 3,14, was bedeutet „Ich bin, der ich bin“ bzw. „Ich bin da“?"},
+   {t:"Runde 1: Fromm",x:"Gott ist namenlos, Bilderverbot, Gefahr der Intoleranz. In indirekter Rede formulieren."},
+   {t:"Runde 2: Zenger",x:"Gotteswort in Menschenwörtern, viele gleichwertige Bilder, Gott in Geschichte, Treue, Lebendigkeit."},
+   {t:"Runde 3: Was folgt daraus fürs Leben?",x:"Verbindung zum Dekalog (erstes Gebot, Bilderverbot, Befreiung vor Gebot) und zum Reich Gottes."},
+   {t:"Moderation: Dein Fazit",x:"Wem stimmst du eher zu und warum?"}],
+  check:{t:"Vergleich im Klausurformat",x:"Fromm und Zenger nach drei Aspekten vergleichen (nicht nacheinander), dann eine kurze Stellungnahme. Dann das Quiz."}},
+ {id:"c",type:"zeichnen",title:"Zeitstrahl-Comic „Vom Wanderprediger zum Christus“",pitch:"8 Panels erzählen, wie aus dem Menschen Jesus der Christus des Glaubens wurde, von Galiläa bis zu den Evangelien.",
+  trains:"Den Stoff zu Jesus, Reich Gottes und Evangelien als zusammenhängende Geschichte im Kopf haben.",
+  covers:["Jesus","Reich Gottes","Evangelien","Forschung"],effort:"mittel · etwa 1 Stunde",
+  steps:[
+   {t:"Panels 1–3: Der historische Jesus",x:"Jude aus Nazareth, Wanderprediger, Reich Gottes „schon jetzt“ (Heilungen, Mahl mit Ausgegrenzten), Hinrichtung unter Pilatus."},
+   {t:"Panel 4: Ostern",x:"Was ändert sich? Die Deutung."},
+   {t:"Panels 5–7: Vom Erzählen zum Aufschreiben",x:"Mündliche Überlieferung, Markus um 70, Matthäus und Lukas mit Q und Sondergut, Johannes."},
+   {t:"Panel 8: Die Forscher",x:"Was suchen Historiker heute (Third Quest: Jesus im Judentum)?"}],
+  check:{t:"Quiz + Erläuterung",x:"Quiz, dann „Reich Gottes: schon jetzt und noch nicht“ in fünf Sätzen erläutern."}}
+];
+
+P.geschichte=[
+ {id:"a",type:"sprechen",title:"Weimar-Talkshow 1932 + Propaganda-Decoder",pitch:"Im LK zählt, dass du Fakten in Zusammenhänge bringst und Fachbegriffe aktiv nutzt. Genau das trainiert eine Talkshow: Jede Figur braucht echte Daten und eine eigene Sicht.",
+  trains:"Ereignisse 1918–1933 verknüpfen, Perspektiven unterscheiden und Propaganda mit Ideologieelementen analysieren.",
+  covers:["1918/19","Republik","Krisen","Stabilität","Ende","NS-Staat","Methode"],effort:"größer · etwa 2,5 Stunden",
+  steps:[
+   {t:"Fieberkurve der Republik",x:"Eine Kurve von 1918 bis 1933, oben stabil, unten Krise. Mindestens 12 Ereignisse mit Datum."},
+   {t:"Talkshow „Hat die Republik noch eine Chance?“ (Herbst 1932)",x:"Vier Gäste: arbeitslose Arbeiterin (KPD), Kriegsheimkehrer (glaubt an die Dolchstoßlegende), Bankier (Stresemann-Fan), Student (Präsidialkabinette, Art. 48). Je 3 Argumente mit Fachbegriffen, du moderierst kritisch."},
+   {t:"Propaganda-Decoder",x:"Plakat „Ganz Deutschland hört den Führer“: Art, Datum, Urheber, Adressat, Bildelemente, Absicht, Ideologieelemente."}],
+  check:{t:"Probe-Quellenanalyse",x:"Goebbels’ Rede zur Rundfunkausstellung (18.08.1933): Einleitung mit Datum, Inhalt im Konjunktiv mit Zeilen, Einordnung, Urteil. Dann Quiz und Fehlerliste."}},
+ {id:"b",type:"schreiben",title:"Zeitungsredaktion 1918–1933",pitch:"Du gestaltest 6 Titelseiten zu Schlüsseltagen, jeweils aus der Sicht einer bestimmten Zeitung (SPD-nah, rechts-national, kommunistisch). Gleiche Ereignisse, verschiedene Schlagzeilen.",
+  trains:"Perspektivität von Quellen verstehen: Wer schreibt, mit welcher Absicht? Das ist der Schlüssel zur Quellenanalyse im LK.",
+  covers:["1918/19","Krisen","Stabilität","Ende","Republik","Methode"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"10. November 1918",x:"Ausrufung der Republik: SPD-Blatt und kommunistisches Blatt. Was feiert wer?"},
+   {t:"29. Juni 1919",x:"Versailler Vertrag in einer rechts-nationalen Zeitung: Schlagzeile, Dolchstoßlegende, „Diktatfrieden“."},
+   {t:"November 1923",x:"Inflation und Hitler-Putsch. Dazu eine kurze Notiz zur Justiz (Gumbel)."},
+   {t:"Oktober 1925",x:"Locarno aus Sicht einer Stresemann-freundlichen Zeitung."},
+   {t:"Oktober 1929 und 31. Januar 1933",x:"Weltwirtschaftskrise, dann Hitlers Ernennung. Dazu die Verfassungsartikel 25, 48, 54 erklärt."},
+   {t:"Redaktionskonferenz",x:"Zu jeder Titelseite ein Satz: Welche Absicht hat die Zeitung, welche Wirkung soll sie haben?"}],
+  check:{t:"Probe-Quellenanalyse",x:"Eine Quelle aus deinen Unterlagen mit Checkliste: Datum, Thema präzise, Konjunktiv, Zeilen, Einordnung, Sach- und Werturteil. Dann das Quiz."}},
+ {id:"c",type:"spiel",title:"Planspiel „Rette die Republik“",pitch:"Du bist an fünf Wendepunkten der Berater des Reichspräsidenten. Du entscheidest, vergleichst mit dem, was wirklich geschah, und schreibst am Ende ein Gutachten: Warum scheiterte Weimar?",
+  trains:"Ursachen gewichten und multikausal urteilen. Das ist die anspruchsvollste LK-Aufgabe (beurteilen und bewerten).",
+  covers:["1918/19","Republik","Krisen","Stabilität","Ende","NS-Staat"],effort:"größer · etwa 2 Stunden",
+  steps:[
+   {t:"Entscheidungskarten",x:"1919 Versailles unterschreiben? 1920 Kapp-Putsch, 1923 Ruhrkampf und Inflation, 1930 Brüning und Art. 48, Januar 1933 Hitler ernennen? Je zwei Optionen mit Folgen."},
+   {t:"Realitätscheck",x:"Was geschah wirklich, und was waren die Folgen? Mit Daten."},
+   {t:"Verfassungskarten",x:"Art. 25, 48, 54: wie sie zusammenwirkten und warum das gefährlich war."},
+   {t:"Nach 1933: Gleichschaltung",x:"Fünf Schritte als Zeitstrahl: Reichstagsbrandverordnung, Ermächtigungsgesetz, Länder, Gewerkschaften, Parteienverbot. Dazu eine Ideologie-Kartei (Führerprinzip, Volksgemeinschaft, Rassismus, Lebensraum)."},
+   {t:"Gutachten",x:"Warum scheiterte Weimar? Mindestens 4 Ursachen, gewichtet, mit Sachurteil und offengelegtem Werturteil."}],
+  check:{t:"Quiz + Fehlerliste",x:"Quiz bis 9 von 10, dann die Fehlerliste aus den Klausurtipps einmal laut lesen."}}
+];
+
+P.englisch=[
+ {id:"a",type:"sprechen",title:"Your own UN speech",pitch:"You stand where DiCaprio stood. If you can write a speech with stylistic devices, you can spot and analyse them in any speech.",
+  trains:"Speech analysis (device → quote → effect) and topic vocabulary on globalization and climate.",
+  covers:["Globalization","Climate","Skills"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Write a 1-minute speech",x:"Topic: “Challenges and Chances of Globalization”. At least 4 devices (direct address, rhetorical question, anaphora, contrast, appeal) and 8 words from the vocabulary table."},
+   {t:"Analyse yourself",x:"Mark every device in your speech and write one sentence on its effect. Then one analysis paragraph on DiCaprio’s speech."},
+   {t:"Mediation practice",x:"A short German article on fast fashion or climate change, summarised in an English email to an exchange student (150 words)."}],
+  check:{t:"Quiz + language check",x:"Vocabulary quiz, then check your speech for tenses, 3rd person -s and word order."}},
+ {id:"b",type:"schreiben",title:"The journey of a T-shirt",pitch:"You follow one cheap T-shirt around the world: cotton field in India, factory in Bangladesh, shop in Germany, second-hand market in Ghana. You write it as a vlog script.",
+  trains:"Explain globalization with a concrete example, use the key vocabulary actively and discuss pros and cons.",
+  covers:["Globalization","Society","Skills"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Map the journey",x:"5 stations with one fact each. Use: multinational corporation, outsource, interdependent, trade barrier."},
+   {t:"Friedman check",x:"Which era of globalization explains which station? (countries, companies, individuals)"},
+   {t:"Vlog script",x:"One page, spoken style, with a hook at the start and a question to the viewers at the end."},
+   {t:"Discussion card",x:"3 pros and 3 cons of fast fashion, plus 5 discussion phrases you want to use."}],
+  check:{t:"Comment",x:"Write a comment (about 250 words): “Is fast fashion a symbol of everything wrong with globalization?” Then check your language with the mistakes list."}},
+ {id:"c",type:"ueben",title:"Mediation Agency",pitch:"Your agency gets three orders: an email for an exchange student, a short blog post for teenagers and an info text for an English teacher. Same topic area, different addressees.",
+  trains:"Mediation: select, shorten and adapt for an addressee. That is a separate part of the exam and graded with the IQB criteria.",
+  covers:["Skills","Technology","Climate"],effort:"mittel · etwa 1,5 Stunden",
+  steps:[
+   {t:"Pick three German texts",x:"Short articles about AI, climate change and food waste."},
+   {t:"Order 1: Email",x:"An exchange student asks what Germans think about AI at school. 150 words, informal."},
+   {t:"Order 2: Blog post",x:"Climate tips for teenagers, catchy headline, 150 words."},
+   {t:"Order 3: Info text",x:"For a teacher, neutral and structured, 150 words."},
+   {t:"Quality check",x:"For each text: Did I select only what the addressee needs? Did I explain German specifics? Is it structured?"}],
+  check:{t:"Quiz",x:"Vocabulary quiz and 5 discussion phrases out loud."}}
+];
+
+
+/* ============ LEISTUNGEN: praktische Leistungen mit Ablauf statt Lernstoff ============
+   steps: Vorbereitung bis Probe (abhakbar), day: Checkliste für den Tag selbst, claude: wobei Claude helfen kann */
+const L={};
+
+L.bm={
+ intro:"Dein 3D-Modell zur Transkription ist fertig. Jetzt geht es darum, es sicher und verständlich vorzustellen.",
+ steps:[
+  {t:"Roter Faden auf eine Karte",x:"Vier Schritte der Transkription in deinen Worten: Promotor und RNA-Polymerase, Entwindung, mRNA-Aufbau komplementär zum codogenen Strang (Uracil statt Thymin), Terminator. Pro Schritt höchstens 6 Stichworte."},
+  {t:"Modell und Sprache verbinden",x:"Zu jedem Schritt notieren: Was zeigst oder drehst du im Modell gerade? So zeigst du nicht nur, sondern erklärst."},
+  {t:"Probe mit Handy-Aufnahme",x:"Einmal komplett vorstellen und aufnehmen. Ziel: etwa 5 Minuten. Beim Anhören prüfen: Sind alle Fachbegriffe gefallen?"},
+  {t:"Fragen üben mit Claude",x:"Schreib im Chat „Biomodell-Fragen“. Claude stellt dir typische Rückfragen (z. B. „Warum Uracil?“, „Wo findet das statt?“, „Was passiert danach?“), du antwortest."},
+  {t:"Technik-Check",x:"Die Datei Transkription-3D-offline.html läuft ohne Internet. Einmal auf dem Gerät öffnen, mit dem du präsentierst, und prüfen, ob Drehen und Zoomen klappen."}],
+ day:["Laptop geladen, Datei geöffnet","Karte mit dem roten Faden dabei","Ausblick parat: Danach kommt die Translation am Ribosom"],
+ claude:"Claude kann deine Erklärung gegenlesen, Rückfragen stellen und dir Feedback zur Aufnahme geben (schick dafür das Transkript oder deine Stichworte)."
+};
+
+L.sozi={
+ intro:"Im Unterrichtsgespräch stellst du dein Video vor und reagierst auf Fragen. Du brauchst keine Präsentation, sondern eine klare Position, Argumente und gute Fragen.",
+ steps:[
+  {t:"Video ansehen mit Stichworten",x:"Zu jeder der 6 Stationen (siehe Spickzettel) ein Stichwort: Was zeigt sie, was folgt daraus für die Leitfrage?"},
+  {t:"Karte 1: Einstieg und Position",x:"Leitfrage, Aufbau des Videos in einem Satz, deine These, Begründung, Beispiel mit Zahl."},
+  {t:"Karte 2: Pro, Contra, Konter",x:"Je zwei Argumente aus der Tabelle im Spickzettel. Zum stärksten Gegenargument einen Konter: „Das stimmt zwar, aber …“."},
+  {t:"Karte 3: Drei Fragen an die Klasse",x:"Zum Beispiel: Würdet ihr einer KI vertrauen, die über eure Bewerbung entscheidet? Soll Deutschland strenger sein als die EU? Wer haftet bei einem KI-Hackerangriff?"},
+  {t:"Faktencheck",x:"Drei Aussagen aus deinem Video nachprüfen (ifo-Zahlen, Risikostufen, Hackerangriff) und die Quelle auf die Karten schreiben."},
+  {t:"Probegespräch mit Claude",x:"Schreib im Chat „Sozi-Probegespräch“. Claude spielt nacheinander eine Unternehmerin, eine Datenschützerin und einen Skeptiker. Du verteidigst dein Video. Danach bekommst du Feedback."}],
+ day:["Drei Karten dabei","Video griffbereit (USB-Stick oder Cloud)","Eine Zahl und eine Quelle auswendig"],
+ claude:"Claude übernimmt das Probegespräch mit drei Rollen und gibt dir danach Rückmeldung, wo deine Argumente noch wackeln."
+};
+
+L.mann={
+ intro:"Folien und Handout sind fertig. Was jetzt noch Punkte bringt, ist freies Sprechen, die richtige Länge und souveräne Antworten auf Rückfragen.",
+ steps:[
+  {t:"Länge klären",x:"Deine Sprechernotizen sind auf 20 Minuten geplant. Wenn 15 Minuten gelten, nutze die Kürzungsvorschläge im Spickzettel."},
+  {t:"Kernsätze-Karten",x:"Pro Folie eine Karteikarte mit höchstens 5 Stichworten und dem Überleitungssatz."},
+  {t:"Video-Probe 1",x:"Kompletter Vortrag, Handy auf Augenhöhe. Beim Anschauen notieren: Zeit, Blickkontakt, Füllwörter, Tempo beim Tagebuch-Einstieg, Betonung des Kernsatzes."},
+  {t:"Rückfragen mit Claude",x:"Schreib im Chat „Thomas-Mann-Fragen“. Claude stellt dir Fragen wie in der Klasse, du antwortest in höchstens 3 Sätzen."},
+  {t:"Video-Probe 2",x:"Mit den drei wichtigsten Verbesserungen. Mit der ersten Aufnahme vergleichen."}],
+ day:["Präsentation auf USB-Stick und in der Cloud","Handout gedruckt, Datum eingetragen","Karteikarten dabei","Fiktiven Tagebuch-Einstieg nach dem Vorlesen auflösen"],
+ claude:"Claude kann Rückfragen stellen, deine Kürzungen prüfen und dir zu einem Transkript deiner Probe Feedback geben."
+};
+
+L.relp={
+ intro:"Das Projekt „Selbstbestimmtheit im Ich und Wir“ machst du mit vier anderen in der Gruppe. Hier hakst du nur ab. Wenn du einen Teil übernimmst, bei dem du Hilfe möchtest, frag Claude im Chat.",
+ steps:[
+  {t:"Leitfrage der Gruppe steht",x:""},
+  {t:"Mein Anteil ist geklärt",x:"Was genau übernimmst du, und bis wann?"},
+  {t:"Mein Anteil ist fertig",x:""},
+  {t:"Mappe abgegeben (05.11.)",x:""},
+  {t:"Film fertig",x:""}],
+ day:["Projektabend am 12.11. (am selben Tag ist die Religionsklausur)"],
+ claude:"Wenn du für deinen Teil Hilfe willst (Text, Struktur, Feedback), schick ihn im Chat."
+};
+
+/* ============ SEMESTER ============
+   Das Cockpit ist nach Semestern aufgebaut. Für das 4. Semester kommen neue Termine und Projekte dazu, Bewertungen und Feedback bleiben erhalten. */
+const SEMS=[{id:"s3",name:"3. Semester",sub:"Klausurphase Herbst 2026",active:true},{id:"s4",name:"4. Semester",sub:"kommt im Frühjahr 2027",active:false}];
+const SEM=SEMS[0];
+const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
+const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
+/* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
+const SNAPSHOT={"at": "2026-10-25T16:53:40.157349Z", "stand": {"choice": {}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T16:24:57.658Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+
+/* ============ ZUSTAND ============
+   done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
+   CL: was Claude einträgt (Feedback zu Projekten und Leistungen, Mitschriften). */
+let S={done:{},quiz:{},choice:{},rate:{},updated:""};
+let CL={feedback:{},mitschriften:{},updated:""};
+const LS="klausurcockpit-"+SEM.id;
+try{const r=localStorage.getItem(LS); if(r) S=Object.assign(S,JSON.parse(r)); else {const o=localStorage.getItem("klausurcockpit-v2"); if(o){const d=JSON.parse(o); S.quiz=d.quiz||{}; S.choice=d.choice||{}; S.done=d.done||{};}}}catch(e){}
+try{const r=localStorage.getItem(LS+"-claude"); if(r) CL=Object.assign(CL,JSON.parse(r));}catch(e){}
+if(SNAPSHOT){
+  if(SNAPSHOT.stand&&(!S.updated||SNAPSHOT.stand.updated>S.updated)) S=Object.assign(S,SNAPSHOT.stand);
+  if(SNAPSHOT.claude) CL=Object.assign(CL,SNAPSHOT.claude);
+}
+
+let db=null, saving=false, pending=false, saveTimer=null;
+const STAND="cockpit/stand-"+SEM.id;
+function setSync(cls,txt){const el=document.getElementById("sync");el.className="sync "+cls;el.querySelector("span").textContent=txt;}
+setSync("local",SNAPSHOT?"iPad-Ansicht · Stand "+fmtStamp(SNAPSHOT.at):"nur auf diesem Gerät");
+function fmtStamp(t){if(!t)return"";const d=new Date(t);return d.getDate()+"."+(d.getMonth()+1)+". "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
+function local(){try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+"-claude",JSON.stringify(CL));}catch(e){}}
+function persist(){
+  S.updated=new Date().toISOString(); local(); if(!db) return;
+  clearTimeout(saveTimer); saveTimer=setTimeout(flush,600);
+}
+async function flush(){
+  if(!db) return;
+  if(saving){pending=true;return;}
+  saving=true;
+  try{await db.doc(STAND).set({done:S.done,quiz:S.quiz,choice:S.choice,rate:S.rate,updated:S.updated||new Date().toISOString()});setSync("on","gespeichert, Claude liest mit");}
+  catch(e){setSync("local","Speichern fehlgeschlagen, lokal gesichert");}
+  saving=false; if(pending){pending=false;flush();}
+}
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use) return;
+    const d=await window.claude.use("db"); if(!d) return;
+    const snap=await d.collection("cockpit").get();
+    const byId={}; snap.docs.forEach(x=>byId[x.id]=x.data()||{});
+    const st=byId["stand-"+SEM.id]||byId["stand"];
+    if(st){
+      S.done=Object.assign({},S.done,st.done||{}); S.choice=Object.assign({},S.choice,st.choice||{}); S.rate=Object.assign({},S.rate,st.rate||{});
+      Object.entries(st.quiz||{}).forEach(([k,q])=>{if(!S.quiz[k]||q.best>S.quiz[k].best)S.quiz[k]=q;});
+    }
+    if(byId.claude) CL=Object.assign({feedback:{},mitschriften:{}},byId.claude);
+    db=d; setSync("on","gespeichert, Claude liest mit"); local();
+    if(!byId["stand-"+SEM.id]) flush();
+    render(true);
+  }catch(e){}
+})();
+
+/* ============ HILFEN ============ */
+const WD=["So","Mo","Di","Mi","Do","Fr","Sa"], WDL=["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+const MON=["Jan.","Feb.","März","Apr.","Mai","Juni","Juli","Aug.","Sep.","Okt.","Nov.","Dez."];
+function iso(dt){return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");}
+function parse(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
+function fmt(s,long){const d=parse(s);return (long?WDL:WD)[d.getDay()]+", "+d.getDate()+". "+MON[d.getMonth()];}
+function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return iso(d);}
+function daysUntil(s){return Math.round((parse(s)-parse(iso(new Date())))/864e5);}
+function cdText(n){return n===0?"heute":n===1?"morgen":n<0?"vorbei":"in "+n+" Tagen";}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
+function chip(s){const x=SUBJ[s];return `<span class="chip" style="--c:${x.c}">${esc(x.n)}</span>`;}
+const pid=(s,p,i)=>"p:"+s+":"+p+":"+i, lid=(s,i)=>"l:"+s+":"+i, did=(s,i)=>"d:"+s+":"+i;
+const TODAY=iso(new Date());
+
+/* Projekte (Lernen) */
+function proj(s){const id=S.choice[s];return id&&P[s]?P[s].find(p=>p.id===id):null;}
+function projDone(s,p){let n=0;p.steps.forEach((_,i)=>{if(S.done[pid(s,p.id,i)])n++;});if(S.done[pid(s,p.id,"check")])n++;return n;}
+function projTotal(p){return p.steps.length+1;}
+function projComplete(s,p){return !!S.done[pid(s,p.id,"check")];}
+function quizRatio(s){const q=S.quiz[s];return q?q.best/q.total:0;}
+function leistDone(s){const l=L[s];let n=0;l.steps.forEach((_,i)=>{if(S.done[lid(s,i)])n++;});l.day.forEach((_,i)=>{if(S.done[did(s,i)])n++;});return n;}
+function leistTotal(s){return L[s].steps.length+L[s].day.length;}
+function progress(s){
+  if(L[s]) return Math.round(leistDone(s)/leistTotal(s)*100);
+  const p=proj(s);const pp=p?projDone(s,p)/projTotal(p):0;return Math.round((pp*.8+quizRatio(s)*.2)*100);
+}
+
+/* Lerneffekt: Aus deinen Bewertungen und Claudes Feedback wird ermittelt, welche Projektart bei dir gut funktioniert. */
+function typeStats(){
+  const acc={};
+  LEARN.forEach(s=>{const r=S.rate[s]; if(!r||!(r.check&&r.gain&&r.fun)) return; const p=P[s].find(x=>x.id===r.p); if(!p) return;
+    let v=(r.check+r.gain+r.fun)/9; const f=CL.feedback[s]; if(f&&f.p===r.p&&f.score) v=(v+f.score/5)/2;
+    (acc[p.type]=acc[p.type]||[]).push(v);});
+  return Object.entries(acc).map(([t,a])=>({t,avg:a.reduce((x,y)=>x+y,0)/a.length,n:a.length})).sort((a,b)=>b.avg-a.avg);
+}
+function bestType(){const t=typeStats();return t.length&&t[0].avg>=.67?t[0].t:null;}
+function effortLead(p){return p.effort.startsWith("klein")?3:p.effort.startsWith("mittel")?5:7;}
+function recommended(s){
+  const n=daysUntil(SUBJ[s].d), bt=bestType(), opts=P[s];
+  if(n<=3){return opts.slice().sort((a,b)=>effortLead(a)-effortLead(b))[0];}
+  return (bt&&opts.find(o=>o.type===bt))||opts[0];
+}
+
+/* Leitfaden: Wann sollte welches Projekt starten? Meist höchstens 2 gleichzeitig, in Wochen mit 3 Klausuren auch 3. */
+function plan(s){
+  const n=daysUntil(SUBJ[s].d), p=proj(s), ref=p||recommended(s), lead=effortLead(ref), startIn=n-lead;
+  let st;
+  if(n<0) st="vorbei"; else if(p&&projComplete(s,p)) st="fertig"; else if(p) st="läuft"; else if(startIn<=0) st="jetzt"; else if(startIn<=3) st="bald"; else st="später";
+  return {n,p,ref,lead,startIn,st};
+}
+function cap(){return LEARN.filter(s=>{const n=daysUntil(SUBJ[s].d);return n>=0&&n<=6;}).length>=3?3:2;}
+function running(){return LEARN.filter(s=>plan(s).st==="läuft");}
+const ST_LABEL={"läuft":"läuft","fertig":"fertig","jetzt":"jetzt starten","bald":"bald","später":"später","vorbei":"vorbei"};
+
+function updateOverall(){
+  const vals=LEARN.map(progress); const p=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  const run=running().length, fin=LEARN.filter(s=>plan(s).st==="fertig").length;
+  document.getElementById("ovbar").style.width=p+"%";
+  document.getElementById("ovpct").textContent=p+" %";
+  document.getElementById("ovtxt").textContent=run+" Projekt"+(run===1?"":"e")+" laufen · "+fin+" fertig";
+}
+
+/* Vorschläge für die nächsten 7 Tage. Nur Vorschläge: nichts wird automatisch abgehakt. */
+function suggestions(s,n){
+  const out=[];
+  if(L[s]){
+    const l=L[s]; const i=l.steps.findIndex((_,k)=>!S.done[lid(s,k)]);
+    if(n===0) out.push({t:"Heute ist es so weit. Checkliste für den Tag durchgehen.",tab:"ablauf",strong:true});
+    else{ if(i>=0) out.push({t:"Nächster Schritt: "+l.steps[i].t,tab:"ablauf",strong:true}); else out.push({t:"Vorbereitung abgeschlossen.",tab:"ablauf"});
+      if(n<=1) out.push({t:"Checkliste für den Tag durchgehen",tab:"ablauf"}); }
+    return out;
+  }
+  const p=proj(s), q=S.quiz[s];
+  if(n===0){out.push({t:"Heute ist es so weit. Nichts Neues mehr lernen, nur noch die typischen Fehler anschauen.",tab:"tipps",strong:true});return out;}
+  if(!p) out.push({t:"Projekt wählen (Vorschlag: "+recommended(s).title+")",tab:"projekte",strong:true});
+  else{
+    const open=p.steps.map((st,i)=>({st,i})).filter(o=>!S.done[pid(s,p.id,o.i)]);
+    if(open.length) out.push({t:"Weiter im Projekt: "+open[0].st.t,tab:"projekte",strong:true});
+    else if(!projComplete(s,p)) out.push({t:"Abschlusscheck: "+p.check.t,tab:"projekte",strong:true});
+    else if(!S.rate[s]) out.push({t:"Projekt bewerten und Claude zeigen",tab:"projekte",strong:true});
+    else out.push({t:"Projekt fertig. Stark!",tab:"projekte"});
+  }
+  if(n<=3) out.push({t:"Spickzettel einmal durchlesen",tab:"spick"});
+  if(n<=3&&(!q||q.best/q.total<.8)) out.push({t:q?`Quiz wiederholen (bisher ${q.best}/${q.total})`:"Quiz machen",tab:"quiz"});
+  if(n<=1) out.push({t:"Typische Fehler und Operatoren durchlesen",tab:"tipps"});
+  return out;
+}
+
+function standText(){
+  const lines=["Mein Stand im Klausur-Cockpit ("+fmt(TODAY)+"):"];
+  LEARN.forEach(s=>{const pl=plan(s);if(pl.st==="vorbei")return;const q=S.quiz[s];lines.push(`- ${SUBJ[s].n}: ${pl.p?pl.p.title+" "+projDone(s,pl.p)+"/"+projTotal(pl.p):"kein Projekt"}${q?", Quiz "+q.best+"/"+q.total:""}`);});
+  LEIST.forEach(s=>{if(daysUntil(SUBJ[s].d)<0)return;lines.push(`- ${SUBJ[s].n}: ${leistDone(s)}/${leistTotal(s)}`);});
+  return lines.join("\n");
+}
+
+/* ============ ANSICHTEN ============ */
+let subjTab={}, quizState={}, browse={};
+
+function viewStart(){
+  const pl=LEARN.map(s=>({s,...plan(s)})).filter(x=>x.st!=="vorbei");
+  const run=pl.filter(x=>x.st==="läuft"), now=pl.filter(x=>x.st==="jetzt"), c=cap();
+  let advice;
+  if(now.length&&run.length<c) advice=`<b>Jetzt starten:</b> ${now.slice(0,c-run.length).map(x=>esc(SUBJ[x.s].n)).join(" und ")}.`;
+  else if(now.length) advice=`<b>Erst abschließen, dann starten:</b> Du hast ${run.length} Projekte laufen. ${esc(SUBJ[now[0].s].n)} ist als Nächstes dran.`;
+  else if(run.length) advice=`<b>Gut im Plan.</b> Bleib bei ${run.map(x=>esc(SUBJ[x.s].n)).join(" und ")}.`;
+  else advice="<b>Gerade ist nichts dringend.</b> Wenn du Lust hast, schau dir das nächste Projekt schon an.";
+  let h=`<section class="stack"><div><div class="eyebrow">${esc(SEM.name)} · ${esc(SEM.sub)}</div><h2 class="big">${fmt(TODAY,true)}</h2></div></section>`;
+  // Fahrplan
+  h+=`<section class="card stack"><div class="row"><h3>Dein Fahrplan</h3><span class="spacer"></span><span class="tag">${run.length} von max. ${c} laufen</span></div><div class="coach">${advice}</div><div class="fplan">`;
+  pl.forEach(x=>{const sx=SUBJ[x.s];let hint;
+    if(x.st==="läuft") hint=`${esc(x.p.title)} · ${projDone(x.s,x.p)}/${projTotal(x.p)}`;
+    else if(x.st==="fertig") hint=`${esc(x.p.title)} · fertig${S.rate[x.s]?"":", noch bewerten"}`;
+    else if(x.st==="jetzt") hint=run.length<c?`Vorschlag: ${esc(x.ref.title)}`:"starten, sobald ein Projekt fertig ist";
+    else hint=`Start ab ${fmt(addDays(x.startIn))} · Vorschlag: ${esc(x.ref.title)}`;
+    h+=`<a class="frow" href="#${x.s}" data-tab="projekte" style="--c:${sx.c}"><span class="cdm">${x.n===0?"heute":x.n}<small>${x.n>1?"Tage":x.n===1?"Tag":""}</small></span><span class="nm"><b>${esc(sx.n)}</b><small>${hint}</small></span><span class="st st-${x.st.replace("ä","ae")}">${ST_LABEL[x.st]}</span></a>`;});
+  h+=`</div><p class="small muted">Klausuren mit kleinem Projekt starten etwa 3 Tage vorher, mittel 5, größer 7. In Wochen mit drei Klausuren dürfen drei Projekte parallel laufen.</p></section>`;
+  // Erinnerungen
+  const soon=ORDER.filter(s=>{const n=daysUntil(SUBJ[s].d);return n>=0&&n<=7;}).sort((a,b)=>SUBJ[a].d.localeCompare(SUBJ[b].d));
+  h+=`<section class="stack"><h3>Erinnerungen für die nächsten 7 Tage</h3>`;
+  if(!soon.length) h+=`<div class="coach">In den nächsten 7 Tagen steht nichts an.</div>`;
+  soon.forEach(s=>{const x=SUBJ[s],n=daysUntil(x.d);const sg=suggestions(s,n);
+    h+=`<div class="remind" style="--c:${x.c}"><div class="rh"><div class="cdbig">${n===0?"heute":n===1?"morgen":n}<small>${n>1?"Tage":""}</small></div><div><div class="eyebrow">${x.kind} · ${fmt(x.d)}</div><h3>${esc(x.n)}</h3></div></div>
+      <div class="sugg">${sg.map(g=>`<a href="#${s}" data-tab="${g.tab}" class="${g.strong?"strong":""}">${esc(g.t)} <span aria-hidden="true">→</span></a>`).join("")}</div></div>`;});
+  h+=`</section>`;
+  // Neues von Claude
+  const fb=Object.entries(CL.feedback||{}).sort((a,b)=>String(b[1].date).localeCompare(String(a[1].date))).slice(0,3);
+  const ms=Object.entries(CL.mitschriften||{}).filter(([s,a])=>a&&a.length).map(([s,a])=>[s,a[a.length-1]]).sort((a,b)=>String(b[1].date).localeCompare(String(a[1].date))).slice(0,3);
+  if(fb.length||ms.length){
+    h+=`<section class="card stack"><h3>Neu von Claude</h3>`;
+    fb.forEach(([s,f])=>h+=`<a class="newrow" href="#${s}" data-tab="${L[s]?"feedback":"projekte"}">${chip(s)}<span><b>Feedback</b>${f.score?" · "+"★".repeat(f.score)+"☆".repeat(5-f.score):""}<br><span class="small muted">${esc(String(f.text).slice(0,120))}…</span></span></a>`);
+    ms.forEach(([s,m])=>h+=`<a class="newrow" href="#${s}" data-tab="mitschriften">${chip(s)}<span><b>Mitschrift:</b> ${esc(m.title)}<br><span class="small muted">${esc(m.date||"")}</span></span></a>`);
+    h+=`</section>`;
+  }
+  // Lerneffekt
+  const ts=typeStats();
+  h+=`<section class="card stack"><h3>Was zu dir passt</h3>`;
+  if(!ts.length) h+=`<p class="muted">Sobald du ein Projekt abgeschlossen und bewertet hast, siehst du hier, welche Art von Projekt bei dir am besten funktioniert. Diese Art wird dir dann zuerst vorgeschlagen.</p>`;
+  else h+=`<div class="tstats">${ts.map(t=>`<div class="trow"><span>${esc(TYPES[t.t]||t.t)}</span><span class="bar"><b style="width:${Math.round(t.avg*100)}%"></b></span><span class="tag">${t.n}×</span></div>`).join("")}</div><p class="small muted">${bestType()?"Projekte der Art „"+esc(TYPES[bestType()])+"“ werden dir zuerst vorgeschlagen.":"Noch kein klarer Favorit."}</p>`;
+  h+=`</section>`;
+  h+=`<section class="row"><button class="btn" data-copy="1">Stand kopieren</button><span class="small muted" id="copymsg">${db?"Claude liest deinen Stand automatisch mit.":"Zum Einfügen in den Chat mit Claude."}</span></section>`;
+  return h;
+}
+
+function grid(list,title,text){
+  let h=`<section class="stack"><div><h2>${title}</h2><p class="muted">${text}</p></div><div class="grid">`;
+  list.forEach(s=>{const x=SUBJ[s];const n=daysUntil(x.d);let line,badge="";
+    if(L[s]){line=`Vorbereitung ${leistDone(s)}/${leistTotal(s)}`;}
+    else{const pl=plan(s);badge=`<span class="st st-${pl.st.replace("ä","ae")}">${ST_LABEL[pl.st]}</span>`;line=pl.p?"Projekt: <b>"+esc(pl.p.title)+"</b>":`<span class="muted">${P[s].length} Projekte zur Wahl</span>`;}
+    h+=`<a class="subj" href="#${s}" style="--c:${x.c};${n<0?"opacity:.6":""}"><div class="meta"><span>${fmt(x.d)}</span>${badge}</div><h3>${esc(x.n)}</h3><div class="small">${line}</div><div class="row small"><b>${cdText(n)}</b></div><div class="bar"><b style="width:${progress(s)}%"></b></div></a>`;});
+  return h+`</div></section>`;
+}
+const viewLernen=()=>grid(LEARN,"Lernen","Alle Klausuren. Pro Klausur wählst du ein kreatives Lernprojekt, dazu gibt es Spickzettel, Klausurtipps, Quiz und deine Mitschriften.");
+const viewLeistungen=()=>grid(LEIST,"Leistungen","Praktische Leistungen: Vorträge, Präsentationen und das Gruppenprojekt. Hier zählt die Vorbereitung mit Ablauf, Probe und Checkliste.");
+
+function viewTermine(){
+  let h=`<section class="stack"><h2>Termine</h2><div class="card"><div class="next">`;
+  EVENTS.forEach(e=>{const n=daysUntil(e.d);h+=`<a class="it" href="#${e.s}" style="text-decoration:none;color:inherit;${n<0?"opacity:.55":""}"><div class="cd">${parse(e.d).getDate()}.${parse(e.d).getMonth()+1}.<small>${WD[parse(e.d).getDay()]}</small></div><div><b>${esc(e.t)}</b><div class="small muted">${e.k} · ${cdText(n)}</div></div>${chip(e.s)}</a>`;});
+  h+=`</div></div>
+  <div class="card stack"><h3>Semester</h3>${SEMS.map(x=>`<div class="row"><span class="st ${x.active?"st-laeuft":"st-spaeter"}">${x.active?"aktiv":"später"}</span><b>${esc(x.name)}</b><span class="muted small">${esc(x.sub)}</span></div>`).join("")}<p class="small muted">Wenn das 4. Semester beginnt, kommen dieselben Fächer mit neuen Terminen und Projekten dazu. Deine Bewertungen und das Feedback bleiben erhalten und fließen später auch in die Abiturvorbereitung ein.</p></div>
+  <div class="coach">Kommt neuer Stoff dazu oder ändert sich ein Termin, schick es Claude im Chat. Dann wird das Cockpit ergänzt.</div></section>`;
+  return h;
+}
+
+function tabsFor(s){
+  if(L[s]){const t=[["ueberblick","Überblick"],["ablauf","Ablauf"]];if(C[s].spick.length)t.push(["spick","Spickzettel"]);if(C[s].mistakes.length)t.push(["tipps","Tipps"]);if(C[s].quiz.length)t.push(["quiz","Quiz"]);t.push(["feedback","Feedback"]);return t;}
+  return [["ueberblick","Überblick"],["projekte","Projekt"],["spick","Spickzettel"],["tipps","Klausurtipps"],["quiz","Quiz"],["mitschriften","Mitschriften"]];
+}
+function viewSubj(s){
+  const x=SUBJ[s], c=C[s]; const tabs=tabsFor(s); let tab=subjTab[s]||"ueberblick"; if(!tabs.some(t=>t[0]===tab)) tab="ueberblick";
+  const n=daysUntil(x.d);
+  let h=`<section class="hero" style="--c:${x.c}"><div class="row"><a class="btn ghost" href="#${L[s]?"leistungen":"lernen"}" style="padding-left:0">‹ ${L[s]?"Alle Leistungen":"Alle Klausuren"}</a></div><div class="eyebrow">${esc(x.k)}</div><h2>${esc(x.n)}</h2><div class="facts"><div><span class="muted small">${x.kind}</span><b>${fmt(x.d,true)}</b></div><div><span class="muted small">Zeit</span><b>${esc(x.time)}</b></div><div><span class="muted small">Countdown</span><b>${cdText(n)}</b></div><div><span class="muted small">Fortschritt</span><b>${progress(s)} %</b></div></div></section>
+  <div class="seg" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${k===tab}" data-stab="${k}" data-s="${s}">${l}</button>`).join("")}</div><section class="stack" style="--c:${x.c}">`;
+  if(tab==="ueberblick"){
+    h+=`<div class="card prose"><div class="eyebrow">${L[s]?"Worum es geht":"Was drankommt"}</div>${L[s]?`<p>${esc(L[s].intro)}</p>`:""}<div class="topics">${c.topics.map(t=>`<div class="topic"><span class="n">${esc(t[0])}</span><span>${esc(t[1])}</span></div>`).join("")}</div><p class="small muted">Grundlage: ${esc(c.src)}</p></div>`;
+    if(L[s]) h+=`<div class="coach"><b>So gehst du vor:</b> Unter „Ablauf“ die Vorbereitung abhaken, am Tag selbst die Checkliste. ${esc(L[s].claude)}</div>`;
+    else{const pl=plan(s);h+=`<div class="coach"><b>Leitfaden:</b> ${pl.st==="läuft"||pl.st==="fertig"?"Dein Projekt: "+esc(pl.p.title)+".":pl.st==="jetzt"?"Jetzt ist ein guter Zeitpunkt, das Projekt zu starten.":pl.st==="vorbei"?"Die Klausur ist vorbei.":"Für "+esc(x.n)+" ist noch Zeit. Empfohlener Start: "+fmt(addDays(pl.startIn))+"."} Spickzettel und Quiz kannst du jederzeit nutzen, neue Mitschriften schickst du Claude im Chat.</div>`;}
+  }
+  if(tab==="projekte") h+=viewProjekte(s);
+  if(tab==="ablauf") h+=viewAblauf(s);
+  if(tab==="spick") h+=`<div class="gloss">${c.spick.map((g,i)=>`<details ${i===0?"open":""}><summary>${esc(g[0])}</summary><div class="in">${g[1]}</div></details>`).join("")}</div>`;
+  if(tab==="tipps"){
+    h+=`<div class="stack"><h3>Typische Fehler, die Punkte kosten</h3><div class="mistakes">${c.mistakes.map(m=>`<div class="mistake"><b>${esc(m[0])}</b><span>${m[1]}</span>${m[2]?`<span class="src">aus: ${esc(m[2])}</span>`:""}</div>`).join("")}</div></div>`;
+    if(c.ops.length) h+=`<div class="stack"><h3>Operatoren: Was die Aufgabe verlangt</h3><div class="ops">${c.ops.map(o=>`<div class="op"><b>${esc(o[0])}</b>${esc(o[1])}</div>`).join("")}</div></div>`;
+  }
+  if(tab==="quiz") h+=viewQuiz(s);
+  if(tab==="feedback") h+=feedbackBox(s,null);
+  if(tab==="mitschriften"){
+    const m=(CL.mitschriften||{})[s]||[];
+    h+=m.length?m.slice().reverse().map(e=>`<div class="card prose"><div class="eyebrow">${esc(e.date||"")}</div><h3>${esc(e.title)}</h3>${e.html}</div>`).join(""):"";
+    h+=`<div class="coach"><b>Neue Mitschriften:</b> Schick Fotos oder Text aus dem Unterricht an Claude im Chat, z. B. „Mitschrift ${esc(x.n)} vom …“. Claude ordnet sie hier ein und ergänzt bei Bedarf Spickzettel und Quiz.</div>`;
+  }
+  h+=`</section>`;
+  return h;
+}
+
+function feedbackBox(s,p){
+  const f=(CL.feedback||{})[s];
+  if(f&&(!p||f.p===p.id)) return `<div class="card prose fb"><div class="row"><div class="eyebrow">Feedback von Claude · ${esc(f.date||"")}</div><span class="spacer"></span>${f.score?`<span class="stars" aria-label="${f.score} von 5">${"★".repeat(f.score)}${"☆".repeat(5-f.score)}</span>`:""}</div>${f.html||`<p>${esc(f.text)}</p>`}</div>`;
+  return `<div class="coach"><b>Zeig es Claude:</b> Schick dein Ergebnis als Foto, Datei oder Text im Chat, z. B. „Feedback ${esc(SUBJ[s].n)}${p?", Projekt "+p.id.toUpperCase():""}“. Claude gibt dir Rückmeldung nach vier Punkten: fachlich richtig, vollständig, klausurnah, gut dargestellt. Danach erscheint das Feedback hier.</div>`;
+}
+
+function coverChips(s,p){
+  const all=C[s].topics.map(t=>t[0]).filter(t=>!["Projekt","Praxis"].includes(t));
+  return `<div class="covers">${all.map(t=>`<span class="cov ${p.covers.includes(t)?"on":""}">${esc(t)}</span>`).join("")}</div>`;
+}
+function rateRow(s,field,label,opts){
+  const r=S.rate[s]||{};
+  return `<div class="rate"><span class="small">${label}</span><div class="seg">${opts.map((o,i)=>`<button aria-pressed="${r[field]===i+1}" data-rate="${s}" data-f="${field}" data-v="${i+1}">${o}</button>`).join("")}</div></div>`;
+}
+function viewProjekte(s){
+  const p=proj(s); let h="";
+  if(p&&!browse[s]){
+    const d=projDone(s,p),tot=projTotal(p);
+    h+=`<div class="card prose pchosen"><div class="row"><div class="eyebrow">Dein Projekt · ${d} von ${tot} erledigt</div><span class="spacer"></span><button class="btn ghost" data-browse="${s}">vergleichen oder wechseln</button></div><h3>${esc(p.title)}</h3><p>${p.pitch}</p><p><b>Danach kannst du:</b> ${esc(p.trains)}</p>${coverChips(s,p)}<p class="small muted">Art: ${esc(TYPES[p.type])} · Umfang: ${esc(p.effort)}, frei einteilbar.</p></div><div class="steps">`;
+    p.steps.forEach((st,i)=>{const id=pid(s,p.id,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""} aria-label="Schritt erledigt"><div class="body"><div class="small muted">Schritt ${i+1}</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label><div class="small">${st.x}</div></div></div>`;});
+    const cid=pid(s,p.id,"check"),cdn=!!S.done[cid];
+    h+=`<div class="step final ${cdn?"done":""}"><input type="checkbox" class="check" id="s-${cid}" data-id="${cid}" ${cdn?"checked":""} aria-label="Abschlusscheck erledigt"><div class="body"><div class="small muted">Abschlusscheck</div><label for="s-${cid}" style="font-weight:700">${esc(p.check.t)}</label><div class="small">${p.check.x}</div><div class="row"><button class="btn" data-stab="quiz" data-s="${s}">Zum Quiz</button><button class="btn ghost" data-stab="tipps" data-s="${s}">Typische Fehler</button></div></div></div></div>`;
+    if(cdn){
+      h+=`<div class="card stack"><div class="eyebrow">Deine Bewertung</div><p class="small muted">Daraus lernt das Cockpit, welche Art von Projekt bei dir am besten funktioniert.</p>
+        ${rateRow(s,"check","Abschlusscheck",["lief schwer","okay","richtig gut"])}${rateRow(s,"gain","Gebracht",["wenig","einiges","viel"])}${rateRow(s,"fun","Spaß",["eher nicht","ging so","ja"])}</div>`;
+      h+=feedbackBox(s,p);
+    }
+    return h;
+  }
+  const pl=plan(s), bt=bestType(), rec=recommended(s);
+  h+=`<div class="stack"><p class="muted">${P[s].length} Projekte zur Auswahl. Jedes bereitet auf die ganze Klausur vor, nur auf unterschiedliche Art. Die Kästchen zeigen, welche Themen ein Projekt abdeckt, den Rest holst du dir aus dem Spickzettel.</p>${pl.st==="später"||pl.st==="bald"?`<div class="coach">Für diese Klausur ist noch Zeit. Empfohlener Start: <b>${fmt(addDays(pl.startIn))}</b>. Anschauen kannst du die Projekte schon jetzt.</div>`:""}${p?`<button class="btn ghost" data-browse="${s}" style="justify-self:start;padding-left:0">‹ zurück zu deinem Projekt</button>`:""}</div><div class="pgrid">`;
+  P[s].forEach(o=>{const d=projDone(s,o),tot=projTotal(o),on=p&&p.id===o.id;
+    const why=o===rec?(pl.n<=3?"Passt in die Zeit":bt&&o.type===bt?"Passt zu dir":"Empfohlen"):"";
+    h+=`<article class="pcard ${on?"on":""}"><div class="row"><span class="pletter">${o.id.toUpperCase()}</span>${why?`<span class="badge">${why}</span>`:""}<span class="spacer"></span><span class="tag">${esc(o.effort)}</span></div><h3>${esc(o.title)}</h3><p>${o.pitch}</p><p class="small"><b>Danach kannst du:</b> ${esc(o.trains)}</p>${coverChips(s,o)}<p class="small muted">Art: ${esc(TYPES[o.type])}</p>
+      <details><summary>Ablauf ansehen (${o.steps.length} Schritte + Abschlusscheck)</summary><ol>${o.steps.map(st=>`<li>${esc(st.t)}</li>`).join("")}<li><b>${esc(o.check.t)}</b></li></ol></details>
+      <div class="row"><button class="btn ${on?"":"primary"}" data-choose="${s}" data-p="${o.id}" ${on?"disabled":""}>${on?"Dein Projekt":d?"Weitermachen ("+d+"/"+tot+")":"Dieses Projekt starten"}</button></div></article>`;});
+  return h+`</div>`;
+}
+
+function viewAblauf(s){
+  const l=L[s]; let h=`<div class="steps">`;
+  l.steps.forEach((st,i)=>{const id=lid(s,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""}><div class="body"><div class="small muted">Schritt ${i+1}</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label>${st.x?`<div class="small">${st.x}</div>`:""}</div></div>`;});
+  h+=`</div><div class="card stack"><div class="eyebrow">Am Tag selbst</div>${l.day.map((t,i)=>{const id=did(s,i),dn=!!S.done[id];return `<div class="mini ${dn?"done":""}"><input type="checkbox" class="check" id="c-${id}" data-id="${id}" ${dn?"checked":""}><label class="txt" for="c-${id}">${esc(t)}</label></div>`;}).join("")}</div>`;
+  h+=`<div class="coach"><b>Mit Claude:</b> ${esc(l.claude)}</div>`;
+  return h;
+}
+
+function viewQuiz(s){
+  const qs=C[s].quiz; let st=quizState[s];
+  if(!st){st=quizState[s]={i:0,ans:[]};}
+  const best=S.quiz[s];
+  let h=`<div class="quiz card"><div class="qhead"><div class="eyebrow">Quiz · ${qs.length} Fragen</div><span class="spacer"></span>${best?`<span class="small muted">Bestes Ergebnis: ${best.best}/${best.total}</span>`:""}</div><div class="pips">${qs.map((_,k)=>`<i class="${st.ans[k]===undefined?(k===st.i?"c":""):(st.ans[k]===qs[k].a?"r":"w")}"></i>`).join("")}</div>`;
+  if(st.i>=qs.length){
+    const right=st.ans.filter((a,k)=>a===qs[k].a).length, ratio=right/qs.length;
+    h+=`<div class="stack"><div class="score">${right} / ${qs.length}</div><p>${ratio>=.85?"Stark. Das ist klausurtauglich.":ratio>=.6?"Gute Basis. Lies die falschen Fragen im Spickzettel nach und versuch es später noch einmal.":"Noch nicht sicher. Schau in den Spickzettel und dein Projekt, dann neuer Versuch."}</p><div class="row"><button class="btn primary" data-qreset="${s}">Nochmal</button>${C[s].spick.length?`<button class="btn" data-stab="spick" data-s="${s}">Zum Spickzettel</button>`:""}</div></div>`;
+  } else {
+    const q=qs[st.i], a=st.ans[st.i], answered=a!==undefined;
+    h+=`<div class="qcard"><div class="small muted">Frage ${st.i+1} von ${qs.length}</div><div class="q">${esc(q.q)}</div><div class="opts">${q.o.map((o,k)=>{let cl="";if(answered){if(k===q.a)cl="right";else if(k===a)cl="wrong";}return `<button class="opt ${cl}" data-qa="${s}" data-k="${k}" ${answered?"disabled":""}><span class="l">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`;}).join("")}</div>${answered?`<div class="expl"><b>${a===q.a?"Richtig.":"Nicht ganz."}</b> ${esc(q.e)}</div><div class="row"><span class="spacer"></span><button class="btn primary" data-qnext="${s}">${st.i+1<qs.length?"Nächste Frage":"Ergebnis"}</button></div>`:""}</div>`;
+  }
+  return h+`</div>`;
+}
+
+/* Hinweis, wenn mehr Projekte laufen würden, als gerade sinnvoll ist. Nicht gesperrt, du entscheidest. */
+function confirmStart(s){
+  const run=running().filter(x=>x!==s), c=cap();
+  if(run.length<c) return true;
+  const n=daysUntil(SUBJ[s].d);
+  const lines=run.map(x=>{const p=proj(x);return `• ${SUBJ[x].n}: ${p.title} (${Math.round(projDone(x,p)/projTotal(p)*100)} %, Klausur ${cdText(daysUntil(SUBJ[x].d))})`;});
+  const near=run.map(x=>({x,r:projDone(x,proj(x))/projTotal(proj(x))})).sort((a,b)=>b.r-a.r)[0];
+  let tip=near.r>=.6?`${SUBJ[near.x].n} ist fast fertig. Empfehlung: erst abschließen, dann ${SUBJ[s].n} starten.`:`Empfehlung: erst eins der laufenden Projekte weiterbringen.`;
+  if(n<=2) tip=`Die ${SUBJ[s].n}-Klausur ist sehr nah. Ein weiteres Projekt kann hier Sinn machen, dann aber das kleinste.`;
+  return confirm(`Du hast schon ${run.length} Projekte laufen (empfohlen sind gerade höchstens ${c}):\n${lines.join("\n")}\n\n${tip}\n\nTrotzdem ${SUBJ[s].n} starten?`);
+}
+
+/* ============ ROUTER ============ */
+const MAIN=["start","lernen","leistungen","termine"];
+function route(){const h=(location.hash||"#start").slice(1);return h||"start";}
+function render(){
+  const r=route(); const app=document.getElementById("app");
+  let html="";
+  if(r==="lernen") html=viewLernen(); else if(r==="leistungen") html=viewLeistungen(); else if(r==="termine") html=viewTermine();
+  else if(SUBJ[r]) html=viewSubj(r); else html=viewStart();
+  app.innerHTML=html;
+  document.querySelectorAll("#tabs a").forEach(a=>{const on=a.dataset.r===r||(SUBJ[r]&&a.dataset.r===(L[r]?"leistungen":"lernen"))||(!MAIN.includes(r)&&!SUBJ[r]&&a.dataset.r==="start");a.removeAttribute("aria-current");if(on)a.setAttribute("aria-current","page");});
+  updateOverall();
+}
+let lastRoute=route();
+window.addEventListener("hashchange",()=>{const r=route();if(r!==lastRoute){lastRoute=r;render();window.scrollTo(0,0);}});
+
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-stab],[data-qa],[data-qnext],[data-qreset],[data-choose],[data-browse],[data-rate],[data-copy],a[data-tab]");
+  if(!t) return;
+  if(t.matches("a[data-tab]")){const s=t.getAttribute("href").slice(1);subjTab[s]=t.dataset.tab;if(route()===s){render();window.scrollTo(0,0);}return;}
+  if(t.dataset.stab){subjTab[t.dataset.s]=t.dataset.stab;render();return;}
+  if(t.dataset.choose){const s=t.dataset.choose;if(!S.choice[s]&&!confirmStart(s))return;S.choice[s]=t.dataset.p;browse[s]=false;persist();render();window.scrollTo(0,0);return;}
+  if(t.dataset.browse){const s=t.dataset.browse;browse[s]=!browse[s];render();return;}
+  if(t.dataset.rate){const s=t.dataset.rate;const r=Object.assign({p:S.choice[s],check:0,gain:0,fun:0},S.rate[s]||{});r.p=S.choice[s];r[t.dataset.f]=Number(t.dataset.v);
+    S.rate[s]=r; persist();render();return;}
+  if(t.dataset.copy){const m=document.getElementById("copymsg");try{await navigator.clipboard.writeText(standText());m.textContent="Kopiert. Jetzt im Chat einfügen.";}catch(err){m.textContent="Kopieren ging nicht, bitte von Hand markieren.";}return;}
+  if(t.dataset.qa){const s=t.dataset.qa,st=quizState[s];st.ans[st.i]=Number(t.dataset.k);render();return;}
+  if(t.dataset.qnext){const s=t.dataset.qnext,st=quizState[s];st.i++;
+    if(st.i>=C[s].quiz.length){const right=st.ans.filter((a,k)=>a===C[s].quiz[k].a).length;const prev=S.quiz[s];if(!prev||right>prev.best){S.quiz[s]={best:right,total:C[s].quiz.length};persist();}}
+    render();return;}
+  if(t.dataset.qreset){quizState[t.dataset.qreset]={i:0,ans:[]};render();return;}
+});
+document.addEventListener("change",e=>{
+  const c=e.target.closest("input.check[data-id]"); if(!c) return;
+  if(c.checked) S.done[c.dataset.id]=true; else delete S.done[c.dataset.id];
+  persist(); render();
+});
+render();
+
+</script>
+
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>
