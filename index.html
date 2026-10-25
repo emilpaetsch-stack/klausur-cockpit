@@ -417,6 +417,45 @@ pre.codeshow,.tcode{font-family:var(--f-mono);font-size:.84rem;line-height:1.55;
 .tvars td:last-child{font-family:var(--f-mono)}
 .tvars tr.chg td{background:var(--ok-soft);font-weight:700}
 .tguess{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-width:0;flex:1 1 140px}
+/* Blitzrunde */
+.bzbar{height:6px;border-radius:3px;background:var(--accent-soft);overflow:hidden}
+.bzbar i{display:block;height:100%;background:var(--accent)}
+.bzq{font-size:1.08rem;font-weight:700;line-height:1.4}
+.bzopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.bzo{justify-content:center;text-align:center;white-space:normal;min-height:46px}
+.bzo.good{background:var(--ok-soft);border-color:var(--ok);color:var(--ink);opacity:1}
+.bzo.bad{background:var(--red-soft);border-color:var(--red);color:var(--ink);opacity:1}
+.bzbig{font-size:1.6rem;font-weight:800;margin:0}
+/* Superkompensation und Trainingsplan */
+.skplot{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:8px}
+.skplot text{font-family:inherit;fill:var(--muted);font-size:12px}
+.skplot .ax{stroke:var(--ink);stroke-width:1.5;fill:none}
+.skplot .base{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:6 5}
+.skplot .cv{stroke:var(--accent);stroke-width:3;fill:none;stroke-linejoin:round}
+.skplot .mk{fill:var(--warn)}
+.skplot .mkt{fill:var(--card);font-weight:800;font-size:11px}
+.skplot .ph{fill:var(--accent-soft)}
+.skplot .phl{fill:var(--ink);font-size:11px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chips .btn{padding:6px 11px}
+.skgoal{display:grid;gap:4px}
+.skgoal div{font-size:.9rem}
+.skgoal .ok{color:var(--ok);font-weight:700}
+.tpgrid{display:grid;gap:12px}
+.tpq{display:grid;gap:6px}
+.tpq>b{font-size:.95rem}
+.tpex{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px}
+.tpex label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.9rem;background:var(--card)}
+.tpres{display:grid;gap:6px}
+.tpres div{border-left:4px solid var(--ok);background:var(--ok-soft);padding:7px 10px;border-radius:6px;font-size:.92rem}
+.tpres div.w{border-left-color:var(--red);background:var(--red-soft)}
+.persona{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.persona .btn{flex-direction:column;align-items:flex-start;text-align:left;white-space:normal;gap:2px;padding:10px}
+.lsf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;font-size:.82rem;text-align:center;margin:.5em 0}
+.lsf div{border:1px solid var(--line);border-radius:8px;padding:6px;background:var(--card)}
+.lsf .mid{background:var(--accent);color:var(--card);font-weight:800;display:grid;place-items:center}
+.lsf .kon{grid-column:1/-1;background:var(--accent-soft)}
+.lsf div{overflow-wrap:anywhere;hyphens:auto;min-width:0}
 
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
@@ -1040,7 +1079,7 @@ P.sport=[
  {id:"a",type:"zeichnen",title:"Trainer-Comic + Kraft-Sammelkarten",pitch:"Du erklärst den Stoff so, dass ein Achtklässler ihn versteht. Ein Comic für die Superkompensation, Sammelkarten für die Kraftformen.",
   trains:"Das Superkompensationsmodell frei zeichnen und erläutern, jede Kraftform mit Sportbeispiel und Arbeitsweise nennen.",
   covers:["Anpassung","Gesetze","Kraft","Muskel"],effort:"mittel · etwa 1 Stunde",
-  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Ein A4-Blatt für den Comic (in 6 Felder geteilt), 5 Karteikarten, Stift, Buntstifte. Die Sport-Folien als Vorlage.",ergebnis:"Einen Comic mit 6 Bildern und darunter den Kurven, 4 Sammelkarten und eine Regel-Karte.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Sport“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Ein A4-Blatt für den Comic (in 6 Felder geteilt), 5 Karteikarten, Stift, Buntstifte. Alle Folien findest du im Reiter Werkstatt.",ergebnis:"Einen Comic mit 6 Bildern und darunter den Kurven, 4 Sammelkarten und eine Regel-Karte.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Sport“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"draw",t:"Comic in 6 Bildern: Superkompensation",x:"Eine Figur trainiert dreimal: zu früh, zu spät, genau richtig. Unter jedes Bild die passende Kurve. Begriffe: Homöostase, Ermüdung, Erholung, Superkompensation."},
    {w:"text",t:"4 Sammelkarten für die Kraftformen",x:"Wie Pokémon-Karten: Name, Definition in einem Satz, Lieblingssportart, Trainingsübung, „Spezialattacke“. Rückseite: konzentrisch, exzentrisch oder isometrisch?"},
@@ -1049,7 +1088,7 @@ P.sport=[
  {id:"b",type:"anwenden",title:"Trainingsplan für eine echte Person",pitch:"Du schreibst einen 4-Wochen-Kraftplan für jemanden, den du kennst (z. B. einen Basketballer, der höher springen will). Jede Entscheidung im Plan begründest du sportwissenschaftlich.",
   trains:"Theorie anwenden statt auswendig lernen: genau das, was bei „erläutern“ und „beurteilen“ Punkte bringt.",
   covers:["Leistung","Anpassung","Gesetze","Kraft","Muskel","Bedeutung"],effort:"mittel · etwa 1,5 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist. Wer mag, schreibt den Plan in Word oder als Tabelle.",brauchst:"Papier oder Word, die Sport-Folien. Denk an eine echte Person (Freund, Vereinskollege).",ergebnis:"Einen 4-Wochen-Plan als Tabelle, bei dem jede Entscheidung mit einem Fachbegriff begründet ist.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Sport“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist. Wer mag, schreibt den Plan in Word oder als Tabelle.",brauchst:"Nur das Cockpit. Die Folien stehen in der Werkstatt, dort gibt es auch den Trainingsplan-Baukasten zum Aufwärmen. Denk an eine echte Person (Freund, Vereinskollege).",ergebnis:"Einen 4-Wochen-Plan als Tabelle, bei dem jede Entscheidung mit einem Fachbegriff begründet ist.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Sport“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"text",t:"Steckbrief der Person",x:"Sportart, Ziel, Leistungsstand. Welche Einflussfaktoren der Leistungsfähigkeit sind bei ihr wichtig?"},
    {w:"text",t:"Kraftform wählen",x:"Welche Kraftform braucht sie vor allem? Begründe mit der Definition. Warum ist Maximalkraft trotzdem die Basis?"},
@@ -1367,7 +1406,7 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T19:35:52.555955Z", "stand": {"choice": {"info": "a", "sport": "b"}, "conf": {}, "done": {"p:info:a:0": true}, "lvl": {}, "mis": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T19:22:14.211Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T19:48:10.681636Z", "stand": {"choice": {"info": "a", "sport": "b"}, "conf": {}, "done": {"p:info:a:0": true}, "lvl": {}, "mis": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T19:22:14.211Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
@@ -1472,7 +1511,7 @@ function workBox(s,p,i,st){
   h+=`<div class="wfb" ${w.fb?"":"hidden"}><div class="eyebrow">Rückmeldung von Claude</div><div class="wfbt">${w.fb?esc(w.fb):""}</div></div></div>`;
   return h;
 }
-function stepOf(s,pidv,i){if(pidv==="m") return misStep(s,i); if(pidv[0]==="x"){const t=wsTask(s,pidv.slice(1),i);return {w:t.w||"text",t:t.n+" "+plain(t.t),x:t.t+(t.pre||""),sol:t.sol,start:t.start};} const p=P[s].find(x=>x.id===pidv); return i==="check"?p.check:p.steps[Number(i)];}
+function stepOf(s,pidv,i){if(pidv==="m") return misStep(s,i); if(pidv[0]==="x"){const t=wsTask(s,pidv.slice(1),i);return {w:t.w||"text",t:t.n+" "+plain(t.t),x:t.t+(t.pre||""),sol:t.sol,start:t.start,pz:t.pz,alt:t.alt};} const p=P[s].find(x=>x.id===pidv); return i==="check"?p.check:p.steps[Number(i)];}
 function plain(html){const d=document.createElement("div");d.innerHTML=String(html||"").replace(/<\/(li|p)>/g,"\n");return d.textContent.replace(/\s+\n/g,"\n").trim();}
 
 async function workCheck(btn){
@@ -2138,7 +2177,7 @@ function examView(s,ex){
   ex.tasks.forEach(t=>{
     if(t.part&&t.part!==part){part=t.part;h+=`<div class="eyebrow">${esc(part)}</div>`;}
     if(t.pre) h+=`<div class="card prose pre">${t.pre}</div>`;
-    const key=wsTaskKey(s,ex,t.n), w=W[key]||{}, st={w:t.w||"text",t:t.n+" "+plain(t.t),x:t.t,sol:t.sol,start:t.start};
+    const key=wsTaskKey(s,ex,t.n), w=W[key]||{}, st={w:t.w||"text",t:t.n+" "+plain(t.t),x:t.t,sol:t.sol,start:t.start,pz:t.pz,alt:t.alt};
     h+=`<div class="step xtask"><div class="xbe">${t.be}<small>BE</small></div><div class="body"><div class="small muted">Aufgabe ${esc(String(t.n))}</div><div>${t.t}</div>${workBox(s,{id:"x"+ex.id},String(t.n).replace(/\W/g,"_"),st)}
       <details class="sol"><summary>Erwartungshorizont (erst selbst versuchen)</summary>${t.sol}</details>
       <div class="row ptsrow"><span class="small">Meine Punkte:</span>${Array.from({length:t.be+1},(_,k)=>`<button class="btn ${w.pts===k?"primary":""}" data-xpts="${key}|${k}" aria-pressed="${w.pts===k}">${k}</button>`).join("")}</div></div></div>`;
@@ -2248,6 +2287,32 @@ function TRexs(){for(const s in WS)for(const it of WS[s].items)if(it.tool==="tra
 TOOLS.check=(s,it)=>{let h=`<div class="card stack">`;
   it.groups.forEach(g=>{h+=`<div class="eyebrow">${esc(g.h)}</div><div class="crit">`+g.items.map((x,k)=>{const id="ck:"+s+":"+it.id+":"+g.h.slice(0,8)+k;return `<label class="critrow"><input type="checkbox" class="check" data-id="${id}" ${S.done[id]?"checked":""}> <span>${x}</span></label>`;}).join("")+`</div>`;});
   return h+`<p class="small muted">Alles, was du noch nicht abhaken kannst, übst du mit den Werkzeugen und Probeklausuren oben.</p></div>`;};
+
+/* ---------- Werkzeug: Blitzrunde (Karte für Karte antippen, sofort Rückmeldung) ----------
+   it.cards=[{q, a, opts?, why}], it.opts = Standard-Antworten. a ist der Antworttext. */
+const BZ={};
+function bzShuffle(n){const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function bzStart(id,cards,only){const b=BZ[id]={order:only&&only.length?only:bzShuffle(cards.length),pos:0,right:0,wrong:[],ans:null};return b;}
+TOOLS.blitz=(s,it)=>{
+  const b=BZ[it.id]||bzStart(it.id,it.cards);
+  if(b.pos>=b.order.length){const n=b.order.length;
+    return `<div class="card stack bz"><div class="eyebrow">Runde geschafft</div><p class="bzbig">${b.right} von ${n} richtig</p><p>${b.right===n?"Alles richtig, stark! 🎉":b.wrong.length<=2?"Fast alles sitzt. Die paar Fehler holst du dir gleich noch.":"Spiel die falschen Karten gleich noch einmal, dann sitzen sie."}</p>
+     <div class="row">${b.wrong.length?`<button class="btn primary" data-bz="${s}|${it.id}|wrong">Nur die ${b.wrong.length} falschen nochmal</button>`:""}<button class="btn" data-bz="${s}|${it.id}|new">Neue Runde, neu gemischt</button></div></div>`;}
+  const c=it.cards[b.order[b.pos]], opts=c.opts||it.opts;
+  return `<div class="card stack bz"><div class="row"><span class="small muted">Karte ${b.pos+1} von ${b.order.length}</span><span class="spacer"></span><span class="xp">${b.right} richtig</span></div>
+   <div class="bzbar"><i style="width:${Math.round(b.pos/b.order.length*100)}%"></i></div>
+   <div class="bzq">${c.q}</div>
+   <div class="bzopts">${opts.map((o,k)=>{let cl="";if(b.ans){if(o===c.a)cl="good";else if(k===b.ans.k)cl="bad";}return `<button class="btn bzo ${cl}" data-bzans="${s}|${it.id}|${k}" ${b.ans?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
+   ${b.ans?`<div class="pzres ${b.ans.ok?"good":"bad"}"><b>${b.ans.ok?"Richtig!":"Nicht ganz, richtig ist: "+esc(c.a)+"."}</b> ${c.why||""}</div><div class="row"><button class="btn primary" data-bz="${s}|${it.id}|next" autofocus>Weiter ›</button></div>`:""}
+  </div>`;
+};
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-bzans]"), n=e.target.closest("[data-bz]");
+  if(a){const [s,id,k]=a.dataset.bzans.split("|");const it=wsItem(s,id),b=BZ[id],c=it.cards[b.order[b.pos]],opts=c.opts||it.opts;const ok=opts[Number(k)]===c.a;
+    b.ans={k:Number(k),ok};if(ok)b.right++;else b.wrong.push(b.order[b.pos]);render();return;}
+  if(n){const [s,id,what]=n.dataset.bz.split("|");const it=wsItem(s,id),b=BZ[id];
+    if(what==="next"){b.pos++;b.ans=null;}else if(what==="wrong")bzStart(id,it.cards,b.wrong.slice());else bzStart(id,it.cards);render();}
+});
 /* Werkstatt Informatik: alle Aufgabenblätter, das Merkblatt und Werkzeuge. Quelle: Ordner „Klausurvorbereitung 12 Info“. */
 const UML_BIB=umlHtml([{n:"Bibliothek",a:["- bestand: Liste von Buch","- rueckgabewagen: Liste von Buch","- entleihungen: Liste von Buch"],m:["+ Bibliothek()","+ getBestand(): Liste von Buch","+ getRueckgabewagen(): Liste von Buch","+ getEntleihungen(): Liste von Buch","+ leiheErstesBuchAus()","+ leiheZufaelligesBuchAus()","+ gibBuchZurueck(pIndex: int)","+ kehreBestandUm()","+ zeigeBestandFormatiert()"]},{n:"Buch",a:["- genre: String","- seitenzahl: int"],m:["+ Buch(pGenre: String, pSeitenzahl: int)","+ getGenre(): String","+ getSeitenzahl(): int","+ setGenre(pGenre: String)","+ setSeitenzahl(pSeitenzahl: int)"]}],{k:"n"});
 const UML_PARK=umlHtml([{n:"Parkhaus",a:["- warteschlange: Liste von Fahrzeug","- parkplaetze: Liste von Fahrzeug","- ausgefahren: Liste von Fahrzeug"],m:["+ Parkhaus()","+ getWarteschlange(): Liste von Fahrzeug","+ getParkplaetze(): Liste von Fahrzeug","+ getAusgefahren(): Liste von Fahrzeug","+ fahreErstesFahrzeugEin()","+ fahreZufaelligesFahrzeugEin()","+ fahreAus(pIndex: int): Fahrzeug","+ zaehleTransporter(): int","+ zeigeWarteschlangeFormatiert()"]},{n:"Fahrzeug",a:["- art: String","- parkdauer: int"],m:["+ Fahrzeug(pArt: String, pParkdauer: int)","+ getArt(): String","+ getParkdauer(): int","+ setArt(pArt: String)","+ setParkdauer(pParkdauer: int)"]}],{k:"n"});
@@ -2333,6 +2398,257 @@ items:[
 <h4>Typische Fehler</h4><ul><li>Index außerhalb der Liste: Obergrenze mit &lt; size() prüfen.</li><li>Elemente in einer Schleife entfernen: Indizes verschieben sich.</li><li>Ganzzahldivision: 7 / 2 = 3.</li><li>Element entfernen, ohne es vorher zu sichern.</li><li>Texte mit == vergleichen: richtig ist equals.</li></ul>`},
  {id:"ops",kind:"mat",icon:"🗝️",title:"Operatoren und Struktogramm-Schreibweise",desc:"Was „erläutern“, „ermitteln“ und Co. bedeuten, und wie man Struktogramme schreibt.",html:`<table class="mini"><tr><th>Operator</th><th>Erwartung</th></tr><tr><td>nennen / angeben</td><td>Ergebnis oder Begriff ohne Begründung</td></tr><tr><td>beschreiben</td><td>Sachverhalt in vollständigen Sätzen darstellen</td></tr><tr><td>erläutern</td><td>erklären und mit einem Beispiel veranschaulichen</td></tr><tr><td>begründen</td><td>Aussage mit nachvollziehbarem Argument stützen</td></tr><tr><td>interpretieren</td><td>Darstellung (z. B. Klassendiagramm) deuten und die Aussage formulieren</td></tr><tr><td>zuordnen</td><td>Elemente den Kategorien zuweisen</td></tr><tr><td>ermitteln</td><td>Ergebnis durch Nachvollziehen oder Rechnen herleiten, Weg zeigen</td></tr><tr><td>ergänzen / erweitern</td><td>Code oder Algorithmus vervollständigen</td></tr><tr><td>implementieren</td><td>lauffähigen Quelltext schreiben</td></tr></table>
 <h4>Struktogramm-Schreibweise</h4><ul><li>Zuweisung: x ← x + 1</li><li>Zählschleife: Für i von 1 bis n wiederhole</li><li>Bedingte Wiederholung: Solange Bedingung wiederhole</li><li>Verzweigung: Bedingung? Ja | Nein</li><li>Rückgabe: Gib x zurück</li></ul><p class="small">Zum Üben: In der Probeklausur „Arbeiten am Quelltext“ jede Methode als Struktogramm darstellen. Im Projekt „Playlist-App“ gibt es einen Struktogramm-Baukasten.</p>`}
+]};
+/* Werkstatt Sport: alle Folien „Training und Kraft aus sportwissenschaftlicher Sicht“ zum Nachlesen,
+   Superkompensations-Simulator, Trainingsplan-Baukasten, Blitzrunden und Probeklausuren. */
+
+/* ---------- Superkompensation: Modell und Diagramm ---------- */
+const SKI={l:{n:"zu leicht",d:.15,R:.8,sc:0,dec:1},p:{n:"passend",d:.8,R:2,sc:.5,dec:2.5},h:{n:"sehr hart",d:1.5,R:3.5,sc:.7,dec:2.5}};
+function skEase(x){return (1-Math.cos(Math.PI*Math.max(0,Math.min(1,x))))/2;}
+function skResp(t,P){
+  if(t<0)return 0;
+  if(t<=.5)return -P.d*skEase(t/.5);
+  if(t<=P.R)return -P.d+P.d*skEase((t-.5)/(P.R-.5));
+  if(t<=P.R+1)return P.sc*skEase(t-P.R);
+  if(t<=P.R+1+P.dec)return P.sc*(1-skEase((t-P.R-1)/P.dec));
+  return 0;
+}
+/* sess=[{day,int}] sortiert. Jede Einheit startet auf dem Niveau, das der Körper gerade hat. */
+function skBases(sess){const b=[];sess.forEach((x,k)=>{b.push(k?b[k-1]+skResp(x.day-sess[k-1].day,SKI[sess[k-1].int]):0);});return b;}
+function skLevel(sess,bases,t){let k=-1;for(let i=0;i<sess.length;i++)if(sess[i].day<=t)k=i;if(k<0)return 0;return bases[k]+skResp(t-sess[k].day,SKI[sess[k].int]);}
+function skPlot(sess,o={}){
+  const nar=window.innerWidth<600,W0=nar?420:(o.w||640),H0=nar?Math.round((o.h||300)*.85):(o.h||300),pl=46,pr=14,pt=26,pb=34,bases=skBases(sess);
+  const last=sess.length?sess[sess.length-1].day:0, T=o.T||Math.max(14,Math.ceil(last+8));
+  const pts=[];for(let t=-1;t<=T;t+=.1)pts.push([t,skLevel(sess,bases,t)]);
+  let lo=Math.min(-1.2,...pts.map(p=>p[1]))-.2, hi=Math.max(1.2,...pts.map(p=>p[1]))+.3;
+  const X=t=>pl+(t+1)/(T+1)*(W0-pl-pr), Y=v=>pt+(hi-v)/(hi-lo)*(H0-pt-pb);
+  let g=`<svg viewBox="0 0 ${W0} ${H0}" class="skplot" role="img" aria-label="${esc(o.label||"Verlauf der Leistungsfähigkeit")}">`;
+  if(o.phases&&sess.length){const d=sess[0].day,P=SKI[sess[0].int];
+    [[d,d+.5,"Belastung"],[d+.5,d+P.R,"Erholung"],[d+P.R,d+P.R+1+P.dec,"Superkompensation"]].forEach(([a,b,n],k)=>{g+=`<rect class="ph" x="${X(a)}" y="${pt}" width="${X(b)-X(a)}" height="${H0-pt-pb}" opacity="${k%2?.55:1}"/><text class="phl" x="${(X(a)+X(b))/2}" y="${H0-pb-6}" text-anchor="middle">${n}</text>`;});}
+  g+=`<line class="base" x1="${pl}" y1="${Y(0)}" x2="${W0-pr}" y2="${Y(0)}"/><text x="${W0-pr}" y="${Y(0)-6}" text-anchor="end">Ausgangsniveau</text>`;
+  g+=`<path class="ax" d="M${pl} ${H0-pb} V${pt-14} M${pl} ${H0-pb} H${W0-pr}"/><path d="M${pl-5} ${pt-8} L${pl} ${pt-18} L${pl+5} ${pt-8}Z M${W0-pr-8} ${H0-pb-5} L${W0-pr+2} ${H0-pb} L${W0-pr-8} ${H0-pb+5}Z" fill="var(--ink)"/>`;
+  g+=`<text transform="translate(16 ${(pt+H0-pb)/2}) rotate(-90)" text-anchor="middle">Leistungsfähigkeit</text><text x="${W0-pr}" y="${H0-8}" text-anchor="end">Zeit in Tagen</text>`;
+  for(let t=0;t<=T;t+=(T>21?7:T>14?2:1))g+=`<text x="${X(t)}" y="${H0-pb+15}" text-anchor="middle">${t}</text>`;
+  g+=`<path class="cv" d="${pts.map((p,k)=>(k?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)).join(" ")}"/>`;
+  sess.forEach((x,k)=>{const xx=X(x.day);g+=`<path d="M${xx} ${pt-4} V${Y(bases[k])-8}" stroke="var(--warn)" stroke-width="2"/><circle class="mk" cx="${xx}" cy="${pt-4}" r="9"/><text class="mkt" x="${xx}" y="${pt}" text-anchor="middle">${k+1}</text>`;});
+  return g+`</svg>`;
+}
+function skJudge(gap,P){
+  if(P.sc===0)return ["bad","Unter der Reizschwelle: Die Belastung war zu leicht. Der Körper muss sich nicht anpassen, es gibt keinen trainingswirksamen Reiz."];
+  if(gap<P.R-.01)return ["bad",`Zu früh: Nach ${gap} Tag${gap>1?"en":""} ist der Körper noch in der Erholungsphase. Die neue Belastung startet unter dem Ausgangsniveau, die Ermüdung summiert sich. Passiert das oft, droht Übertraining.`];
+  if(gap<P.R+.5)return ["mid","Knapp: Die Erholung ist gerade abgeschlossen, aber die Superkompensation hat noch nicht begonnen. Du hältst nur dein Niveau."];
+  if(gap<=P.R+1.6)return ["good","Optimal: Die neue Belastung trifft die Phase der Superkompensation. Das höhere Niveau ist die neue Basis, die Leistung steigt Schritt für Schritt."];
+  if(gap<P.R+1+P.dec)return ["mid","Etwas spät: Die Superkompensation bildet sich schon zurück. Ein kleiner Gewinn bleibt."];
+  return ["bad","Zu spät: Die Superkompensation hat sich vollständig zurückgebildet. Du startest wieder beim alten Ausgangsniveau, es bleibt kein Effekt."];
+}
+const SKG=[
+ {id:"up",t:"Bring die Leistung mit höchstens 6 Einheiten über +2",ok:(b,l)=>l>2},
+ {id:"down",t:"Zeig, wie Übertraining entsteht: Leistung unter −1,5",ok:(b,l)=>l<-1.5},
+ {id:"flat",t:"Zeig, dass zu späte Reize nichts bringen: 4 Einheiten, am Ende immer noch Ausgangsniveau",ok:(b,l,s)=>s.length>=4&&Math.abs(l)<.05&&s.every(x=>x.int!=="l")},
+ {id:"hard",t:"Finde den richtigen Abstand für sehr harte Einheiten (3 harte Einheiten, Leistung über +1)",ok:(b,l,s)=>s.length>=3&&s.every(x=>x.int==="h")&&l>1}];
+let SK={sess:[{day:0,int:"p"}],gap:3,int:"p",msg:null,pre:false};
+TOOLS.superkomp=(s,it)=>{
+  const sess=SK.sess,bases=skBases(sess),last=sess[sess.length-1];
+  const now=bases[bases.length-1], full=sess.length>=8;
+  const lvlAtNext=skLevel(sess,bases,last.day+SK.gap);
+  SKG.forEach(g=>{const id="ck:sport:sk:"+g.id;if(!SK.pre&&!S.done[id]&&sess.length<=(g.id==="up"?6:8)&&sess.length>1&&g.ok(bases,now,sess)){S.done[id]=true;persist();SK.msg=["good","🎉 Ziel geschafft: "+g.t+"."];}});
+  return `<div class="card stack">
+   <p class="small">Jede Einheit bringt den Körper aus dem Gleichgewicht (Homöostase). Danach erholt er sich und baut über das alte Niveau hinaus auf. Du entscheidest, <b>wann</b> die nächste Einheit kommt und <b>wie hart</b> sie ist. Die Kurve zeigt, was passiert.</p>
+   ${skPlot(sess,{phases:sess.length===1})}
+   ${SK.msg?`<div class="pzres ${SK.msg[0]==="good"?"good":SK.msg[0]==="bad"?"bad":""}" style="${SK.msg[0]==="mid"?"background:var(--accent-soft);border:1px solid var(--line)":""}">${SK.msg[1]}</div>`:""}
+   <div class="row"><span class="small">Einheiten: <b>${sess.length}</b></span><span class="small">Aktuelles Niveau nach Einheit ${sess.length}: <b>${now>=0?"+":""}${now.toFixed(2).replace(".",",")}</b></span></div>
+   ${full?`<p class="small muted">Mehr als 8 Einheiten passen nicht ins Bild. Starte neu oder nimm eine zurück.</p>`:`
+   <div class="tpq"><b>Nächste Einheit nach …</b><div class="chips">${[1,2,3,4,5,7].map(g=>`<button class="btn ${SK.gap===g?"primary":""}" data-skgap="${g}">${g} Tag${g>1?"en":""}</button>`).join("")}</div></div>
+   <div class="tpq"><b>Wie hart?</b><div class="chips">${Object.entries(SKI).map(([k,v])=>`<button class="btn ${SK.int===k?"primary":""}" data-skint="${k}">${v.n}</button>`).join("")}</div></div>
+   <p class="small muted">${sess.length===1?"Die Intensität gilt auch schon für Einheit 1. ":""}Vorhersage: Die nächste Einheit würde bei ${lvlAtNext>=0?"+":""}${lvlAtNext.toFixed(2).replace(".",",")} starten. Überleg erst selbst: zu früh, optimal oder zu spät?</p>`}
+   <div class="row">${full?"":`<button class="btn primary" data-skadd="1">Einheit eintragen</button>`}<button class="btn" data-skundo="1" ${sess.length>1?"":"disabled"}>‹ Rückgängig</button><button class="btn ghost" data-skreset="1">Neu starten</button></div>
+   <div class="tpq"><b>Schnell vergleichen</b><div class="chips"><button class="btn" data-skpre="früh">Jeden Tag (zu früh)</button><button class="btn" data-skpre="opt">Alle 3 Tage (optimal)</button><button class="btn" data-skpre="spät">Jede Woche (zu spät)</button><button class="btn" data-skpre="leicht">Immer zu leicht</button></div></div>
+   <div class="hbox skgoal"><div class="eyebrow">Deine Ziele</div><div class="small muted">Zählen nur, wenn du die Einheiten selbst einträgst (nach „Neu starten“), nicht mit den Vergleichs-Knöpfen.</div>${SKG.map(g=>`<div class="${S.done["ck:sport:sk:"+g.id]?"ok":""}">${S.done["ck:sport:sk:"+g.id]?"✓":"○"} ${esc(g.t)}</div>`).join("")}</div>
+   <details class="sol"><summary>So schreibst du es in der Klausur</summary><p>Nach einer Belastung sinkt die Leistungsfähigkeit unter das Ausgangsniveau (Ermüdung). In der Erholungsphase stellt der Organismus das Gleichgewicht (Homöostase) wieder her und baut darüber hinaus auf ein höheres Niveau auf: die Superkompensation. Erfolgt der nächste Reiz in dieser Phase, wird das höhere Niveau zur neuen Basis und die Leistung steigt (positiver Verlauf). Erfolgt er zu früh, summiert sich die Ermüdung und die Leistung fällt (negativer Verlauf, Übertraining). Erfolgt er zu spät, hat sich die Superkompensation zurückgebildet und es bleibt kein Effekt. Ein zu leichter Reiz liegt unter der Reizschwelle und löst gar keine Anpassung aus.</p><p class="small muted">Das Modell ist eine Vereinfachung: Die Zeiten hängen von Belastung, Leistungsstand, Alter und Ernährung ab, und verschiedene Organsysteme erholen sich unterschiedlich schnell.</p></details>
+  </div>`;
+};
+function skPreset(k){const gap={früh:1,opt:3,spät:7,leicht:3}[k],int=k==="leicht"?"l":"p";SK.sess=[0,1,2,3,4].map(i=>({day:i*gap,int}));SK.gap=gap;SK.int=int;
+  SK.msg=skJudge(gap,SKI[int]);SK.pre=true;}
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-skgap]"),n=e.target.closest("[data-skint]"),a=e.target.closest("[data-skadd]"),u=e.target.closest("[data-skundo]"),r=e.target.closest("[data-skreset]"),p=e.target.closest("[data-skpre]");
+  if(g){SK.gap=Number(g.dataset.skgap);render();return;}
+  if(n){SK.int=n.dataset.skint;if(SK.sess.length===1)SK.sess[0].int=SK.int;render();return;}
+  if(a){const last=SK.sess[SK.sess.length-1];SK.msg=skJudge(SK.gap,SKI[last.int]);SK.sess.push({day:last.day+SK.gap,int:SK.int});render();return;}
+  if(u){SK.sess.pop();SK.msg=null;render();return;}
+  if(r){SK={sess:[{day:0,int:SK.int}],gap:3,int:SK.int,msg:null,pre:false};render();return;}
+  if(p){skPreset(p.dataset.skpre);render();}
+});
+
+/* ---------- Trainingsplan-Baukasten ---------- */
+const TP_P={
+ jonas:{n:"Jonas, 17",d:"Basketball im Verein, will höher springen und schneller zum Korb kommen. Trainiert seit 3 Jahren.",need:["rk","sk"],age:"jung"},
+ helga:{n:"Oma Helga, 68",d:"Hat lange keinen Sport gemacht. Will Treppen ohne Pause schaffen und Stürzen vorbeugen.",need:["ka","max"],age:"alt"},
+ mia:{n:"Mia, 16",d:"Ruderin. Ihr Rennen geht über 2000 Meter, am Ende fehlt ihr die Kraft.",need:["ka"],age:"jung"}};
+const TP_EX=[
+ {id:"squat",n:"Kniebeugen",m:"vordere Oberschenkel (Beinstrecker)",g:"beinV"},
+ {id:"curl",n:"Beinbeuger-Curls",m:"hintere Oberschenkel (Beinbeuger)",g:"beinH"},
+ {id:"drop",n:"Niedersprünge (Drop Jumps)",m:"Beinstrecker, Waden, reaktiv",g:"beinV",k:"rk"},
+ {id:"chair",n:"Aufstehen vom Stuhl ohne Hände",m:"vordere Oberschenkel",g:"beinV",k:"ka"},
+ {id:"bench",n:"Bankdrücken",m:"Brust, Trizeps",g:"push"},
+ {id:"row",n:"Rudern am Kabelzug",m:"oberer Rücken, Bizeps",g:"pull"},
+ {id:"ergo",n:"Ruderergometer 3 × 10 Minuten",m:"ganzer Körper, Ausdauer",g:"pull",k:"ka"},
+ {id:"crunch",n:"Bauchpresse (Crunches)",m:"Bauchmuskeln",g:"bauch"},
+ {id:"back",n:"Rückenstrecker",m:"unterer Rücken",g:"ruecken"},
+ {id:"med",n:"Medizinball-Würfe, explosiv",m:"Brust, Schultern, Arme",g:"push",k:"sk"}];
+const TP_PAIRS=[["beinV","beinH","vordere und hintere Oberschenkelmuskulatur"],["push","pull","Brust (drücken) und Rücken (ziehen)"],["bauch","ruecken","Bauch und Rücken"]];
+const TP_Q=[
+ {id:"kf",q:"Welche Kraftform steht im Mittelpunkt?",o:[["max","Maximalkraft"],["sk","Schnellkraft"],["rk","Reaktivkraft"],["ka","Kraftausdauer"]]},
+ {id:"fr",q:"Wie oft pro Woche?",o:[["1","1 ×"],["3","2 bis 3 ×"],["7","jeden Tag"]]},
+ {id:"in",q:"Wie hoch ist die Belastung?",o:[["l","locker, kaum anstrengend"],["m","fordernd, aber saubere Technik"],["h","immer bis zum Maximum"]]},
+ {id:"pr",q:"Wie verläuft die Belastung über 4 Wochen?",o:[["gleich","jede Woche gleich"],["linear","jede Woche deutlich mehr"],["wellen","langsam steigern, Woche 4 etwas leichter"]]},
+ {id:"ko",q:"Wie regelmäßig?",o:[["dur","4 Wochen am Stück"],["pause","2 Wochen Training, 2 Wochen Pause, dann weiter"]]}];
+function tpKey(s){return wkey(s,"xplan","cfg");}
+function tpCfg(s){return (W[tpKey(s)]||{}).cfg||{p:null,ex:[]};}
+function tpEval(c){
+  const P=TP_P[c.p], out=[], ex=TP_EX.filter(x=>c.ex.includes(x.id)), gs=new Set(ex.map(x=>x.g));
+  const R=(ok,h,t)=>out.push({ok,h,t});
+  if(c.kf) R(P.need.includes(c.kf),"Spezifität",P.need.includes(c.kf)?"Die Kraftform passt zu Ziel und Sportart. Spezifische Anpassungen brauchen spezifische Reize.":`${P.n.split(",")[0]} braucht vor allem ${P.need.map(k=>({max:"Maximalkraft",sk:"Schnellkraft",rk:"Reaktivkraft",ka:"Kraftausdauer"}[k])).join(" und ")}. Spezifische Anpassungen brauchen spezifische Reize.${c.kf==="max"?" Maximalkraft ist zwar die Basis, aber nicht das Hauptziel.":""}`);
+  if(c.fr) R(c.fr==="3","Superkompensation",c.fr==="3"?"2 bis 3 Einheiten pro Woche lassen genug Zeit für die Erholung, die nächste Einheit trifft die Superkompensation.":c.fr==="1"?"Bei nur einer Einheit pro Woche hat sich die Superkompensation meist schon zurückgebildet. Der Reiz kommt zu spät.":"Jeden Tag ist zu früh: Der Körper ist noch in der Erholungsphase, die Ermüdung summiert sich. Gefahr von Übertraining.");
+  if(c.in) R(c.in==="m","Trainingswirksamer Reiz und Dosierung",c.in==="m"?`Der Reiz liegt über der Reizschwelle, ohne zu überfordern. Passend zu Alter und Leistungsstand${P.age==="alt"?", gerade für eine Einsteigerin wichtig":""}.`:c.in==="l"?"Zu locker: Der Reiz liegt unter der Reizschwelle, das Gleichgewicht wird nicht gestört und der Körper passt sich nicht an.":`Immer bis zum Maximum ist zu viel: Die Dosierung muss zu Alter${P.age==="jung"?" (Jugendliche: erst Technik)":""} und Leistungsstand passen. Sonst steigen Verletzungsgefahr und Übertraining.`);
+  if(c.pr) R(c.pr==="wellen","Progressive Belastungssteigerung",c.pr==="wellen"?"Die Belastung steigt schrittweise, die leichtere Woche gibt Zeit zur Anpassung. Gut, denn die Leistungsentwicklung verläuft nicht linear.":c.pr==="gleich"?"Immer gleich: Nach der ersten Anpassung ist der Reiz nicht mehr wirksam. Für weitere Fortschritte muss die Belastung steigen.":"Jede Woche deutlich mehr ist zu schnell. Die Leistung wächst nicht linear mit, das Risiko von Überlastung steigt.");
+  if(c.ko) R(c.ko==="dur","Kontinuität",c.ko==="dur"?"Regelmäßig trainiert: Kontinuierlich und langfristig aufgebaute Leistung ist stabiler.":"Zwei Wochen Pause sind zu lang. Anpassungen bilden sich ohne neue Reize zurück, längere Zeiträume ohne Training vermeiden.");
+  if(ex.length){
+    TP_PAIRS.forEach(([a,b,n])=>{if(gs.has(a)!==gs.has(b))R(false,"Agonist und Antagonist",`Nur eine Seite trainiert (${n}). Agonist und Antagonist müssen gleichermaßen trainiert werden, sonst drohen muskuläre Dysbalancen, Fehlhaltungen und Verletzungen.`);});
+    if(TP_PAIRS.every(([a,b])=>gs.has(a)===gs.has(b)))R(true,"Agonist und Antagonist","Zu jeder trainierten Muskelgruppe ist auch der Gegenspieler dabei. So vermeidest du Dysbalancen.");
+    const spec=ex.some(x=>x.k&&P.need.includes(x.k));
+    R(spec,"Übungsauswahl",spec?"Mindestens eine Übung trainiert genau die Kraftform, die gebraucht wird.":`Keine Übung trainiert gezielt ${P.need.includes("rk")?"die Reaktivkraft (z. B. Niedersprünge)":P.need.includes("ka")&&c.p==="mia"?"die Kraftausdauer im Rudern (z. B. Ergometer)":"die Kraftausdauer im Alltag (z. B. Aufstehen vom Stuhl)"}.`);
+    if(c.p==="helga"&&c.ex.includes("drop"))R(false,"Belastbarkeit","Niedersprünge sind für eine 68-jährige Einsteigerin zu riskant: hohe Belastung für Gelenke, Sehnen und Knochen.");
+  }
+  return out;
+}
+TOOLS.trainplan=(s,it)=>{
+  const c=tpCfg(s);
+  let h=`<div class="card stack"><div class="tpq"><b>1. Für wen ist der Plan?</b><div class="persona">${Object.entries(TP_P).map(([k,v])=>`<button class="btn ${c.p===k?"primary":""}" data-tpp="${s}|${k}"><b>${esc(v.n)}</b><span class="small">${esc(v.d)}</span></button>`).join("")}</div></div>`;
+  if(!c.p) return h+`<p class="small muted">Wähl zuerst eine Person. Dann baust du in fünf Entscheidungen einen 4-Wochen-Plan und bekommst sofort eine Trainer-Rückmeldung.</p></div>`;
+  TP_Q.forEach((q,k)=>{h+=`<div class="tpq"><b>${k+2}. ${esc(q.q)}</b><div class="chips">${q.o.map(([v,n])=>`<button class="btn ${c[q.id]===v?"primary":""}" data-tpq="${s}|${q.id}|${v}">${esc(n)}</button>`).join("")}</div></div>`;});
+  h+=`<div class="tpq"><b>7. Welche Übungen kommen in den Plan?</b><div class="tpex">${TP_EX.map(x=>`<label><input type="checkbox" class="check" data-tpex="${s}|${x.id}" ${c.ex.includes(x.id)?"checked":""}><span><b>${esc(x.n)}</b><br><span class="small muted">${esc(x.m)}</span></span></label>`).join("")}</div></div>`;
+  const done=TP_Q.every(q=>c[q.id])&&c.ex.length;
+  h+=`<div class="row"><button class="btn primary" data-tpcheck="${s}" ${done?"":"disabled"}>Trainer-Check</button>${done?"":`<span class="small muted">Beantworte alle Fragen und wähle Übungen.</span>`}</div>`;
+  if(c.checked&&done){const r=tpEval(c),ok=r.filter(x=>x.ok).length;
+    h+=`<div class="eyebrow">Trainer-Check: ${ok} von ${r.length} Punkten passen ${ok===r.length?"🏆":""}</div><div class="tpres">${r.map(x=>`<div class="${x.ok?"":"w"}"><b>${x.ok?"✓":"✗"} ${esc(x.h)}:</b> ${x.t}</div>`).join("")}</div>
+    <p class="small muted">${ok===r.length?"Perfekt. Probier gleich die nächste Person, dort passen andere Entscheidungen.":"Ändere die rot markierten Entscheidungen und prüf noch einmal."}</p>`;}
+  h+=`</div>`;
+  if(c.checked&&done){const t=it.tasks[0];h+=`<div class="card stack"><div class="eyebrow">Jetzt in Klausursprache</div><div>${t.t}</div>${workBox(s,{id:"x"+it.id},t.n,{w:"text",t:t.n+" "+plain(t.t),x:t.t,sol:t.sol})}<details class="sol"><summary>Musterlösung (erst selbst versuchen)</summary>${t.sol}</details></div>`;}
+  return h;
+};
+function tpSet(s,f){const k=tpKey(s),c=JSON.parse(JSON.stringify(tpCfg(s)));f(c);W[k]=Object.assign({},W[k],{cfg:c,v:tpText(c)});wSave(k);render();}
+function tpText(c){if(!c.p)return "";const L=q=>{const o=TP_Q.find(x=>x.id===q).o.find(x=>x[0]===c[q]);return o?o[1]:"–";};
+  return `Trainingsplan für ${TP_P[c.p].n}: Kraftform ${L("kf")}, ${L("fr")} pro Woche, Belastung ${L("in")}, Verlauf ${L("pr")}, ${L("ko")}. Übungen: ${TP_EX.filter(x=>c.ex.includes(x.id)).map(x=>x.n).join(", ")||"–"}.`;}
+document.addEventListener("click",e=>{
+  const p=e.target.closest("[data-tpp]"),q=e.target.closest("[data-tpq]"),k=e.target.closest("[data-tpcheck]");
+  if(p){const [s,v]=p.dataset.tpp.split("|");tpSet(s,c=>{if(c.p!==v){Object.keys(c).forEach(x=>delete c[x]);c.ex=[];}c.p=v;});return;}
+  if(q){const [s,id,v]=q.dataset.tpq.split("|");tpSet(s,c=>{c[id]=v;c.checked=false;});return;}
+  if(k){const s=k.dataset.tpcheck;tpSet(s,c=>{c.checked=true;const r=tpEval(c);if(r.every(x=>x.ok)){S.done["ck:sport:tp:"+c.p]=true;persist();}});}
+});
+document.addEventListener("change",e=>{const x=e.target.closest("[data-tpex]");if(!x)return;const [s,id]=x.dataset.tpex.split("|");tpSet(s,c=>{c.ex=x.checked?[...new Set([...c.ex,id])]:c.ex.filter(y=>y!==id);c.checked=false;});});
+
+/* ---------- Inhalte ---------- */
+const SP_LSF=`<div class="lsf"><div>Koordinative Fähigkeiten</div><div>Technik</div><div>Bewegungs&shy;fertigkeiten</div><div>Psychische Fähigkeiten</div><div class="mid">Sportliche Leistungs&shy;fähigkeit</div><div>Taktisch-kognitive Fähigkeiten</div><div>Veranlagung, Konstitution, Gesundheit</div><div></div><div>Soziale Fähigkeiten</div><div class="kon"><b>Kondition:</b> Kraft · Schnelligkeit · Ausdauer · Flexibilität</div></div><p class="small muted">Modell nach Bauersfeld/Schröter: Alle Faktoren hängen zusammen und beeinflussen sich gegenseitig.</p>`;
+const SP_FOLIEN=`<h4>1. Sportliche Leistungsfähigkeit</h4><p><b>Definition:</b> Sportliche Leistungsfähigkeit ist die <b>Fähigkeit</b> des Menschen, eine bestimmte <b>Aufgabe</b> in der <b>höchsten erreichbaren Belastungsstufe</b> zu erfüllen. Sie hängt vom Leistungsvermögen und von der Leistungsbereitschaft ab, wird durch Lernen erworben und im Training verbessert. Eine höhere Leistungsfähigkeit entsteht durch Anpassungen des Organismus.</p>${SP_LSF}
+<h4>2. Trainingsgesetze: Homöostase und Anpassung</h4><ul><li>Im Körper (einem biologischen System) herrscht ein <b>dynamisches Gleichgewicht</b> zwischen aufbauenden und abbauenden Prozessen: die <b>Homöostase</b>.</li><li>Dieses Gleichgewicht wird durch Milieuänderungen gestört, zum Beispiel durch Sport.</li><li>Der Körper versucht, das Gleichgewicht auf einem <b>neuen, höheren Niveau</b> wiederherzustellen: die <b>Anpassung</b>.</li></ul><p>Wird das Leistungsniveau der Funktionssysteme über das Ausgangsniveau hinaus angehoben, spricht man von <b>Superkompensation</b> (Überkompensation). Dabei verändert sich der Körper sowohl körperbaulich als auch funktional, physisch und psychisch.</p>
+<h4>3. Das Modell der Superkompensation</h4><p>Man geht davon aus, dass sich der Körper nach einer sportlichen Belastung <b>nicht nur bis</b> zum ursprünglichen Leistungsniveau erholt, sondern dass die Regeneration zu einem <b>Anstieg über das Ausgangsniveau hinaus</b> führt. Phasen: Trainingsbelastung, Ermüdung, Regeneration (Erholung), Superkompensation. Am Gipfel der Superkompensation liegt der <b>optimale Zeitpunkt für den nächsten Trainingsreiz</b>.</p>${skPlot([{day:0,int:"p"}],{phases:true,T:9,h:240,label:"Modell der Superkompensation mit einer Belastung"})}
+<p><b>Positiver Verlauf:</b> Der nächste Reiz kommt jeweils in der Superkompensation. Die Leistung steigt treppenartig (trainingswirksamer Belastungsreiz).</p>${skPlot([0,3,6,9].map(d=>({day:d,int:"p"})),{T:16,h:220,label:"Positiver Verlauf: Leistungssteigerung"})}
+<p><b>Negativer Verlauf:</b> Die Reize kommen zu früh, noch in der Erholungsphase. Die Leistung fällt (kein trainingswirksamer Belastungsreiz, Übertraining).</p>${skPlot([0,1,2,3].map(d=>({day:d,int:"p"})),{T:10,h:220,label:"Negativer Verlauf: Leistungsabfall"})}
+<p class="small muted">Diese Kurven kannst du im Simulator selbst erzeugen und verändern.</p>
+<h4>4. Gesetzmäßigkeiten des Trainings</h4><ul>
+<li><b>Trainingswirksamer Reiz (kritische Reizschwelle):</b> Um die Leistungsfähigkeit zu steigern, muss das psychophysische Gleichgewicht durch planmäßige Trainings- und Wettkampfbelastung gestört werden. Leistungssportler haben eine höhere Reizschwelle und müssen mit höherer Belastungsintensität und höherem Belastungsumfang trainieren. Die Trainingsbelastung setzt sich zusammen aus <b>Reizintensität, Reizdauer, Reizumfang und Reizdichte</b>.</li>
+<li><b>Individuelle Dosierung:</b> Die Belastungsreize hängen ab von <b>Alter, Leistungsstand, Geschlecht und Leistungsziel</b>.</li>
+<li><b>Spezifität:</b> Spezifische Anpassungen brauchen spezifische Reize. Beispiel Barfußlaufen: körperbaulich bildet sich Hornhaut, funktional wird man unempfindlich gegen den Untergrund.</li>
+<li><b>Nicht lineare Leistungsentwicklung:</b> Je höher das Leistungsniveau, desto geringer wird der Leistungszuwachs je Zeiteinheit, trotz systematisch steigender Belastung. Spitzenathleten brauchen einen großen Teil ihres Trainings, um ihr hohes Niveau zu halten. Zwischen Leistungszuwachs und Übertraining liegt nur ein kleiner Schritt.</li>
+<li><b>Kontinuität:</b> Kontinuierlich und langfristig aufgebaute Leistung ist stabiler als kurzfristig aufgebaute. Ohne neue Reize bilden sich Anpassungen zurück, kurzfristig aufgebautes Niveau ist noch nicht gefestigt. Darum längere Zeiträume ohne Training vermeiden.</li></ul>
+<h4>5. Kraft und Kraftformen</h4><p><b>Definition (Steinhöfer 2003):</b> Kraft ist die Fähigkeit des Nerv-Muskel-Systems, durch Innervations- und Stoffwechselprozesse mit Muskelkontraktionen von mehr als 30 % des individuellen Kraftmaximums Widerstände zu überwinden, ihnen nachzugeben oder sie zu halten.</p><p>Man unterscheidet heute vier Kraftformen:</p>
+<table class="mini"><tr><th>Kraftform</th><th>Definition</th><th>Sportarten</th></tr>
+<tr><td><b>Maximalkraft</b></td><td>Die größtmögliche Kraft, die willkürlich gegen einen Widerstand ausgeübt werden kann. Sie gilt als „Basiskraft“ für die anderen Kraftformen, das ist für die Trainingsmethodik wichtig.</td><td>Gewichtheben, Kugelstoßen, Diskus, Hammerwurf</td></tr>
+<tr><td><b>Schnellkraft</b></td><td>Die Fähigkeit, optimal schnell Kraft zu bilden: den eigenen Körper oder ein Gerät mit hoher Geschwindigkeit zu bewegen bzw. Widerstände mit höchstmöglicher Kontraktionsgeschwindigkeit zu überwinden.</td><td>Tischtennis, Handball, Volleyball, Basketball, Fußball</td></tr>
+<tr><td><b>Reaktivkraft</b></td><td>Die Fähigkeit, bei Dehnungs-Verkürzungs-Zyklen der Muskulatur einen hohen Kraftstoß zu erzeugen. Kombination aus exzentrischer (abbremsen) und konzentrischer (abdrücken) Kontraktion.</td><td>Stützphase beim 100-m-Sprint, Volleyball- und Basketballsprünge, Beinarbeit im Tischtennis</td></tr>
+<tr><td><b>Kraftausdauer</b></td><td>Die Ermüdungswiderstandsfähigkeit bei lang andauernden oder sich wiederholenden Kraftleistungen.</td><td>Radsport, Klettern, Rudern, Kajakfahren, Ringe- und Seilspringen</td></tr></table>
+<h4>6. Biologische Grundlagen: Agonist und Antagonist</h4><p>Ein Muskel kann sich nur zusammenziehen (kontrahieren), aber nicht selbst wieder strecken. Für die Gegenbewegung braucht es einen zweiten Muskel. Beim <b>Beugen</b> des Arms verkürzt sich der Armbeuger (Bizeps, <b>Agonist</b>), der Armstrecker (Trizeps, <b>Antagonist</b>) wird passiv gedehnt. Beim aktiven <b>Strecken</b> ist es umgekehrt: Der Trizeps ist Agonist, der Bizeps Antagonist. Muskeln, die den Agonisten unterstützen, heißen <b>Synergisten</b>.</p><p>Das Zusammenspiel von Agonisten und Antagonisten bei gezielten Bewegungsabläufen heißt <b>intermuskuläre Koordination</b>.</p>
+<h4>7. Arbeitsweisen der Muskulatur (Kontraktionsformen)</h4><table class="mini"><tr><th>Arbeitsweise</th><th>Was passiert</th><th>Beispiele</th></tr>
+<tr><td><b>konzentrisch</b><br>positiv-dynamisch, überwindend</td><td>Die Spannung im Muskel ändert sich, Ursprung und Ansatz nähern sich, der Muskel <b>verkürzt</b> sich.</td><td>Hantel beim Curl hochziehen, aus der Kniebeuge hochdrücken, Klimmzug nach oben, Absprung</td></tr>
+<tr><td><b>exzentrisch</b><br>negativ-dynamisch, nachgebend</td><td>Der Muskel steht unter Spannung, wird aber <b>verlängert</b>. Ursprung und Ansatz entfernen sich, die Bewegung wird abgebremst.</td><td>Hantel langsam absenken, in die Kniebeuge gehen, bergab laufen, Landung nach einem Sprung</td></tr>
+<tr><td><b>isometrisch</b><br>statisch, haltend</td><td>Die Spannung steigt, aber die <b>Länge bleibt gleich</b>. Der Muskel verkürzt sich nicht oder kaum.</td><td>Wandsitz, Unterarmstütz (Plank), Halten am Reck, Ringe-Kreuzhang, Tauziehen auf der Stelle</td></tr></table>
+<h4>8. Krafttraining</h4><p>Das primäre Ziel von Krafttraining ist die Verbesserung der <b>Maximalkraft</b>, denn sie ist die Basis für alle anderen Kraftformen.</p><p><b>Wichtig:</b> Agonisten und Antagonisten müssen gleichermaßen trainiert werden. <b>Warum?</b> Wird nur eine Seite gekräftigt, zieht sie stärker am Gelenk. Es entstehen muskuläre Dysbalancen, Fehlhaltungen und Verletzungen, die Leistung sinkt. <b>Beispiele:</b> Bauch und Rücken (sonst Hohlkreuz und Rückenschmerzen), Brust und oberer Rücken (sonst runde Schultern), vordere und hintere Oberschenkel (sonst Zerrungen im Beinbeuger), Bizeps und Trizeps.</p>
+<h4>9. Bedeutung des Krafttrainings</h4><table class="mini"><tr><th>Ziel</th><th>Inhalte</th></tr>
+<tr><td><b>Präventiv</b></td><td>Leistungsfähigkeit und Belastbarkeit des Stütz- und Bewegungsapparats erhalten und verbessern. Verletzungs- und Verschleißrisiko in Alltag, Beruf und Sport senken. Passiven Bewegungsapparat stabilisieren (festere Sehnen, Bänder, Knorpel und Knochen). Vorbeugen gegen Rückenbeschwerden, Haltungsschwächen, Osteoporose, arthrotische Veränderungen und Dysbalancen. Kraftverlust im Alter ausgleichen, Selbstständigkeit erhalten. Einseitige sportliche Belastung ausgleichen.</td></tr>
+<tr><td><b>Rehabilitativ</b></td><td>Schnellere Rehabilitation nach Verletzungen oder Operationen (z. B. Bandscheibenvorfall, Knochenbruch, Bänderriss). Beschwerden wie Rücken- oder Knieschmerzen verringern oder vermeiden.</td></tr>
+<tr><td><b>Leistungssteigerung</b></td><td>Kraftzuwachs als Grundlage der Leistung in den meisten Sportarten. Ausgleich nicht speziell trainierter Muskelgruppen.</td></tr>
+<tr><td><b>Körperformung</b></td><td>Aufbau von Muskelmasse und Gewebestraffung, weniger Körperfett.</td></tr>
+<tr><td><b>Psychische Effekte</b></td><td>Mehr Selbstbewusstsein und Selbstwertgefühl, bessere Körperwahrnehmung.</td></tr></table><p class="small muted">Nach Boeckh-Behrens und Buskies (1996).</p>
+<p><b>Negative Effekte:</b> Verletzungsrisiko bei schlechter Technik. Mehr Muskelmasse erhöht das Körpergewicht, ohne Ausdauertraining kann das zu Konditionsproblemen führen, z. B. beim Treppensteigen. Übertraining. Suchtverhalten bis hin zu Doping. Fehlhaltungen, wenn Agonisten und Antagonisten nicht gleichmäßig trainiert werden.</p>`;
+
+WS.sport={intro:"Alle Folien aus dem Unterricht stecken hier drin, dazu Werkzeuge zum Ausprobieren und zwei Probeklausuren mit Erwartungshorizont. <b>Tipp für heute:</b> Erst 10 Minuten Simulator, dann eine Blitzrunde, dann die Probeklausur.",items:[
+ {id:"skomp",kind:"tool",tool:"superkomp",icon:"📈",title:"Superkompensations-Simulator",desc:"Du bestimmst, wann und wie hart trainiert wird, und siehst die Kurve. Mit vier Zielen."},
+ {id:"plan",kind:"tool",tool:"trainplan",icon:"🏋️",title:"Trainingsplan-Baukasten",desc:"Bau einen 4-Wochen-Plan für Jonas, Oma Helga oder Mia. Der Trainer-Check sagt dir, welche Gesetzmäßigkeit du verletzt.",
+  tasks:[{n:"begr",be:0,t:"<b>Erläutern</b> Sie Ihren Trainingsplan. Begründen Sie Häufigkeit, Belastung und Übungsauswahl mit mindestens drei Gesetzmäßigkeiten des Trainings.",sol:"<p>Beispiel Jonas: Ich plane 2 bis 3 Einheiten pro Woche, weil der Körper nach einer Belastung Zeit für Erholung und Superkompensation braucht. Die nächste Einheit soll in die Phase der Superkompensation fallen, sonst summiert sich die Ermüdung (zu früh) oder der Effekt verpufft (zu spät). Die Belastung ist fordernd, damit der Reiz über der Reizschwelle liegt (trainingswirksamer Reiz), aber an Alter und Leistungsstand angepasst (Dosierung). Sie steigt über die Wochen langsam an (progressive Belastungssteigerung), Woche 4 ist leichter. Weil Jonas höher springen will, trainiere ich mit Niedersprüngen gezielt die Reaktivkraft (Spezifität); Kniebeugen bauen die Maximalkraft als Basis auf. Zu jeder Übung trainiere ich den Gegenspieler (Kniebeugen und Beinbeuger-Curls, Bauch und Rücken), damit keine Dysbalancen entstehen.</p>"}]},
+ {id:"bzkraft",kind:"tool",tool:"blitz",icon:"⚡",title:"Blitzrunde Kraft und Muskel",desc:"20 Karten: Kraftform, Arbeitsweise, Agonist. Sofort Rückmeldung.",
+  opts:["Maximalkraft","Schnellkraft","Reaktivkraft","Kraftausdauer"],cards:[
+  {q:"Ein Gewichtheber reißt einmal so viel Gewicht wie möglich.",a:"Maximalkraft",why:"Größtmögliche Kraft gegen einen Widerstand."},
+  {q:"Ein Basketballer landet nach dem Rebound und springt sofort wieder hoch.",a:"Reaktivkraft",why:"Dehnungs-Verkürzungs-Zyklus: erst abbremsen (exzentrisch), dann abdrücken (konzentrisch)."},
+  {q:"Eine Ruderin hält über 2000 m ihre Schlagkraft.",a:"Kraftausdauer",why:"Ermüdungswiderstand bei vielen wiederholten Kraftleistungen."},
+  {q:"Ein Handballer wirft aus dem Sprung aufs Tor.",a:"Schnellkraft",why:"Ein Gerät (den Ball) mit möglichst hoher Geschwindigkeit bewegen."},
+  {q:"Kugelstoßen",a:"Maximalkraft",why:"Auf der Folie bei Maximalkraft genannt. Schnellkraft spielt auch mit, aber die Basis ist die Maximalkraft."},
+  {q:"Ein Kletterer bewältigt eine lange Route.",a:"Kraftausdauer",why:"Die Unterarme müssen viele Züge hintereinander schaffen."},
+  {q:"Sprinter in der Stützphase beim 100-m-Lauf",a:"Reaktivkraft",why:"Bei jedem Bodenkontakt wird kurz abgebremst und sofort abgedrückt."},
+  {q:"Ein Tischtennisspieler schlägt einen schnellen Topspin.",a:"Schnellkraft",why:"Den Schläger optimal schnell beschleunigen."},
+  {q:"Welche Kraftform gilt als Basis für alle anderen?",a:"Maximalkraft",why:"Darum ist sie das primäre Ziel im Krafttraining."},
+  {q:"Seilspringen über drei Minuten",a:"Kraftausdauer",why:"Viele Wiederholungen über lange Zeit."},
+  {q:"Hantel beim Bizeps-Curl nach oben ziehen: Wie arbeitet der Bizeps?",a:"konzentrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Er verkürzt sich und überwindet den Widerstand."},
+  {q:"In die Kniebeuge hinuntergehen: Wie arbeitet der vordere Oberschenkel?",a:"exzentrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Er steht unter Spannung, wird aber länger und bremst die Bewegung."},
+  {q:"60 Sekunden Wandsitz",a:"isometrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Spannung ja, Längenänderung nein: haltende Arbeit."},
+  {q:"Landung nach einem Sprung abfangen",a:"exzentrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Nachgebende Arbeit: Der Muskel bremst, während er gedehnt wird."},
+  {q:"Unterarmstütz (Plank): Wie arbeiten die Bauchmuskeln?",a:"isometrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Halten ohne Bewegung."},
+  {q:"Klimmzug nach oben",a:"konzentrisch",opts:["konzentrisch","exzentrisch","isometrisch"],why:"Der Rücken- und Armmuskel verkürzt sich."},
+  {q:"Arm beugen: Wer ist der Agonist?",a:"Bizeps",opts:["Bizeps","Trizeps"],why:"Der Bizeps führt die Beugung aus. Der Trizeps ist der Antagonist."},
+  {q:"Arm strecken: Wer ist der Agonist?",a:"Trizeps",opts:["Bizeps","Trizeps"],why:"Beim Strecken tauschen die Rollen: Der Trizeps arbeitet, der Bizeps wird gedehnt."},
+  {q:"Wie heißt das Zusammenspiel von Agonist und Antagonist?",a:"intermuskuläre Koordination",opts:["intramuskuläre Koordination","intermuskuläre Koordination","Superkompensation"],why:"inter = zwischen verschiedenen Muskeln."},
+  {q:"Was passiert, wenn man nur den Bauch, aber nie den Rücken trainiert?",a:"Dysbalance und Fehlhaltung",opts:["mehr Leistung","Dysbalance und Fehlhaltung","nichts"],why:"Agonist und Antagonist müssen gleichermaßen trainiert werden."}]},
+ {id:"bztrain",kind:"tool",tool:"blitz",icon:"⚡",title:"Blitzrunde Trainingsgesetze",desc:"16 Fälle: Welche Gesetzmäßigkeit steckt dahinter?",
+  opts:["Trainingswirksamer Reiz","Dosierung","Spezifität","Nicht lineare Entwicklung","Kontinuität","Superkompensation"],cards:[
+  {q:"Lena joggt seit Monaten jeden Tag ganz locker 2 km und wird trotzdem nicht fitter.",a:"Trainingswirksamer Reiz",why:"Der Reiz liegt unter der Reizschwelle, der Körper muss sich nicht anpassen."},
+  {q:"Ein Profi braucht viel mehr Training als ein Anfänger, um überhaupt besser zu werden.",a:"Nicht lineare Entwicklung",why:"Je höher das Niveau, desto kleiner der Zuwachs je Zeiteinheit (und: höhere Reizschwelle)."},
+  {q:"Ein Fußballer macht nach der Saison 6 Wochen gar nichts. Danach ist seine Ausdauer deutlich schlechter.",a:"Kontinuität",why:"Ohne neue Reize bilden sich Anpassungen zurück."},
+  {q:"Wer barfuß läuft, bekommt Hornhaut an den Füßen, aber nicht an den Händen.",a:"Spezifität",why:"Spezifische Anpassungen brauchen spezifische Reize."},
+  {q:"Für die 70-jährige Oma und den 17-jährigen Leistungssportler gelten unterschiedliche Gewichte.",a:"Dosierung",why:"Die Belastung richtet sich nach Alter, Leistungsstand, Geschlecht und Ziel."},
+  {q:"Tim trainiert genau dann wieder, wenn er sich besonders fit fühlt, etwa zwei bis drei Tage nach der letzten Einheit.",a:"Superkompensation",why:"Der nächste Reiz trifft die Phase der Superkompensation."},
+  {q:"Ein Hochspringer trainiert Sprünge statt nur Fahrradfahren.",a:"Spezifität",why:"Die Kraftform muss zur Sportart passen."},
+  {q:"Nach einem Crash-Training vor dem Wettkampf ist die Form nach zwei Wochen wieder weg.",a:"Kontinuität",why:"Kurzfristig aufgebautes Niveau ist nicht gefestigt."},
+  {q:"Spitzenathleten trainieren einen großen Teil ihrer Zeit nur, um ihr Niveau zu halten.",a:"Nicht lineare Entwicklung",why:"So steht es auf der Folie: Halten kostet auf hohem Niveau viel Training."},
+  {q:"Ein Sportler trainiert jeden Tag hart. Seine Leistung sinkt, er ist ständig müde.",a:"Superkompensation",why:"Die Reize kommen zu früh, in der Erholungsphase. Ermüdung summiert sich: Übertraining."},
+  {q:"Mit dem Training muss das Gleichgewicht des Körpers gestört werden, sonst passiert nichts.",a:"Trainingswirksamer Reiz",why:"Erst eine Störung der Homöostase löst Anpassung aus."},
+  {q:"Der Trainer plant für einen Anfänger leichtere Gewichte als für einen Fortgeschrittenen.",a:"Dosierung",why:"Leistungsstand bestimmt die Belastung."},
+  {q:"Was sind die vier Größen der Trainingsbelastung?",a:"Intensität, Dauer, Umfang, Dichte",opts:["Intensität, Dauer, Umfang, Dichte","Kraft, Ausdauer, Technik, Taktik","Alter, Größe, Gewicht, Geschlecht"],why:"Reizintensität, Reizdauer, Reizumfang und Reizdichte."},
+  {q:"Wie heißt das dynamische Gleichgewicht im Körper?",a:"Homöostase",opts:["Homöostase","Superkompensation","Adaption"],why:"Gleichgewicht zwischen aufbauenden und abbauenden Prozessen."},
+  {q:"Wo liegt der optimale Zeitpunkt für den nächsten Trainingsreiz?",a:"am Gipfel der Superkompensation",opts:["direkt nach der Belastung","am tiefsten Punkt der Ermüdung","am Gipfel der Superkompensation","wenn alles wieder normal ist"],why:"Dann wird das höhere Niveau zur neuen Basis."},
+  {q:"Was ist das primäre Ziel von Krafttraining?",a:"Maximalkraft verbessern",opts:["Maximalkraft verbessern","Muskelkater bekommen","Gewicht verlieren"],why:"Maximalkraft ist die Basis aller Kraftformen."}]},
+ {id:"pk1",kind:"exam",icon:"📝",title:"Probeklausur 1: Training und Kraft",desc:"Alles aus den Folien in Klausurform, von „nennen“ bis „beurteilen“.",minutes:90,
+  intro:"<p>So könnte deine Klausur aussehen. Achte auf die Operatoren: <b>nennen</b> heißt aufzählen, <b>erläutern</b> heißt erklären mit Beispiel, <b>beurteilen</b> heißt eine begründete eigene Einschätzung.</p>",tasks:[
+  {part:"Leistungsfähigkeit und Anpassung",n:"1",be:4,t:"<b>Definieren</b> Sie den Begriff sportliche Leistungsfähigkeit und <b>nennen</b> Sie vier Faktoren, die sie beeinflussen.",sol:"<p>Fähigkeit, eine bestimmte Aufgabe in der höchsten erreichbaren Belastungsstufe zu erfüllen; abhängig von Leistungsvermögen und Leistungsbereitschaft, durch Training verbesserbar (2 BE).</p><p>Faktoren nach Bauersfeld/Schröter, je 0,5 BE: Kondition (Kraft, Schnelligkeit, Ausdauer, Flexibilität), Technik/koordinative Fähigkeiten, taktisch-kognitive Fähigkeiten, psychische Fähigkeiten, soziale Fähigkeiten, Veranlagung/Konstitution/Gesundheit.</p>"},
+  {part:"Leistungsfähigkeit und Anpassung",n:"2",be:4,t:"<b>Erläutern</b> Sie den Zusammenhang zwischen Homöostase und Anpassung an einem Beispiel.",sol:"<p>Homöostase: dynamisches Gleichgewicht zwischen aufbauenden und abbauenden Prozessen (1). Training stört dieses Gleichgewicht (Milieuänderung) (1). Der Körper stellt es auf einem höheren Niveau wieder her: Anpassung (1). Beispiel, z. B. Krafttraining führt zu dickeren Muskelfasern, mehr Kraft (1).</p>"},
+  {part:"Leistungsfähigkeit und Anpassung",n:"3a",be:4,t:"<b>Skizzieren</b> Sie das Modell der Superkompensation: Beschriften Sie die Kurve.",w:"sort",alt:"text",pz:{layout:"slots",fig:PZ_FIG_SK,intro:"Zieh jeden Begriff an die passende Nummer.",slots:[["s1","① gestrichelte Linie"],["s2","② Pfeil"],["s3","③ Tal"],["s4","④ Anstieg"],["s5","⑤ Gipfel"],["s6","⑥ senkrechte Achse"],["s7","⑦ waagerechte Achse"]],done:"Vollständig beschriftet, so gibt es alle Punkte.",pieces:[{t:"Ausgangsniveau",z:"s1"},{t:"Belastung",z:"s2"},{t:"Ermüdung",z:"s3"},{t:"Erholung (Regeneration)",z:"s4"},{t:"Superkompensation",z:"s5"},{t:"Leistungsfähigkeit",z:"s6"},{t:"Zeit",z:"s7"},{t:"Homöostase",z:"x",why:"Homöostase ist das Gleichgewicht, keine Stelle auf der Kurve."}]},sol:"<p>Achsen: Leistungsfähigkeit (y) und Zeit (x). Gestrichelt: Ausgangsniveau. Belastung (Pfeil), Ermüdung (Tal), Erholung (Anstieg), Superkompensation (Gipfel über dem Ausgangsniveau), danach Rückbildung. Ohne Achsenbeschriftung gibt es Abzug.</p>"},
+  {part:"Leistungsfähigkeit und Anpassung",n:"3b",be:6,t:"<b>Erläutern</b> Sie das Modell und gehen Sie darauf ein, was passiert, wenn der nächste Reiz zu früh, optimal oder zu spät erfolgt.",sol:"<p>Nach der Belastung sinkt die Leistungsfähigkeit (Ermüdung), in der Regeneration steigt sie wieder und über das Ausgangsniveau hinaus (Superkompensation) (2). Optimal: nächster Reiz am Gipfel, höheres Niveau wird neue Basis, Leistung steigt treppenartig (1,5). Zu früh: Reiz in der Erholungsphase, Ermüdung summiert sich, Leistung sinkt, Übertraining (1,5). Zu spät: Superkompensation zurückgebildet, kein Effekt (1).</p>"},
+  {part:"Gesetzmäßigkeiten",n:"4",be:6,pre:"<p><b>Fall:</b> Paul (16) will fitter werden. In den Ferien trainiert er zwei Wochen lang jeden Tag sehr hart, danach macht er vier Wochen gar nichts. Nach den sechs Wochen ist er so fit wie vorher.</p>",t:"<b>Analysieren</b> Sie Pauls Training mithilfe von drei Gesetzmäßigkeiten des Trainings.",sol:"<p>Je 2 BE (Gesetz nennen + am Fall erklären): Superkompensation: tägliches hartes Training, Reize zu früh, Ermüdung summiert sich, keine Leistungssteigerung, Gefahr von Übertraining. Kontinuität: 4 Wochen Pause, Anpassungen bilden sich ohne neue Reize zurück, kurzfristig aufgebautes Niveau ist nicht stabil. Dosierung/Belastungssteigerung: „jeden Tag sehr hart“ passt nicht zu Alter und Leistungsstand, besser schrittweise steigern.</p>"},
+  {part:"Kraft",n:"5",be:4,t:"<b>Definieren</b> Sie Kraft im Sport und <b>nennen</b> Sie die vier Kraftformen.",sol:"<p>Fähigkeit des Nerv-Muskel-Systems, durch Innervations- und Stoffwechselprozesse mit Kontraktionen über 30 % des Kraftmaximums Widerständen zu begegnen: überwinden, nachgeben, halten (2). Maximalkraft, Schnellkraft, Reaktivkraft, Kraftausdauer (2).</p>"},
+  {part:"Kraft",n:"6",be:6,t:"<b>Ordnen</b> Sie den Sportarten Gewichtheben, Volleyball (Angriffssprung nach Anlauf) und Rudern jeweils die wichtigste Kraftform <b>zu</b> und <b>begründen</b> Sie mit der Definition.",sol:"<p>Je 2 BE: Gewichtheben: Maximalkraft, größtmögliche Kraft gegen einen Widerstand. Volleyball-Angriffssprung: Reaktivkraft (auch Schnellkraft), nach dem Anlauf abbremsen und sofort abspringen, Dehnungs-Verkürzungs-Zyklus. Rudern: Kraftausdauer, viele Schläge über lange Zeit, Ermüdungswiderstand.</p>"},
+  {part:"Kraft",n:"7",be:6,t:"<b>Beschreiben</b> Sie am Beispiel der Kniebeuge die drei Arbeitsweisen der Muskulatur.",sol:"<p>Je 2 BE: Hinuntergehen: exzentrisch (nachgebend), vorderer Oberschenkel unter Spannung, wird länger, bremst. Unten halten: isometrisch (haltend), Spannung ohne Längenänderung. Hochdrücken: konzentrisch (überwindend), Muskel verkürzt sich, Ursprung und Ansatz nähern sich.</p>"},
+  {part:"Kraft",n:"8",be:4,t:"<b>Erklären</b> Sie die Begriffe Agonist und Antagonist am Beispiel des Armbeugens und <b>begründen</b> Sie, warum beide trainiert werden müssen.",sol:"<p>Beugen: Bizeps verkürzt sich, Agonist; Trizeps wird gedehnt, Antagonist; beim Strecken umgekehrt (2). Ein Muskel kann nur ziehen, deshalb braucht jede Bewegung einen Gegenspieler. Werden nicht beide trainiert: Dysbalancen, Fehlhaltungen, Verletzungen (2).</p>"},
+  {part:"Bewertung",n:"9",be:8,pre:"<p>„Krafttraining ist nur etwas für Bodybuilder.“</p>",t:"<b>Beurteilen</b> Sie diese Aussage. Berücksichtigen Sie dabei Ziele und Risiken des Krafttrainings.",sol:"<p>Gegenargumente (bis 5 BE): präventiv (Rücken, Haltung, Osteoporose, Verletzungen vorbeugen), rehabilitativ (nach Verletzungen), Leistungssteigerung in fast allen Sportarten (Maximalkraft als Basis), im Alter Selbstständigkeit erhalten, psychische Effekte (Selbstwert, Körperwahrnehmung). Risiken (bis 2 BE): Verletzungen durch schlechte Technik, Übertraining, Doping, Dysbalancen, höheres Gewicht ohne Ausdauer. Eigenes begründetes Urteil (1 BE): Die Aussage stimmt nicht, richtig dosiert nützt Krafttraining fast allen.</p>"}]},
+ {id:"pk2",kind:"exam",icon:"📝",title:"Probeklausur 2: Der Trainingsfall",desc:"Ein Fall, fünf Aufgaben. Hier zählt Anwenden.",minutes:45,
+  intro:"<p><b>Fall:</b> Jana (17) spielt Volleyball im Verein. Sie möchte höher springen und hat sich einen Plan gemacht: Jeden Tag 100 Crunches und 50 Bizeps-Curls mit leichten Hanteln, sonntags frei. Nach vier Wochen springt sie nicht höher, hat aber Rückenschmerzen.</p>",tasks:[
+  {n:"1",be:4,t:"<b>Nennen</b> Sie die Kraftform, die Jana für den Sprung vor allem braucht, und <b>erläutern</b> Sie sie.",sol:"<p>Reaktivkraft (bzw. Schnellkraft) (1). Beim Sprung nach dem Anlauf wird zuerst abgebremst (exzentrisch) und sofort abgedrückt (konzentrisch), Dehnungs-Verkürzungs-Zyklus, hoher Kraftstoß (3).</p>"},
+  {n:"2",be:6,t:"<b>Analysieren</b> Sie Janas Plan mithilfe von drei Gesetzmäßigkeiten des Trainings.",sol:"<p>Spezifität: Crunches und Curls trainieren weder Beine noch Sprung, spezifische Reize fehlen (2). Trainingswirksamer Reiz: leichte Hanteln, wahrscheinlich unter der Reizschwelle (2). Superkompensation: jeden Tag, kaum Erholung, zu früh (2). Auch möglich: fehlende Belastungssteigerung.</p>"},
+  {n:"3",be:4,t:"<b>Erklären</b> Sie, wie die Rückenschmerzen entstanden sein könnten.",sol:"<p>Nur der Bauch (Agonist) wird trainiert, der Rücken (Antagonist) nicht (2). Muskuläre Dysbalance, Fehlhaltung, Schmerzen; beide Seiten müssen gleichermaßen trainiert werden (2).</p>"},
+  {n:"4",be:6,t:"<b>Entwickeln</b> Sie einen verbesserten Wochenplan für Jana und <b>begründen</b> Sie Ihre Entscheidungen.",sol:"<p>z. B. 2 bis 3 Einheiten pro Woche mit Pausentagen (Superkompensation); Kniebeugen für die Maximalkraft als Basis, Niedersprünge und Sprungläufe für die Reaktivkraft (Spezifität); Bauch und Rücken, Beinstrecker und Beinbeuger im Wechsel (Agonist/Antagonist); Belastung fordernd, über die Wochen langsam steigern (wirksamer Reiz, progressive Steigerung). Je Entscheidung mit Begründung 1,5 BE.</p>"},
+  {n:"5",be:4,t:"<b>Skizzieren</b> Sie in Worten, wie sich Janas Leistung bei täglichem harten Training im Modell der Superkompensation entwickeln würde.",sol:"<p>Jede neue Belastung fällt in die Erholungsphase der vorherigen, die Kurve startet jedes Mal unter dem Ausgangsniveau (2). Die Ermüdung summiert sich, die Leistung sinkt stufenweise: negativer Verlauf, Übertraining (2). Probier es im Simulator mit „Jeden Tag“.</p>"}]},
+ {id:"checkl",kind:"tool",tool:"check",icon:"✅",title:"Checkliste vor der Klausur",desc:"Abhaken, was sitzt.",groups:[
+  {h:"Grundlagen",items:["Ich kann sportliche Leistungsfähigkeit definieren und vier Faktoren nennen","Ich kann Homöostase und Anpassung erklären","Ich kann das Superkompensationsmodell vollständig beschriftet skizzieren","Ich kann positiven und negativen Verlauf erklären (zu früh, optimal, zu spät)"]},
+  {h:"Gesetzmäßigkeiten",items:["Trainingswirksamer Reiz und die vier Belastungsgrößen","Dosierung nach Alter, Leistungsstand, Geschlecht, Ziel","Spezifität mit dem Barfuß-Beispiel","Nicht lineare Leistungsentwicklung","Kontinuität"]},
+  {h:"Kraft",items:["Ich kann Kraft definieren (Nerv-Muskel-System, über 30 %)","Ich kenne alle vier Kraftformen mit Definition und Sportart","Ich kann konzentrisch, exzentrisch und isometrisch an einer Übung zeigen","Ich kann Agonist und Antagonist erklären und weiß, warum beide trainiert werden","Ich kenne präventive, rehabilitative und weitere Ziele und die Risiken von Krafttraining"]}]},
+ {id:"folien",kind:"mat",icon:"📄",title:"Alle Folien zum Nachlesen",desc:"„Training und Kraft aus sportwissenschaftlicher Sicht“ komplett, mit den Lücken der Folien schon ausgefüllt.",html:SP_FOLIEN}
 ]};
 
 /* ============ SPIEL: XP, Level, Sterne, Abzeichen, Missionen ============
