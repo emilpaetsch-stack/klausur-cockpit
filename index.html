@@ -267,6 +267,14 @@ tr:last-child td{border-bottom:0}
 .toast.big{background:var(--ok);color:#fff;font-size:1.1rem;padding:14px 22px}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 .step .body>*{min-width:0}.step pre{max-width:100%}
+.lvlsel .row{gap:8px}
+.learn{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:10px 14px}
+.learn summary{cursor:pointer;font-weight:700}
+.learn[open] summary{margin-bottom:8px}
+.lrn{display:grid;gap:4px;padding:8px 0;border-top:1px solid var(--line)}
+.help{display:grid;gap:8px;min-width:0}
+.hbox{background:var(--card);border:1px solid var(--line);border-left:4px solid #e0a100;border-radius:8px;padding:10px 12px;min-width:0}
+.hbox ol,.hbox ul{margin:.3em 0;padding-left:1.3em}.hbox p{margin:.3em 0}
 
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
@@ -1183,12 +1191,12 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T17:43:44.789532Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T17:55:02.897995Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
    CL: was Claude einträgt (Feedback zu Projekten und Leistungen, Mitschriften). */
-let S={done:{},quiz:{},choice:{},rate:{},mis:{},conf:{},updated:""};
+let S={done:{},quiz:{},choice:{},rate:{},mis:{},conf:{},lvl:{},updated:""};
 let CL={feedback:{},mitschriften:{},updated:""};
 const LS="klausurcockpit-"+SEM.id;
 try{const r=localStorage.getItem(LS); if(r) S=Object.assign(S,JSON.parse(r)); else {const o=localStorage.getItem("klausurcockpit-v2"); if(o){const d=JSON.parse(o); S.quiz=d.quiz||{}; S.choice=d.choice||{}; S.done=d.done||{};}}}catch(e){}
@@ -1212,7 +1220,7 @@ async function flush(){
   if(!db) return;
   if(saving){pending=true;return;}
   saving=true;
-  try{await db.doc(STAND).set({done:S.done,quiz:S.quiz,choice:S.choice,rate:S.rate,mis:S.mis||{},conf:S.conf||{},updated:S.updated||new Date().toISOString()});setSync("on","gespeichert, Claude liest mit");}
+  try{await db.doc(STAND).set({done:S.done,quiz:S.quiz,choice:S.choice,rate:S.rate,mis:S.mis||{},conf:S.conf||{},lvl:S.lvl||{},updated:S.updated||new Date().toISOString()});setSync("on","gespeichert, Claude liest mit");}
   catch(e){setSync("local","Speichern fehlgeschlagen, lokal gesichert");}
   saving=false; if(pending){pending=false;flush();}
 }
@@ -1224,7 +1232,7 @@ async function flush(){
     const byId={}; snap.docs.forEach(x=>byId[x.id]=x.data()||{});
     const st=byId["stand-"+SEM.id]||byId["stand"];
     if(st){
-      S.done=Object.assign({},S.done,st.done||{}); S.choice=Object.assign({},S.choice,st.choice||{}); S.rate=Object.assign({},S.rate,st.rate||{}); S.mis=Object.assign({},S.mis,st.mis||{}); S.conf=Object.assign({},S.conf,st.conf||{});
+      S.done=Object.assign({},S.done,st.done||{}); S.choice=Object.assign({},S.choice,st.choice||{}); S.rate=Object.assign({},S.rate,st.rate||{}); S.mis=Object.assign({},S.mis,st.mis||{}); S.conf=Object.assign({},S.conf,st.conf||{}); S.lvl=Object.assign({},S.lvl,st.lvl||{});
       Object.entries(st.quiz||{}).forEach(([k,q])=>{if(!S.quiz[k]||q.best>S.quiz[k].best)S.quiz[k]=q;});
     }
     if(byId.claude) CL=Object.assign({feedback:{},mitschriften:{}},byId.claude);
@@ -1285,7 +1293,7 @@ async function workCheck(btn){
   if(!w.v||(st.start&&w.v.trim()===st.start.trim())){fb.hidden=false;out.textContent="Trag zuerst etwas ein, dann kann Claude es prüfen.";return;}
   const lk=/Leistungskurs/.test(SUBJ[s].k);
   const kindTxt=st.w==="code"?"Java-Code":st.w==="draw"?"Zeichnung (als Bild angehängt)":"Antwort";
-  let prompt=`Du bist ein freundlicher Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs-Niveau":"Grundkurs-Niveau"}). Er bereitet sich auf eine Klausur vor und hat in „${p.title}“ diese Aufgabe bearbeitet:
+  let prompt=`Du bist ein freundlicher Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs-Niveau":"Grundkurs-Niveau"}). Sein eigenes Niveau in diesem Fach: ${LVP[lvlOf(s)||2]} Er bereitet sich auf eine Klausur vor und hat in „${p.title}“ diese Aufgabe bearbeitet:
 
 AUFGABE: ${st.t}
 ${plain(st.x)}
@@ -1372,7 +1380,7 @@ const MF={fehler:{n:"Fehlerjagd",i:"🔍"},erklaer:{n:"Erklärmission",i:"💬"}
 const M={};
 M.info=[
  {id:"m1",f:"fehler",topic:"OOP",title:"Der kaputte Konstruktor",sit:"Ein Mitschüler hat die Klasse Fahrrad geschrieben. Sein Programm läuft nicht, und er versteht nicht warum.",
-  task:"<p>Finde <b>alle 4 Fehler</b> und schreib die Klasse korrigiert ins Feld.</p><pre>class Fahrrad {\n    public String marke;\n    private int gaenge\n\n    public void Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return marke;\n    }\n}</pre>",
+  task:"<p>Finde <b>alle 4 Fehler</b>. Der Code steht unten schon im Feld „Dein Code“. Verbessere die Fehler direkt dort. Zum Vergleichen hier das Original:</p><pre>class Fahrrad {\n    public String marke;\n    private int gaenge\n\n    public void Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return marke;\n    }\n}</pre>",
   w:"code",crit:["Konstruktor ohne void","Beide Attribute private","Semikolon nach gaenge","Getter gibt gaenge zurück, nicht marke"],
   transfer:"Warum ist <code>public String marke</code> ein Verstoß gegen die Datenkapselung? Ein Satz.",
   sol:"<pre>class Fahrrad {\n    private String marke;\n    private int gaenge;\n\n    public Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return gaenge;\n    }\n}</pre><p>Transfer: Ist das Attribut public, kann jede andere Klasse es direkt ändern, auch auf falsche Werte. Die Klasse verliert die Kontrolle über ihre Daten.</p>"},
@@ -1613,6 +1621,35 @@ M.englisch=[
   transfer:"Which four IQB criteria are used to grade mediation?",
   sol:"<p>Check your email against the criteria: task fulfilment, focus on relevant aspects, addressee, structure. Use an opening (“Hi …”), a short answer to the question, two or three points, a closing question.</p><p>Transfer: task fulfilment, relevant aspects, addressee, structure.</p>"}
 ];
+/* Niveau-Hilfen: learn = passende Spickzettel-Einträge, easy = Aufgabe einfach erklärt, hints = gestufte Tipps */
+const MH={
+ info:{
+  m1:{learn:["Konstruktor","Datenkapselung"],start:"class Fahrrad {\n    public String marke;\n    private int gaenge\n\n    public void Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return marke;\n    }\n}",
+   easy:"<p><b>Worum geht’s?</b> Im Code stecken 4 Fehler. Der fehlerhafte Code steht schon im Feld unten. Du verbesserst ihn direkt dort.</p><p><b>So gehst du vor:</b></p><ol><li>Lies oben bei „Erst kurz nachlesen“, was ein Konstruktor ist und was <code>private</code> bedeutet.</li><li>Geh den Code Zeile für Zeile durch und stell dir bei jeder Zeile vier Fragen: Steht am Ende ein <code>;</code>? Ist das Attribut <code>private</code>? Hat der Konstruktor ein <code>void</code>, das da nicht hingehört? Gibt der Getter das Richtige zurück?</li><li>Ändere die Fehler im Feld. Dann hak die Selbstkontrolle ab.</li></ol>",
+   hints:["Zwei Fehler stecken in den Attributen (Zeile 2 und 3). Schau auf public oder private und aufs Zeilenende.","Ein Konstruktor hat nie einen Rückgabetyp, auch kein void. Und: Was soll getGaenge() zurückgeben, die Marke oder die Gänge?"]},
+  m2:{learn:["Assoziation 1 : n","ArrayList"],
+   easy:"<p><b>Worum geht’s?</b> Im Klassendiagramm steht an der Linie zwischen Bibliothek und Buch eine 1 und ein n. Das heißt Kardinalität. Du sollst es so erklären, dass eine 12-Jährige es versteht.</p><p><b>So gehst du vor:</b> Nimm ein Beispiel aus der Schule (eine Klasse und ihre Schüler). Sag, wer die 1 ist und wer das n. Zum Schluss ein Satz, wie man das in Java baut: mit einer Liste.</p>",
+   hints:["Denk an deine Schulklasse: Wie viele Schüler hat eine Klasse, und zu wie vielen Klassen gehört ein Schüler?","In Java merkt sich die Klasse auf der „1“-Seite alle Objekte der „n“-Seite in einer Liste, z. B. ArrayList<Schueler> schueler."]},
+  m3:{learn:["ArrayList"],
+   easy:"<p><b>Worum geht’s?</b> Die Schleife soll die Seiten aller drei Bücher zusammenzählen, kommt aber auf 500 statt 600. Du findest heraus, welches Buch fehlt und warum.</p><p><b>So gehst du vor:</b> Spiel die Schleife auf einem Zettel durch: Welche Werte nimmt i an? Welches Buch holt <code>bestand.get(i)</code> jeweils? Wichtig: Eine Liste zählt ab 0.</p>",
+   hints:["Durchlauf 1: i = 1, also bestand.get(1). Welches Buch ist das, wenn das erste Buch Index 0 hat?","Index 0 (100 Seiten) wird übersprungen. Was muss in der Schleife statt int i = 1 stehen?"]},
+  m4:{learn:["Qualitätskriterien","Datenkapselung"],
+   easy:"<p><b>Worum geht’s?</b> Qualitätskriterien sind Eigenschaften guter Software: Korrektheit, Robustheit, Wiederverwendbarkeit, Effizienz. Du nimmst einen Setter, der prüft, ob ein Wert gültig ist, und erklärst an ihm zwei dieser Kriterien.</p><p><b>So gehst du vor:</b> Schreib den Setter ab (z. B. <code>setDauerSek</code>). Dann zwei Sätze nach dem Muster: „Das Kriterium … ist erfüllt, weil die Zeile … dafür sorgt, dass …“.</p>",
+   hints:["Robust heißt: Das Programm kommt mit falschen Eingaben klar. Was macht dein Setter mit einer negativen Dauer?","Satzanfang: „Der Setter macht das Projekt robust, weil die Bedingung if (pDauerSek > 0) …“"]},
+  m5:{learn:["ArrayList","Algorithmus"],
+   easy:"<p><b>Worum geht’s?</b> Eine Methode soll zählen, wie viele Songs länger als 180 Sekunden sind. Du beschreibst erst das Struktogramm in Worten und schreibst dann den Java-Code.</p><p><b>Du brauchst vier Bausteine:</b> eine Zählvariable, die bei 0 startet, eine Schleife über alle Songs, darin eine if-Abfrage, am Ende <code>return</code>.</p>",
+   hints:["Gerüst: int anzahl = 0; dann for (int i = 0; i < songs.size(); i++) { … } und am Ende return anzahl;","In die Schleife gehört: if (songs.get(i).getDauerSek() > 180) { anzahl = anzahl + 1; }"]}
+ },
+ sport:{m1:{learn:["Homöostase","Superkompensation"]},m2:{learn:["Kraftformen"]},m3:{learn:["Kraft","Agonist und Antagonist"]},m4:{learn:["Gesetzmäßigkeiten des Trainings"]},m5:{learn:["Bedeutung des Krafttrainings"]}},
+ musik:{m1:{learn:["Halleluja: Gestaltungsmittel"]},m2:{learn:["Oratorium vs. Oper"]},m3:{learn:["Geschichte des Klaviers"]},m4:{learn:["Bach und Händel"]},m5:{learn:["Halleluja: Gestaltungsmittel"]}},
+ mathe:{m1:{learn:["Verbindungsvektor","Länge (Betrag)"]},m2:{learn:["Vielfache und Kollinearität"]},m3:{learn:["Skalarprodukt","Winkel zwischen Vektoren"]},m4:{learn:["Länge (Betrag)","Mittelpunkt"]},m5:{learn:["Lineare Abhängigkeit"]}},
+ deutsch:{m1:{learn:["Aufbau einer Interpretation","Franz Kafka"]},m2:{learn:["Expressionismus (1905–1925)"]},m3:{learn:["Zeitgestaltung"]},m4:{learn:["Franz Kafka"]},m5:{learn:["Gottfried Benn","Expressionismus (1905–1925)"]}},
+ bio:{m1:{learn:["Toleranzkurve"]},m2:{learn:["Replikation und Meselson-Stahl"]},m3:{learn:["Stoff- und Energieumwandlung","Ökosystem Wald"]},m4:{learn:["Transkription (Zellkern)","Translation (Ribosom)","Genetischer Code"]},m5:{learn:["Ökologische Nische","Konkurrenz"]}},
+ religion:{m1:{learn:["Außerbiblische Quellen"]},m2:{learn:["Quellenproblem und Synoptiker"]},m3:{learn:["Reich Gottes"]},m4:{learn:["Gottesbilder: Fromm und Zenger"]},m5:{learn:["Dekalog"]}},
+ geschichte:{m1:{learn:["1918: Kriegsende und Revolution","Dolchstoßlegende"]},m2:{learn:["Krisenjahre 1919–1923"]},m3:{learn:["Präsidialkabinette und Ende"]},m4:{learn:["Stabilisierung 1924–1929"]},m5:{learn:["NS-Ideologie","Propaganda"]}},
+ englisch:{m1:{learn:["Key vocabulary"]},m2:{learn:["Thomas L. Friedman: three eras"]},m3:{learn:["DiCaprio at the UN (2016)","Speech analysis: one paragraph"]},m4:{learn:["Key vocabulary","Globalization in one sentence"]},m5:{learn:["Mediation (Sprachmittlung)"]}}
+};
+Object.entries(MH).forEach(([s,o])=>Object.entries(o).forEach(([id,h])=>{const m=(M[s]||[]).find(x=>x.id===id);if(m)Object.assign(m,h);}));
 
 /* ============ SPIEL: XP, Level, Sterne, Abzeichen, Missionen ============
    XP werden immer aus dem Stand berechnet (nie gespeichert), so kann nichts doppelt zählen oder verloren gehen.
@@ -1690,9 +1727,10 @@ function viewMissionen(s){
     let h=`<button class="btn ghost" data-mopen="${s}|" style="justify-self:start;padding-left:0">‹ alle Missionen</button>
       <div class="card prose mission ${dn?"won":""}"><div class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"geschafft ✓":"+"+XP.mission+" XP"}</span></div>
       <h3>${esc(m.title)}</h3><p class="sit">${m.sit}</p><div class="small muted">Thema: ${esc(m.topic)} · etwa 10–20 Minuten, ganz ohne Druck</div></div>
-      <div class="step"><div></div><div class="body"><div class="small muted">Dein Auftrag</div><div>${m.task}</div>${workBox(s,{id:"m"},id,st)}</div></div>
+      ${learnBox(s,m)}
+      <div class="step"><div></div><div class="body"><div class="small muted">Dein Auftrag</div><div>${m.task}</div>${workBox(s,{id:"m"},id,st)}${helpBox(s,wkey(s,"m",id),st,m)}</div></div>
       <div class="card stack"><div class="eyebrow">Selbstkontrolle: Hast du das drin?</div><div class="crit">${m.crit.map((c,k)=>{const cid="mc:"+s+":"+id+":"+k;return `<label class="critrow"><input type="checkbox" class="check" data-id="${cid}" ${S.done[cid]?"checked":""}> <span>${esc(c)}</span></label>`;}).join("")}</div>
-      <details class="sol"><summary>Bonusfrage (Transfer)</summary><p>${m.transfer}</p></details>
+      <details class="sol" ${lvlOf(s)===3?"open":""}><summary>${lvlOf(s)===3?"Profi-Bonus":"Bonusfrage"} (Transfer)</summary><p>${m.transfer}</p></details>
       <details class="sol"><summary>Musterlösung zum Vergleichen</summary>${m.sol}</details></div>`;
     if(dn){const c=(S.mis[s+":"+id]||{}).conf||0;h+=`<div class="coach win">Mission geschafft! Deine Einschätzung bei <b>${esc(m.topic)}</b>: ${STARW[c]} ${starHtml(c)}. Du kannst sie unten jederzeit ändern.</div>`;}
     h+=`<div class="card stack"><div class="eyebrow">${dn?"Wie sicher bist du jetzt?":"Mission abschließen"}</div>${allc||dn?`<p class="small">Wie sicher fühlst du dich jetzt bei <b>${esc(m.topic)}</b>?</p><div class="row">${[1,2,3].map(c=>`<button class="btn ${dn&&(S.mis[s+":"+id]||{}).conf===c?"primary":""}" data-mwin="${s}|${id}|${c}">${starHtml(c)} ${STARW[c]}</button>`).join("")}</div>`:`<p class="small muted">Hak oben alle Punkte der Selbstkontrolle ab. Dann kannst du die Mission abschließen und bekommst ${XP.mission} XP.</p>`}</div>`;
@@ -1757,6 +1795,72 @@ document.addEventListener("click",e=>{
   if(n){nextLen=n.dataset.nlen;render();return;}
   if(g){const [kind,s,id]=g.dataset.go.split("|");if(kind==="mission"){subjTab[s]="missionen";openMis[s]=id;}else{subjTab[s]="projekte";}
     if(route()===s){e.preventDefault();render();window.scrollTo(0,0);}return;}
+});
+
+/* ============ NIVEAU UND HILFE-LEITER ============
+   S.lvl[fach] = 1 Einsteiger, 2 Mittel, 3 Fit. Das Niveau steuert, wie viel Hilfe sichtbar ist und wie Claude erklärt.
+   Hilfe-Leiter: erst einfach erklärt, dann gestufte Tipps (fertige zuerst, danach von Claude), ganz am Ende die Lösung. */
+const LVN=["","Einsteiger","Mittel","Fit"];
+const LVD=["","Mit Grundlagen zum Nachlesen, einfach erklärten Aufgaben und Tipps.","Grundlagen und Tipps auf Wunsch.","Ohne Vorab-Hilfen, dafür mit Profi-Bonus."];
+const LVP=["","Einsteiger: kennt die Grundlagen noch kaum. Braucht einfache Sprache, jeden Fachbegriff kurz erklärt und sehr kleine Schritte. Sei besonders ermutigend.","Mittel: kennt die Grundbegriffe, braucht ab und zu Hilfe.","Fit: kann das meiste und möchte auf Klausurniveau gefordert werden."];
+function lvlOf(s){return (S.lvl||{})[s]||0;}
+function lvlBar(s){
+  const l=lvlOf(s);
+  return `<div class="card stack lvlsel"><div class="row"><b>Dein Niveau in ${esc(SUBJ[s].n)}</b><span class="spacer"></span>${[1,2,3].map(k=>`<button class="btn ${l===k?"primary":""}" data-lvl="${s}|${k}" aria-pressed="${l===k}">${LVN[k]}</button>`).join("")}</div><span class="small ${l?"muted":""}">${l?LVD[l]+" Du kannst es jederzeit ändern.":"<b>Stell zuerst ein, wie fit du dich fühlst.</b> Danach passen sich Hilfen, Tipps und Claudes Erklärungen an dich an."}</span></div>`;
+}
+function learnBox(s,m){
+  const l=lvlOf(s)||2; if(l===3||!m.learn||!m.learn.length) return "";
+  const items=m.learn.map(n=>C[s].spick.find(g=>g[0]===n)).filter(Boolean);
+  if(!items.length) return "";
+  return `<details class="learn" ${l===1?"open":""}><summary>📖 Erst kurz nachlesen: ${items.map(g=>esc(g[0])).join(", ")}</summary>${items.map(g=>`<div class="lrn"><b>${esc(g[0])}</b>${g[1]}</div>`).join("")}</details>`;
+}
+const HS={}, HCTX={};
+function helpBox(s,key,st,extra){
+  HCTX[key]={s,st,easy:extra&&extra.easy,hints:(extra&&extra.hints)||[]};
+  const hs=HS[key]||(HS[key]={easy:lvlOf(s)===1&&!!(extra&&extra.easy),n:0,out:[]});
+  let h=`<div class="help" data-hk="${key}"><div class="row"><span class="small muted">Kommst du nicht weiter?</span><button class="btn" data-help="${key}|easy">🪜 Aufgabe einfacher erklären</button><button class="btn" data-help="${key}|tip">💡 ${hs.n?"Noch ein Tipp":"Tipp bekommen"}</button></div>`;
+  if(hs.easy&&extra&&extra.easy) h+=`<div class="hbox"><div class="eyebrow">Einfach erklärt</div>${extra.easy}</div>`;
+  hs.out.forEach((o,i)=>h+=`<div class="hbox" data-hi="${i}"><div class="eyebrow">${esc(o.t)}</div><div class="wfbt">${esc(o.x)}</div></div>`);
+  return h+`</div>`;
+}
+function helpPrompt(s,key,kind,n){
+  const c=HCTX[key], st=c.st, lk=/Leistungskurs/.test(SUBJ[s].k), w=W[key]||{};
+  let p=`Du bist ein geduldiger Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs":"Grundkurs"}).
+Sein eigenes Niveau in diesem Fach: ${LVP[lvlOf(s)||2]}
+
+AUFGABE: ${st.t}
+${plain(st.x)}
+${st.code?"\nCODE ZUR AUFGABE:\n"+st.code+"\n":""}${st.sol?"\nMUSTERLÖSUNG (nur für dich, nicht verraten):\n"+plain(st.sol)+"\n":""}`;
+  if(kind==="easy") p+=`
+Erkläre ihm die Aufgabe in einfachen Worten:
+1. Was genau ist gefragt?
+2. Welche Begriffe muss er dafür kennen? Je ein kurzer, verständlicher Satz.
+3. Die ersten zwei Schritte, mit denen er anfangen kann.
+Verrate die Lösung nicht. Höchstens 150 Wörter, Du-Form, schlichter Text ohne Markdown-Zeichen wie * oder #.`;
+  else p+=`
+Bisherige Tipps: ${HS[key].out.filter(o=>o.k==="tip").map(o=>o.x).join(" | ")||"keine"}
+Seine bisherige Antwort: ${w.v&&w.kind!=="draw"?w.v:"(noch nichts geschrieben)"}
+
+Gib Tipp Nummer ${n}. Die Tipps werden gestuft immer konkreter: Tipp 1 lenkt nur die Aufmerksamkeit auf das Wichtige, Tipp 2 nennt den Lösungsweg, ab Tipp 3 darf ein Teil der Lösung als Beispiel vorkommen. Höchstens 60 Wörter, Du-Form, schlichter Text ohne Markdown.`;
+  return p;
+}
+async function helpClick(btn){
+  const [key,kind]=btn.dataset.help.split("|"), c=HCTX[key], hs=HS[key], s=c.s;
+  if(kind==="easy"&&c.easy){hs.easy=true;render();return;}
+  let label;
+  if(kind==="tip"){hs.n++; if(hs.n<=c.hints.length){hs.out.push({k:"tip",t:"Tipp "+hs.n,x:c.hints[hs.n-1]});render();return;} label="Tipp "+hs.n+" von Claude";}
+  else label="Einfach erklärt von Claude";
+  if(!SAMPLE){hs.out.push({k:kind,t:label,x:kind==="tip"?"Hier gibt es keine weiteren Tipps. Klapp die Lösung zum Vergleichen auf oder frag Claude im Chat am Laptop.":"Schau unter „Erst kurz nachlesen“ oder im Spickzettel nach. Oder frag Claude im Chat am Laptop."});render();return;}
+  const item={k:kind,t:label,x:"Claude denkt nach …"}; hs.out.push(item); render();
+  const idx=hs.out.length-1, el=()=>document.querySelector(`.help[data-hk="${key}"] .hbox[data-hi="${idx}"] .wfbt`);
+  try{const {text}=await SAMPLE(helpPrompt(s,key,kind,hs.n),{modelTier:"default",cache:false,onText:({text})=>{item.x=text;const e=el();if(e)e.textContent=text;}});item.x=text;}
+  catch(e){item.x=(e&&e.code==="not_granted")?"Du hast die Hilfe nicht erlaubt. Kein Problem: frag Claude im Chat.":(e&&e.code==="rate_limited")?"Gerade zu viele Anfragen. Versuch es gleich noch einmal.":"Das hat nicht geklappt. Frag Claude sonst im Chat.";}
+  const e=el(); if(e) e.textContent=item.x;
+}
+document.addEventListener("click",e=>{
+  const h=e.target.closest("[data-help]"), l=e.target.closest("[data-lvl]");
+  if(h){helpClick(h);return;}
+  if(l){const [s,k]=l.dataset.lvl.split("|");S.lvl=S.lvl||{};S.lvl[s]=Number(k);Object.keys(HS).forEach(x=>{if(x.startsWith(s+"-"))delete HS[x];});persist();render();}
 });
 
 /* ============ HILFEN ============ */
@@ -1938,6 +2042,7 @@ function viewSubj(s){
     else{const pl=plan(s);h+=`<div class="coach"><b>Leitfaden:</b> ${pl.st==="läuft"||pl.st==="fertig"?"Dein Projekt: "+esc(pl.p.title)+".":pl.st==="jetzt"?"Jetzt ist ein guter Zeitpunkt, das Projekt zu starten.":pl.st==="vorbei"?"Die Klausur ist vorbei.":"Für "+esc(x.n)+" ist noch Zeit. Empfohlener Start: "+fmt(addDays(pl.startIn))+"."} Spickzettel und Quiz kannst du jederzeit nutzen, neue Mitschriften schickst du Claude im Chat.</div>`;}
   }
   if(tab==="ueberblick"&&!L[s]&&C[s].topics.length) h+=themenKarte(s);
+  if((tab==="missionen"&&!openMis[s])||tab==="projekte") h+=lvlBar(s);
   if(tab==="missionen") h+=viewMissionen(s);
   if(tab==="projekte") h+=viewProjekte(s);
   if(tab==="ablauf") h+=viewAblauf(s);
@@ -1980,6 +2085,7 @@ function stepExtra(s,p,i,st){
   let h="";
   if(st.code) h+=`<div class="codebox"><pre>${esc(st.code)}</pre><div class="row">${st.join?`<button class="btn" data-join="${s}|${p.id}|${i}">Alles zusammen kopieren</button>`:`<button class="btn" data-cc="1">Vorlage kopieren</button>`}<span class="small muted cmsg"></span></div></div>`;
   h+=workBox(s,p,i,st);
+  if(st.w) h+=helpBox(s,wkey(s,p.id,i),st,null);
   if(st.sol) h+=`<details class="sol"><summary>Lösung zum Vergleichen (erst selbst versuchen)</summary>${st.sol.trim().startsWith("<")?st.sol:`<pre>${esc(st.sol)}</pre>`}</details>`;
   return h;
 }
