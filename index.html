@@ -239,6 +239,35 @@ tr:last-child td{border-bottom:0}
 .cov{font-size:.74rem;padding:2px 8px;border-radius:6px;border:1px dashed var(--line);color:var(--muted)}
 .cov.on{border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--ink);font-weight:700}
 .pchosen{border-top:5px solid var(--c)}
+.stars{letter-spacing:1px;white-space:nowrap}.stars i{font-style:normal;color:var(--line)}.stars i.on{color:#e0a100}
+.xp{font-family:var(--f-mono);font-size:.78rem;font-weight:700;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.mfmt{font-size:.8rem;font-weight:700;color:var(--muted)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.mcard{display:grid;gap:6px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:var(--r);padding:12px 14px;cursor:pointer;min-width:0}
+.mcard:hover{border-color:var(--accent);border-left-color:var(--c)}
+.mcard.won{background:var(--ok-soft)}
+.mission{border-top:5px solid var(--c)}.mission.won{border-top-color:var(--ok)}
+.sit{font-style:italic}
+.crit{display:grid;gap:8px}.critrow{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.coach.win{border-left-color:var(--ok);background:var(--ok-soft)}
+.tmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.tnode{display:grid;gap:4px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);min-width:0}
+.tnode.st0{border-style:dashed}.tnode.st3{border-color:var(--ok);background:var(--ok-soft)}
+.nextbox .nm{display:grid;gap:6px;padding:12px 14px;border-radius:var(--r);border-left:5px solid var(--c);background:var(--accent-soft)}
+.nmt{font-size:1.05rem}
+.lvl{font-family:var(--f-display);font-weight:700;font-size:.85rem;color:var(--accent);white-space:nowrap}
+.lvrow{display:flex;gap:14px;align-items:center}
+.lvbadge{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:var(--accent);color:var(--card);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.5rem}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.badge2{display:grid;gap:2px;padding:10px;border-radius:8px;border:1px dashed var(--line);opacity:.6;min-width:0}
+.badge2.got{opacity:1;border-style:solid;border-color:#e0a100;background:rgba(224,161,0,.08)}
+.badge2 .bi{font-size:1.5rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:12px;font-weight:700;z-index:50;transition:all .3s;text-align:center;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.big{background:var(--ok);color:#fff;font-size:1.1rem;padding:14px 22px}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+.step .body>*{min-width:0}.step pre{max-width:100%}
+
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
 .how dd{margin:0;font-size:.92rem;min-width:0}
@@ -1064,10 +1093,10 @@ P.englisch=[
  {id:"a",type:"sprechen",title:"Your own UN speech",pitch:"You stand where DiCaprio stood. If you can write a speech with stylistic devices, you can spot and analyse them in any speech.",
   trains:"Speech analysis (device → quote → effect) and topic vocabulary on globalization and climate.",
   covers:["Globalization","Climate","Skills"],effort:"mittel · etwa 1,5 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b> schreiben, optional mit der Sprachmemo-App laut vortragen. DiCaprios Rede: <a href=\"https://www.youtube.com/results?search_query=DiCaprio+UN+climate+speech+2014\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „DiCaprio UN speech“</a>.",brauchst:"Papier, die Vokabeltabelle aus dem Unterricht, Kopfhörer.",ergebnis:"Eine Rede mit markierten Stilmitteln, einen Analyseabsatz und eine Mediation-E-Mail.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Englisch“ im Chat oder der Prüfknopf)."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> schreiben, optional mit der Sprachmemo-App laut vortragen. DiCaprios Rede: <a href=\"https://www.youtube.com/results?search_query=DiCaprio+UN+speech+2016+Paris\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „DiCaprio UN speech“</a>.",brauchst:"Papier, die Vokabeltabelle aus dem Unterricht, Kopfhörer.",ergebnis:"Eine Rede mit markierten Stilmitteln, einen Analyseabsatz und eine Mediation-E-Mail.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Englisch“ im Chat oder der Prüfknopf)."},
   steps:[
    {w:"text",t:"Write a 1-minute speech",x:"Topic: “Challenges and Chances of Globalization”. At least 4 devices (direct address, rhetorical question, anaphora, contrast, appeal) and 8 words from the vocabulary table."},
-   {w:"text",t:"Analyse yourself",x:"Mark every device in your speech and write one sentence on its effect. Then one analysis paragraph on DiCaprio’s speech.<p class=\"small muted\">DiCaprio’s speech: <a href=\"https://www.youtube.com/results?search_query=DiCaprio+UN+climate+speech+2014\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „DiCaprio UN speech“</a>. English subtitles help.</p>"},
+   {w:"text",t:"Analyse yourself",x:"Mark every device in your speech and write one sentence on its effect. Then one analysis paragraph on DiCaprio’s speech.<p class=\"small muted\">DiCaprio’s speech: <a href=\"https://www.youtube.com/results?search_query=DiCaprio+UN+speech+2016+Paris\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „DiCaprio UN speech“</a>. English subtitles help.</p>"},
    {w:"text",t:"Mediation practice",x:"A short German article on fast fashion or climate change, summarised in an English email to an exchange student (150 words).<p class=\"small muted\">Kein Artikel zur Hand? Schreib im Chat „Mediation-Texte“, dann gibt Claude dir einen kurzen deutschen Text.</p>"}],
   check:{t:"Quiz + language check",x:"Vocabulary quiz, then check your speech for tenses, 3rd person -s and word order."}},
  {id:"b",type:"schreiben",title:"The journey of a T-shirt",pitch:"You follow one cheap T-shirt around the world: cotton field in India, factory in Bangladesh, shop in Germany, second-hand market in Ghana. You write it as a vlog script.",
@@ -1154,12 +1183,12 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T17:22:37.159448Z", "stand": {"choice": {}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T16:24:57.658Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T17:43:44.789532Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
    CL: was Claude einträgt (Feedback zu Projekten und Leistungen, Mitschriften). */
-let S={done:{},quiz:{},choice:{},rate:{},updated:""};
+let S={done:{},quiz:{},choice:{},rate:{},mis:{},conf:{},updated:""};
 let CL={feedback:{},mitschriften:{},updated:""};
 const LS="klausurcockpit-"+SEM.id;
 try{const r=localStorage.getItem(LS); if(r) S=Object.assign(S,JSON.parse(r)); else {const o=localStorage.getItem("klausurcockpit-v2"); if(o){const d=JSON.parse(o); S.quiz=d.quiz||{}; S.choice=d.choice||{}; S.done=d.done||{};}}}catch(e){}
@@ -1183,7 +1212,7 @@ async function flush(){
   if(!db) return;
   if(saving){pending=true;return;}
   saving=true;
-  try{await db.doc(STAND).set({done:S.done,quiz:S.quiz,choice:S.choice,rate:S.rate,updated:S.updated||new Date().toISOString()});setSync("on","gespeichert, Claude liest mit");}
+  try{await db.doc(STAND).set({done:S.done,quiz:S.quiz,choice:S.choice,rate:S.rate,mis:S.mis||{},conf:S.conf||{},updated:S.updated||new Date().toISOString()});setSync("on","gespeichert, Claude liest mit");}
   catch(e){setSync("local","Speichern fehlgeschlagen, lokal gesichert");}
   saving=false; if(pending){pending=false;flush();}
 }
@@ -1195,7 +1224,7 @@ async function flush(){
     const byId={}; snap.docs.forEach(x=>byId[x.id]=x.data()||{});
     const st=byId["stand-"+SEM.id]||byId["stand"];
     if(st){
-      S.done=Object.assign({},S.done,st.done||{}); S.choice=Object.assign({},S.choice,st.choice||{}); S.rate=Object.assign({},S.rate,st.rate||{});
+      S.done=Object.assign({},S.done,st.done||{}); S.choice=Object.assign({},S.choice,st.choice||{}); S.rate=Object.assign({},S.rate,st.rate||{}); S.mis=Object.assign({},S.mis,st.mis||{}); S.conf=Object.assign({},S.conf,st.conf||{});
       Object.entries(st.quiz||{}).forEach(([k,q])=>{if(!S.quiz[k]||q.best>S.quiz[k].best)S.quiz[k]=q;});
     }
     if(byId.claude) CL=Object.assign({feedback:{},mitschriften:{}},byId.claude);
@@ -1247,16 +1276,16 @@ function workBox(s,p,i,st){
   h+=`<div class="wfb" ${w.fb?"":"hidden"}><div class="eyebrow">Rückmeldung von Claude</div><div class="wfbt">${w.fb?esc(w.fb):""}</div></div></div>`;
   return h;
 }
-function stepOf(s,pidv,i){const p=P[s].find(x=>x.id===pidv); return i==="check"?p.check:p.steps[Number(i)];}
+function stepOf(s,pidv,i){if(pidv==="m") return misStep(s,i); const p=P[s].find(x=>x.id===pidv); return i==="check"?p.check:p.steps[Number(i)];}
 function plain(html){const d=document.createElement("div");d.innerHTML=String(html||"").replace(/<\/(li|p)>/g,"\n");return d.textContent.replace(/\s+\n/g,"\n").trim();}
 
 async function workCheck(btn){
-  const [s,pidv,i]=btn.dataset.wcheck.split("|"); const key=wkey(s,pidv,i), st=stepOf(s,pidv,i), p=P[s].find(x=>x.id===pidv);
+  const [s,pidv,i]=btn.dataset.wcheck.split("|"); const key=wkey(s,pidv,i), st=stepOf(s,pidv,i), p=pidv==="m"?{title:"Kurz-Mission: "+st.t}:P[s].find(x=>x.id===pidv);
   const box=btn.closest(".work"), fb=box.querySelector(".wfb"), out=box.querySelector(".wfbt"), w=W[key]||{};
   if(!w.v||(st.start&&w.v.trim()===st.start.trim())){fb.hidden=false;out.textContent="Trag zuerst etwas ein, dann kann Claude es prüfen.";return;}
   const lk=/Leistungskurs/.test(SUBJ[s].k);
   const kindTxt=st.w==="code"?"Java-Code":st.w==="draw"?"Zeichnung (als Bild angehängt)":"Antwort";
-  let prompt=`Du bist ein freundlicher Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs-Niveau":"Grundkurs-Niveau"}). Er bereitet sich auf eine Klausur vor und hat im Projekt „${p.title}“ diese Aufgabe bearbeitet:
+  let prompt=`Du bist ein freundlicher Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs-Niveau":"Grundkurs-Niveau"}). Er bereitet sich auf eine Klausur vor und hat in „${p.title}“ diese Aufgabe bearbeitet:
 
 AUFGABE: ${st.t}
 ${plain(st.x)}
@@ -1336,6 +1365,400 @@ document.addEventListener("keydown",e=>{
   e.preventDefault(); const a=ta.selectionStart,b=ta.selectionEnd; ta.value=ta.value.slice(0,a)+"    "+ta.value.slice(b); ta.selectionStart=ta.selectionEnd=a+4; ta.dispatchEvent(new Event("input",{bubbles:true}));
 });
 
+/* ============ KURZ-MISSIONEN: 10–20 Minuten, je Klausur 5 Stück ============
+   f: Format, topic: Thema aus „Was drankommt“, sit: Ausgangslage, task: Auftrag, w: Arbeitsfeld,
+   crit: Selbstkontrolle (alle abhaken = Mission geschafft), transfer: Bonusfrage, sol: Musterlösung zum Vergleichen */
+const MF={fehler:{n:"Fehlerjagd",i:"🔍"},erklaer:{n:"Erklärmission",i:"💬"},detektiv:{n:"Detektivfall",i:"🕵️"},verknuepf:{n:"Verknüpfung",i:"🔗"},challenge:{n:"Prüfungs-Challenge",i:"⚔️"}};
+const M={};
+M.info=[
+ {id:"m1",f:"fehler",topic:"OOP",title:"Der kaputte Konstruktor",sit:"Ein Mitschüler hat die Klasse Fahrrad geschrieben. Sein Programm läuft nicht, und er versteht nicht warum.",
+  task:"<p>Finde <b>alle 4 Fehler</b> und schreib die Klasse korrigiert ins Feld.</p><pre>class Fahrrad {\n    public String marke;\n    private int gaenge\n\n    public void Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return marke;\n    }\n}</pre>",
+  w:"code",crit:["Konstruktor ohne void","Beide Attribute private","Semikolon nach gaenge","Getter gibt gaenge zurück, nicht marke"],
+  transfer:"Warum ist <code>public String marke</code> ein Verstoß gegen die Datenkapselung? Ein Satz.",
+  sol:"<pre>class Fahrrad {\n    private String marke;\n    private int gaenge;\n\n    public Fahrrad(String pMarke, int pGaenge) {\n        marke = pMarke;\n        gaenge = pGaenge;\n    }\n\n    public int getGaenge() {\n        return gaenge;\n    }\n}</pre><p>Transfer: Ist das Attribut public, kann jede andere Klasse es direkt ändern, auch auf falsche Werte. Die Klasse verliert die Kontrolle über ihre Daten.</p>"},
+ {id:"m2",f:"erklaer",topic:"UML",title:"Erklär’s deiner kleinen Schwester",sit:"Deine Schwester (12) sieht dein Klassendiagramm Bibliothek 1 — n Buch und fragt: „Was soll das 1 und das n?“",
+  task:"<p>Erkläre in <b>höchstens 5 Sätzen</b>, ohne Fachchinesisch, was 1 : n bedeutet und wie man das in Java umsetzt. Nutze ein Beispiel aus ihrem Alltag (z. B. Klasse und Schüler).</p>",
+  w:"text",crit:["Ein Alltagsbeispiel ist drin","Es wird klar, wer „1“ und wer „n“ ist","Die Umsetzung mit einer Liste (ArrayList) ist erwähnt"],
+  transfer:"Ein Kino hat n Säle, jeder Saal hat n Sitze. Welche Klasse bekommt welche Liste?",
+  sol:"<p>Beispiel: „Eine Schulklasse hat viele Schüler, aber jeder Schüler gehört zu genau einer Klasse. Die 1 steht bei der Klasse, das n bei den Schülern. In Java bekommt die Klasse Schulklasse eine Liste, in der alle Schüler-Objekte stehen: <code>ArrayList&lt;Schueler&gt; schueler</code>.“</p><p>Transfer: Kino hat <code>ArrayList&lt;Saal&gt;</code>, Saal hat <code>ArrayList&lt;Sitz&gt;</code>.</p>"},
+ {id:"m3",f:"detektiv",topic:"Listen",title:"Wo ist der Wert geblieben?",sit:"Ein Programm soll die Gesamtzahl der Seiten aller Bücher ausgeben. Es gibt 3 Bücher mit 100, 200 und 300 Seiten. Ausgegeben wird aber 500.",
+  task:"<pre>int summe = 0;\nfor (int i = 1; i &lt; bestand.size(); i++) {\n    summe = summe + bestand.get(i).getSeitenzahl();\n}\nSystem.out.println(summe);</pre><p>Löse den Fall: <b>Welches Buch fehlt und warum?</b> Wie lautet die richtige Zeile?</p>",
+  w:"text",crit:["Du nennst, welches Buch fehlt","Du erklärst, dass der Index bei 0 beginnt","Du gibst die korrigierte Schleife an"],
+  transfer:"Was würde mit <code>i &lt;= bestand.size()</code> passieren?",
+  sol:"<p>Das erste Buch (100 Seiten, Index 0) fehlt, weil die Schleife bei i = 1 startet. 200 + 300 = 500. Richtig: <code>for (int i = 0; i &lt; bestand.size(); i++)</code>.</p><p>Transfer: Dann würde Index 3 abgefragt, den es nicht gibt. Das Programm stürzt ab (IndexOutOfBoundsException).</p>"},
+ {id:"m4",f:"verknuepf",topic:"Theorie",title:"Qualitäts-Check am eigenen Code",sit:"Die Klausur fragt oft: „Begründen Sie, dass das Projekt ein Qualitätskriterium erfüllt.“",
+  task:"<p>Nimm den Setter <code>setDauerSek</code> aus deiner Playlist-App (oder einen Setter mit Prüfung aus dem Merkblatt). Ordne ihn <b>zwei Qualitätskriterien</b> zu und begründe jeweils in einem Satz mit Bezug auf den Code.</p>",
+  w:"text",crit:["Zwei Kriterien genannt (Korrektheit, Robustheit, Wiederverwendbarkeit, Effizienz)","Jede Begründung bezieht sich auf eine Code-Stelle","Fachbegriff Datenkapselung kommt vor"],
+  transfer:"Warum macht eine eigene Klasse Song das Projekt wiederverwendbar?",
+  sol:"<p><b>Robustheit:</b> Der Setter lehnt negative Werte ab (<code>if (pDauerSek &gt; 0)</code>), Fehleingaben bringen das Objekt nicht in einen ungültigen Zustand. <b>Korrektheit:</b> Durch die Datenkapselung (private Attribut, Zugriff nur über den Setter) bleibt die Dauer immer sinnvoll, Berechnungen wie gesamtdauer() liefern richtige Ergebnisse.</p><p>Transfer: Die Klasse Song kann ohne Änderung in einem anderen Programm benutzt werden, z. B. in einer Musik-Bibliothek.</p>"},
+ {id:"m5",f:"challenge",topic:"Algorithmen",title:"Boss-Vorbote: Struktogramm in 10 Minuten",sit:"Klausurbedingungen: kein Spickzettel, 10 Minuten.",
+  task:"<p>Die Methode <code>anzahlLangeSongs()</code> soll zählen, wie viele Songs länger als 180 Sekunden sind. Beschreibe das Struktogramm Zeile für Zeile im Feld (Balken, Schleife, Verzweigung, Rückgabe). Schreib danach die Methode in Java.</p>",
+  w:"code",start:"// Struktogramm in Worten:\n// \n\npublic int anzahlLangeSongs() {\n    \n}",crit:["Zähler startet bei 0","Zählschleife über alle Songs (i < size())","Verzweigung mit Bedingung > 180","Rückgabe des Zählers"],
+  transfer:"Welche der 5 Algorithmus-Eigenschaften erfüllt deine Methode, weil die Schleife immer endet?",
+  sol:"<pre>public int anzahlLangeSongs() {\n    int anzahl = 0;\n    for (int i = 0; i &lt; songs.size(); i++) {\n        if (songs.get(i).getDauerSek() &gt; 180) {\n            anzahl = anzahl + 1;\n        }\n    }\n    return anzahl;\n}</pre><p>Struktogramm: Balken „anzahl = 0“, Zählschleife „für i von 0 bis size()−1“, darin Verzweigung „Dauer &gt; 180?“ mit „ja: anzahl = anzahl + 1“, „nein: –“, am Ende Balken „gib anzahl zurück“. Transfer: terminiert.</p>"}
+];
+M.sport=[
+ {id:"m1",f:"fehler",topic:"Anpassung",title:"Der Trainer liegt falsch",sit:"Ein Fitness-Influencer sagt: „Trainiert jeden Tag dieselben Muskeln bis zur Erschöpfung. Mehr Training = mehr Muskeln!“",
+  task:"<p>Widerlege ihn mit dem <b>Superkompensationsmodell</b>. Erkläre in 4 bis 6 Sätzen, was bei zu früher Belastung passiert, und nenne den richtigen Zeitpunkt.</p>",
+  w:"text",crit:["Begriffe Ermüdung, Erholung und Superkompensation kommen vor","Folge zu früher Belastung: Leistungsabfall, Übertraining","Richtiger Zeitpunkt: in der Phase der Superkompensation"],
+  transfer:"Was passiert, wenn man zu lange Pause macht?",
+  sol:"<p>Training stört die Homöostase, die Leistung sinkt zuerst (Ermüdung). In der Erholung baut der Körper wieder auf und kurz über das Ausgangsniveau hinaus (Superkompensation). Wer schon in der Ermüdungsphase wieder trainiert, belastet einen geschwächten Körper: Die Leistung sinkt weiter, es droht Übertraining. Die nächste Belastung gehört in die Superkompensation.</p><p>Transfer: Die Leistung fällt aufs alte Niveau zurück, kein Trainingseffekt.</p>"},
+ {id:"m2",f:"detektiv",topic:"Kraft",title:"Welche Kraft war’s?",sit:"Vier Sportler, vier Situationen. Ordne jede einer Kraftform zu und begründe kurz.",
+  task:"<ol><li>Ein Ruderer hält 2000 m lang ein hohes Tempo.</li><li>Ein Gewichtheber stemmt einmal 150 kg.</li><li>Ein Volleyballer springt aus dem Anlauf zum Block ab.</li><li>Ein Sprinter drückt sich aus dem Startblock.</li></ol>",
+  w:"text",crit:["Alle vier zugeordnet","Bei 3 ist der Dehnungs-Verkürzungs-Zyklus erklärt","Jede Antwort hat eine Begründung"],
+  transfer:"Warum ist die Maximalkraft für alle vier wichtig?",
+  sol:"<p>1 Kraftausdauer (lang andauernde Kraftleistung, Ermüdungswiderstand). 2 Maximalkraft (größte willkürliche Kraft). 3 Reaktivkraft (abbremsen und sofort abdrücken, Dehnungs-Verkürzungs-Zyklus). 4 Schnellkraft (Widerstand mit hoher Geschwindigkeit überwinden).</p><p>Transfer: Die Maximalkraft ist die Basis der anderen Kraftformen.</p>"},
+ {id:"m3",f:"erklaer",topic:"Muskel",title:"Muskel-Reporter",sit:"Du kommentierst eine Kniebeuge in Zeitlupe für eine Sportsendung.",
+  task:"<p>Beschreibe die Kniebeuge in drei Phasen: <b>runter, unten halten, hoch</b>. Nenne jeweils die Arbeitsweise des Oberschenkelmuskels (Quadrizeps) und wer Agonist ist.</p>",
+  w:"text",crit:["runter = exzentrisch, halten = isometrisch, hoch = konzentrisch","Agonist und Antagonist korrekt benannt","Fachsprache statt Umgangssprache"],
+  transfer:"Warum sollte man Agonist und Antagonist gleich trainieren?",
+  sol:"<p>Runter: Der Quadrizeps arbeitet <b>exzentrisch</b> (nachgebend, wird länger). Unten halten: <b>isometrisch</b> (Spannung ohne Längenänderung). Hoch: <b>konzentrisch</b> (überwindend, verkürzt sich). Beim Strecken ist der Quadrizeps Agonist, der hintere Oberschenkel (Beinbeuger) Antagonist.</p><p>Transfer: Sonst entstehen muskuläre Ungleichgewichte, Fehlhaltungen und Verletzungen.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Gesetze",title:"Drei Gesetze, ein Plan",sit:"Deine Freundin will für einen Lauf trainieren und macht seit Wochen exakt dasselbe Programm. Ihr Fortschritt stagniert.",
+  task:"<p>Erkläre ihr mit <b>drei Gesetzmäßigkeiten des Trainings</b>, warum sie nicht besser wird, und gib ihr drei konkrete Tipps.</p>",
+  w:"text",crit:["Wirksamer Reiz, Steigerung und Dosierung genannt","Jeder Tipp passt zu einer Gesetzmäßigkeit","Erwähnt, dass Zuwächse mit höherem Niveau kleiner werden"],
+  transfer:"Was passiert mit ihrer Leistung, wenn sie vier Wochen gar nicht trainiert?",
+  sol:"<p>Der Reiz ist nicht mehr wirksam, weil der Körper sich angepasst hat. Nach dem Prinzip der Steigerung braucht sie stärkere Reize (mehr Umfang oder Tempo). Die Dosierung muss zu ihrem Leistungsstand passen. Außerdem verläuft Leistungsentwicklung nicht linear, mit höherem Niveau werden Zuwächse kleiner.</p><p>Transfer: Ohne Training bilden sich die Anpassungen zurück.</p>"},
+ {id:"m5",f:"challenge",topic:"Bedeutung",title:"Boss-Vorbote: Beurteilen in 10 Minuten",sit:"Klausurbedingungen, kein Spickzettel.",
+  task:"<p>„Beurteilen Sie, ob Krafttraining für Jugendliche sinnvoll ist.“ Schreib 6 bis 8 Sätze: zwei Vorteile, zwei Risiken, ein begründetes Urteil.</p>",
+  w:"text",crit:["Präventiver oder leistungsbezogener Nutzen genannt","Zwei Risiken genannt (Technik, Übertraining, Ungleichgewicht, Doping)","Eigenes Urteil mit Bedingung (z. B. mit Anleitung)"],
+  transfer:"Welcher Operator verlangt ein eigenes Urteil, „erläutern“ oder „beurteilen“?",
+  sol:"<p>Vorteile: bessere Haltung, Schutz vor Verletzungen und Rückenschmerzen, Grundlage für fast alle Sportarten, mehr Selbstbewusstsein. Risiken: Verletzungen durch falsche Technik, Übertraining, muskuläre Ungleichgewichte, Doping. Urteil: sinnvoll, wenn es angeleitet, technisch sauber und dosiert stattfindet.</p><p>Transfer: beurteilen.</p>"}
+];
+M.musik=[
+ {id:"m1",f:"fehler",topic:"Satztechnik",title:"Falsch verhört",sit:"Ein Musikblog schreibt: „Beim ‚Halleluja‘ singen am Anfang alle Stimmen eigene Melodien durcheinander, das nennt man Homophonie.“",
+  task:"<p>Korrigiere den Satz und erkläre den Unterschied zwischen Homophonie und Polyphonie mit je einer Stelle aus dem Halleluja.</p>",
+  w:"text",crit:["Anfang = homophon (gleicher Rhythmus)","Polyphonie mit Stelle belegt (z. B. „And He shall reign …“)","Merkhilfe homo = gleich, poly = viele genutzt oder sinngemäß erklärt"],
+  transfer:"Welche Wirkung hat das Unisono bei „For the Lord God omnipotent reigneth“?",
+  sol:"<p>Am Anfang singen alle Stimmen im gleichen Rhythmus, das ist <b>Homophonie</b>. <b>Polyphonie</b> heißt: Jede Stimme hat eine eigene Melodie, Einsätze nacheinander, z. B. bei „And He shall reign for ever and ever“.</p><p>Transfer: Alle singen dieselbe Linie, ein Gott wird hörbar. Einheit und Macht.</p>"},
+ {id:"m2",f:"detektiv",topic:"Gattungen",title:"Oper oder Oratorium?",sit:"Du findest ein altes Programmheft: „Aufführung im Dom, Text aus dem Alten Testament, Solisten, Chor und Orchester, ohne Kostüme, drei Teile.“",
+  task:"<p>Entscheide, um welche Gattung es geht, und belege mit <b>mindestens vier Merkmalen</b>. Nenne zum Vergleich je ein Gegenmerkmal der anderen Gattung.</p>",
+  w:"text",crit:["Oratorium erkannt","Vier Merkmale: Ort, geistlicher Text, keine Szene, Teile","Gegenmerkmale der Oper genannt"],
+  transfer:"Was ist der Unterschied zwischen Rezitativ und Arie?",
+  sol:"<p>Oratorium: Kirche, geistlicher Text, keine Bühne und keine Kostüme, Gliederung in Teile. Oper dagegen: Theater, weltlicher Text, szenische Aufführung, Akte.</p><p>Transfer: Rezitativ = Sprechgesang, treibt die Handlung voran. Arie = kommentiert, zeigt Gefühle.</p>"},
+ {id:"m3",f:"erklaer",topic:"Instrument",title:"Warum heißt es Piano-Forte?",sit:"Ein Grundschüler fragt dich beim Klaviervorspiel: „Warum heißt das Ding eigentlich Pianoforte?“",
+  task:"<p>Erkläre in 4 Sätzen den Unterschied zwischen Cembalo und Pianoforte und wer das Pianoforte erfunden hat.</p>",
+  w:"text",crit:["Cembalo: Saiten gezupft, keine Dynamik","Pianoforte: Hammer, leise und laut","Cristofori, um 1700, Florenz"],
+  transfer:"Was brachte Érard 1821?",
+  sol:"<p>Beim Cembalo werden die Saiten gezupft, man kann nicht leiser oder lauter spielen. Beim Pianoforte schlägt ein Hammer die Saite an, je nach Anschlag leise (piano) oder laut (forte). Erfunden hat es Bartolomeo Cristofori um 1700 in Florenz.</p><p>Transfer: die Repetitionsmechanik, schnelles Wiederanschlagen desselben Tons.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Komponisten",title:"Zwei Lebenswege",sit:"Bach und Händel, beide 1685 geboren, nur 130 km voneinander entfernt.",
+  task:"<p>Vergleiche beide nach <b>drei Aspekten</b> (Wirkungsort, Musik, Leben). Formuliere jeden Aspekt als Gegenüberstellung in einem Satz.</p>",
+  w:"text",crit:["Nach Aspekten verglichen, nicht nacheinander","Leipzig/Thomaskantor gegen London/Opern und Oratorien","Ein Werk je Komponist genannt"],
+  transfer:"Welches Werk von Händel analysierst du in der Klausur, und aus welchem Jahr ist es?",
+  sol:"<p>Wirkungsort: Bach blieb in Mitteldeutschland und war ab 1723 Thomaskantor in Leipzig, Händel lebte 47 Jahre in London. Musik: Bach schrieb Kirchenmusik und Instrumentalwerke wie die Brandenburgischen Konzerte, Händel Opern, Oratorien und die Wassermusik. Leben: Bach hatte viele Kinder und reiste kaum, Händel war Junggeselle und weit gereist.</p><p>Transfer: „Halleluja“ aus dem „Messias“, 1742.</p>"},
+ {id:"m5",f:"challenge",topic:"Werk",title:"Boss-Vorbote: Analyseabsatz",sit:"Klausurbedingungen, 10 Minuten.",
+  task:"<p>Schreib einen Analyseabsatz zu „King of Kings, and Lord of Lords“: Gestaltungsmittel benennen, mit Notentext belegen, Wirkung deuten.</p>",
+  w:"text",crit:["Tonwiederholung und steigende Oberstimmen genannt","Bezug zur Textaussage (Gottes Macht)","Wirkung (Spannung, Steigerung) erklärt"],
+  transfer:"Welche Instrumente stehen für königlichen Glanz?",
+  sol:"<p>Bei „King of Kings“ wiederholen die Stimmen denselben Ton, während die Oberstimmen Stufe für Stufe ansteigen. Dadurch baut sich Spannung bis zum Schluss auf. Die Steigerung passt zum Text: Gott wird als höchster König über allen Königen gefeiert.</p><p>Transfer: Trompeten und Pauken.</p>"}
+];
+M.mathe=[
+ {id:"m1",f:"fehler",topic:"Vektoren",title:"Spitze oder Fuß?",sit:"In einer Probeklausur steht: A(2|1|5), B(6|4|5). „AB = A − B = (−4, −3, 0), |AB| = −4 − 3 + 0 = −7.“",
+  task:"<p>Finde die <b>zwei Fehler</b>, rechne richtig und schreib einen Antwortsatz.</p>",
+  w:"text",crit:["AB = B − A = (4, 3, 0)","Länge mit Wurzel: √(16+9+0) = 5","Antwortsatz vorhanden"],
+  transfer:"Wie weit ist A vom Ursprung entfernt?",
+  sol:"<p>Fehler 1: Spitze minus Fuß, AB = B − A = (4, 3, 0). Fehler 2: Die Länge ist die Wurzel aus der Summe der Quadrate: |AB| = √(16 + 9 + 0) = √25 = 5. Antwort: Die Punkte A und B sind 5 LE voneinander entfernt.</p><p>Transfer: |OA| = √(4 + 1 + 25) = √30 ≈ 5,48 LE.</p>"},
+ {id:"m2",f:"detektiv",topic:"Lage",title:"Liegen sie auf einer Linie?",sit:"Ein Laser soll durch die Punkte A(1|2|3), B(3|6|7) und C(4|8|9) gehen.",
+  task:"<p>Prüfe, ob A, B und C auf einer Geraden liegen (kollinear). Zeig den Rechenweg mit r in <b>jeder</b> Koordinate.</p>",
+  w:"text",crit:["AB und AC berechnet","r in allen drei Koordinaten geprüft","Klare Aussage mit Antwortsatz"],
+  transfer:"Ändere C so, dass die Punkte nicht mehr kollinear sind.",
+  sol:"<p>AB = (2, 4, 4), AC = (3, 6, 6). AC = r · AB: 3 = 2r → r = 1,5; 6 = 4r → r = 1,5; 6 = 4r → r = 1,5. Überall gleich, also kollinear. Antwort: A, B und C liegen auf einer Geraden.</p><p>Transfer: z. B. C(4|8|10), dann wäre r in der dritten Koordinate 1,75.</p>"},
+ {id:"m3",f:"erklaer",topic:"Skalarprodukt",title:"Warum null = rechter Winkel?",sit:"Dein Kumpel kann das Skalarprodukt ausrechnen, weiß aber nicht, wofür.",
+  task:"<p>Erkläre ihm in 3 Sätzen, was das Skalarprodukt aussagt, und rechne vor, ob a = (2, −1, 3) und b = (1, 5, 1) orthogonal sind.</p>",
+  w:"text",crit:["Formel a₁b₁ + a₂b₂ + a₃b₃ richtig","Ergebnis 0 → orthogonal erklärt","Antwortsatz"],
+  transfer:"Berechne den Winkel zwischen a = (1, 0, 0) und b = (1, 1, 0).",
+  sol:"<p>Das Skalarprodukt ist eine Zahl. Ist sie 0, stehen die Vektoren senkrecht aufeinander. a · b = 2·1 + (−1)·5 + 3·1 = 2 − 5 + 3 = 0. Die Vektoren sind orthogonal.</p><p>Transfer: cos γ = 1 / (1 · √2) ≈ 0,707, γ = 45°.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Länge",title:"Das Zelt-Dreieck",sit:"Ein Zelt hat die Ecken A(0|0|0), B(4|0|0) und C(2|0|3).",
+  task:"<p>Berechne die drei Seitenlängen und den Mittelpunkt von AB. Prüfe, ob das Dreieck gleichschenklig ist.</p>",
+  w:"text",crit:["Alle drei Längen mit Wurzel berechnet","Mittelpunkt M(2|0|0)","Aussage zu gleichschenklig mit Begründung"],
+  transfer:"Hat das Dreieck bei C einen rechten Winkel? Prüfe mit dem Skalarprodukt.",
+  sol:"<p>|AB| = 4. |AC| = √(4 + 0 + 9) = √13 ≈ 3,61. |BC| = √(4 + 0 + 9) = √13. Gleichschenklig, weil AC = BC. M = ½(A + B) = (2|0|0).</p><p>Transfer: CA = (−2, 0, −3), CB = (2, 0, −3), CA · CB = −4 + 0 + 9 = 5 ≠ 0, also kein rechter Winkel.</p>"},
+ {id:"m5",f:"challenge",topic:"Lage",title:"Boss-Vorbote: Linear abhängig?",sit:"Klausurbedingungen, 15 Minuten, Taschenrechner erlaubt.",
+  task:"<p>Prüfe, ob a = (1, 2, 0), b = (0, 1, 1) und c = (2, 5, 1) linear abhängig sind. Stelle das Gleichungssystem c = r·a + s·b auf und löse es.</p>",
+  w:"text",crit:["Gleichungssystem mit drei Zeilen aufgestellt","r und s aus zwei Zeilen bestimmt","Probe mit der dritten Zeile und Antwortsatz"],
+  transfer:"Was bedeutet „linear abhängig“ geometrisch?",
+  sol:"<p>I: 2 = r. II: 5 = 2r + s. III: 1 = s. Aus I: r = 2, aus III: s = 1. Probe in II: 2·2 + 1 = 5 ✓. Also linear abhängig: c = 2a + b.</p><p>Transfer: Die drei Vektoren liegen in einer Ebene (komplanar).</p>"}
+];
+M.deutsch=[
+ {id:"m1",f:"fehler",topic:"Methode",title:"Die schwache Einleitung",sit:"Eine Mitschülerin beginnt ihre Interpretation so: „In dem Text geht es um einen Mann, der zum Bahnhof will. Kafka hat ihn geschrieben. Das finde ich interessant.“",
+  task:"<p>Was fehlt? Schreib eine <b>bessere Einleitung</b> für „Gibs auf!“ mit allen Bausteinen.</p>",
+  w:"text",crit:["Autor, Titel, Textsorte, Entstehungsjahr","Thema in einem Satz (Orientierungslosigkeit, verweigerte Hilfe)","Keine Wertung in der Einleitung"],
+  transfer:"Was gehört in die Inhaltsangabe nicht hinein?",
+  sol:"<p>Beispiel: „Die Parabel ‚Gibs auf!‘ von Franz Kafka, entstanden 1922, handelt von einem Ich-Erzähler, der sich auf dem Weg zum Bahnhof verirrt und von einem Schutzmann, den er um Hilfe bittet, abgewiesen wird. Thematisiert wird die Orientierungslosigkeit des Einzelnen gegenüber einer Autorität, die Hilfe verweigert.“</p><p>Transfer: Zitate, Deutungen und eigene Meinung. Inhaltsangabe im Präsens.</p>"},
+ {id:"m2",f:"detektiv",topic:"Epochen",title:"Welche Epoche spricht hier?",sit:"Zwei Verse ohne Autor: „Dem Bürger fliegt vom spitzen Kopf der Hut“ … „Die Eisenbahnen fallen von den Brücken.“",
+  task:"<p>Ordne die Zeilen einer Epoche zu und belege mit <b>drei Stilmerkmalen</b>. Nenne Gedicht und Autor, wenn du es erkennst.</p>",
+  w:"text",crit:["Expressionismus erkannt","Reihungsstil oder Simultanstil benannt","Thema Weltuntergang/Bürgerkritik erwähnt"],
+  transfer:"Wie würde die Neue Sachlichkeit dasselbe Thema anders darstellen?",
+  sol:"<p>Expressionismus, Jakob van Hoddis „Weltende“ (1911). Merkmale: Reihungsstil (unverbundene Bilder nebeneinander), Simultanstil (alles passiert gleichzeitig), groteske Bilder (der Hut fliegt vom spitzen Kopf), Thema Weltuntergang und Kritik am Bürger.</p><p>Transfer: nüchtern, sachlich, mit Alltagssprache und distanziertem Beobachter.</p>"},
+ {id:"m3",f:"erklaer",topic:"Erzähltechnik",title:"Zeitlupe erklärt",sit:"Du sollst einer 9. Klasse Zeitgestaltung erklären.",
+  task:"<p>Erkläre Zeitdeckung, Zeitraffung und Zeitdehnung mit je <b>einem Beispiel aus der „Verwandlung“</b> oder einer Szene, die du erfindest.</p>",
+  w:"text",crit:["Erzählzeit und erzählte Zeit unterschieden","Alle drei Formen richtig mit Beispiel","Wirkung mindestens einer Form genannt"],
+  transfer:"Warum dehnt Kafka gerade den Moment, in dem Gregor seinen Körper sieht?",
+  sol:"<p>Erzählzeit = Lesezeit, erzählte Zeit = Dauer der Handlung. Zeitdeckung: beide gleich, z. B. der Dialog durch die Tür. Zeitraffung: Wochen werden in einem Satz erzählt. Zeitdehnung: ein kurzer Moment wird lang erzählt, z. B. Gregors Gedanken beim Erwachen. Wirkung: Spannung, Fokus auf das Innere.</p><p>Transfer: Der Schock und die Fremdheit werden spürbar, der Leser erlebt die Verwandlung mit.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Epik",title:"Gregor trifft den Schutzmann",sit:"Zwei Texte von Kafka, ein Motiv: Ausgrenzung durch Autorität.",
+  task:"<p>Vergleiche Gregor (Vater) und den Ich-Erzähler (Schutzmann) <b>nach zwei Aspekten</b>: Verhalten der Autorität und Reaktion der Hauptfigur. Je zwei Sätze.</p>",
+  w:"text",crit:["Nach Aspekten verglichen, nicht nacheinander","Beide Autoritäten verweigern Hilfe oder Anerkennung","Bezug zu Kafkas Vaterbeziehung oder „kafkaesk“"],
+  transfer:"Welcher Operator verlangt diesen Aufbau?",
+  sol:"<p>Autorität: Der Vater gewinnt nach der Verwandlung Macht zurück und verletzt Gregor, der Schutzmann lacht und sagt „Gibs auf!“. Beide verweigern Hilfe. Reaktion: Gregor zieht sich zurück und gibt sich auf, der Ich-Erzähler bleibt orientierungslos zurück. Beides spiegelt Ohnmacht gegenüber übermächtigen Autoritäten, wie Kafka sie gegenüber dem Vater erlebte.</p><p>Transfer: vergleichen.</p>"},
+ {id:"m5",f:"challenge",topic:"Lyrik",title:"Boss-Vorbote: Ein Stilmittel, volle Punkte",sit:"Klausurbedingungen, 10 Minuten, LK-Niveau.",
+  task:"<p>Wähle ein Gedicht aus deinen Unterlagen („Kleine Aster“, „Der Gott der Stadt“ oder „Weltende“). Schreib einen Analyseabsatz: Stilmittel benennen → Zitat mit Vers → Wirkung → Epochenbezug.</p>",
+  w:"text",crit:["Stilmittel korrekt benannt","Zitat mit Versangabe","Wirkung und Epochenbezug"],
+  transfer:"Was unterscheidet Benns Blick auf den Tod von einem romantischen?",
+  sol:"<p>Beispiel „Kleine Aster“: Benn beschreibt die Obduktion mit medizinischer Fachsprache und nüchternem Ton, die Aster in der Brusthöhle wird zum grotesken Kontrast. Wirkung: Schock, Ästhetik des Hässlichen, keine Sentimentalität. Epochenbezug: typisch für den Expressionismus (Morgue-Zyklus 1912).</p><p>Transfer: Kein Trost und keine Verklärung, der Tod wird sachlich und körperlich gezeigt.</p>"}
+];
+M.bio=[
+ {id:"m1",f:"fehler",topic:"Toleranz",title:"Die halbe Kurve",sit:"In der LEK gab es für die Toleranzkurve nur 2 von 8 Punkten. Hier ist eine typische unvollständige Beschriftung: „Kurve, oben Optimum, Bereich.“",
+  task:"<p>Liste alle Beschriftungen auf, die eine vollständige Toleranzkurve braucht, und erkläre den Unterschied euryök/stenök.</p>",
+  w:"text",crit:["Achsen mit Faktor und Aktivität","Minimum, Maximum, Optimum, Pessima, Toleranzbereich, Präferendum","euryök = weit, stenök = eng"],
+  transfer:"Ist die Schwarzerle für Bodenfeuchte eher euryök oder stenök? Begründe.",
+  sol:"<p>x-Achse: Umweltfaktor mit Einheit, y-Achse: Lebensaktivität. Minimum und Maximum als Grenzen, Optimum (höchste Aktivität), Pessima (Überleben ohne Fortpflanzung), Toleranzbereich, Präferendum. Euryök: weiter Toleranzbereich, stenök: enger.</p><p>Transfer: Antwort je nach Kurve aus deinen Unterlagen, Begründung über die Breite des Toleranzbereichs.</p>"},
+ {id:"m2",f:"detektiv",topic:"DNA",title:"Das Röhrchen-Rätsel",sit:"Meselson und Stahl ziehen Bakterien auf schwerem ¹⁵N an und setzen sie dann auf leichtes ¹⁴N.",
+  task:"<p>Sag voraus, wo die Banden nach 0, 1 und 2 Generationen liegen, und erkläre, warum das die semikonservative Replikation beweist.</p>",
+  w:"text",crit:["0: schwer, 1: mittel, 2: mittel und leicht","Semikonservativ: ein alter, ein neuer Strang","Erklärt, warum konservativ ausgeschlossen ist"],
+  transfer:"Wie sähe Generation 1 bei konservativer Replikation aus?",
+  sol:"<p>0 Generationen: eine schwere Bande. 1: eine mittlere (Hybrid-DNA, ein alter ¹⁵N- und ein neuer ¹⁴N-Strang). 2: eine mittlere und eine leichte Bande. Das passt nur zur semikonservativen Replikation.</p><p>Transfer: eine schwere und eine leichte Bande, keine mittlere.</p>"},
+ {id:"m3",f:"erklaer",topic:"Wald",title:"Wohin verschwindet die Energie?",sit:"In der LEK gab es für den Energiefluss 1 von 5 Punkten.",
+  task:"<p>Erkläre in 5 Sätzen den Energiefluss in der Kette Eichenblatt → Raupe → Meise → Sperber. Verwende: Fotosynthese, Trophiestufe, 10 %, Wärme.</p>",
+  w:"text",crit:["Lichtenergie wird zu chemischer Energie","Nur ca. 10 % pro Stufe weitergegeben","Rest als Wärme, Energie fließt statt zu kreisen"],
+  transfer:"Warum gibt es weniger Sperber als Meisen?",
+  sol:"<p>Pflanzen wandeln Lichtenergie durch Fotosynthese in chemische Energie (Glucose) um. Auf jeder Trophiestufe wird nur etwa 10 % der Energie weitergegeben. Der Rest wird für Bewegung, Wachstum und Körperwärme genutzt und geht als Wärme verloren. Deshalb fließt Energie durch das Ökosystem, sie kreist nicht. Stoffe wie Kohlenstoff kreisen dagegen.</p><p>Transfer: Auf der höchsten Stufe kommt am wenigsten Energie an, sie reicht nur für wenige Tiere.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Proteinbiosynthese",title:"Vom Gen zum Protein",sit:"Codogener DNA-Strang: 3'-TAC GGA TTC ATT-5'",
+  task:"<p>Schreib die mRNA, übersetze mit der Codesonne in Aminosäuren und benenne, wo welcher Schritt in der Zelle abläuft.</p>",
+  w:"text",crit:["mRNA komplementär mit U statt T","Start AUG = Met, Stopp erkannt","Transkription im Zellkern, Translation am Ribosom"],
+  transfer:"Was passiert, wenn aus GGA durch Mutation GGG wird?",
+  sol:"<p>mRNA: 5'-AUG CCU AAG UAA-3'. Aminosäuren: Met – Pro – Lys – Stopp. Transkription im Zellkern (RNA-Polymerase), Translation am Ribosom im Cytoplasma (tRNA mit Anticodon).</p><p>Transfer: mRNA CCU wird zu CCC, das codiert ebenfalls Prolin. Stumme Mutation, weil der Code redundant ist.</p>"},
+ {id:"m5",f:"challenge",topic:"Nische",title:"Boss-Vorbote: Die Kiefer im Moor",sit:"Klausurbedingungen, 10 Minuten.",
+  task:"<p>Die Waldkiefer hat ihr Optimum bei mittlerer Bodenfeuchte, wächst in der Natur aber auf trockenen, sauren Böden. Erkläre das mit Fundamental- und Realnische und Konkurrenz.</p>",
+  w:"text",crit:["Fundamentalnische = ohne Konkurrenz möglich","Realnische = mit Konkurrenz tatsächlich genutzt","Interspezifische Konkurrenz als Ursache"],
+  transfer:"Was besagt das Konkurrenzausschlussprinzip?",
+  sol:"<p>Ohne Konkurrenz (Fundamentalnische, physiologische Potenz) wüchse die Kiefer am besten bei mittlerer Feuchte. Dort wird sie aber von konkurrenzstärkeren Baumarten verdrängt (interspezifische Konkurrenz). Ihre Realnische (ökologische Potenz) liegt deshalb auf trockenen, sauren Böden, wo andere schlechter zurechtkommen.</p><p>Transfer: Zwei Arten mit gleicher Nische können nicht dauerhaft zusammenleben.</p>"}
+];
+M.religion=[
+ {id:"m1",f:"fehler",topic:"Jesus",title:"Der Zeitungsfehler",sit:"Ein Artikel behauptet: „Dass Jesus gelebt hat, wissen wir nur aus der Bibel.“",
+  task:"<p>Widerlege den Satz mit <b>zwei außerbiblischen Quellen</b> und sag, was sie belegen.</p>",
+  w:"text",crit:["Zwei Quellen mit ungefährer Zeit (Josephus, Tacitus, Plinius, Talmud)","Was belegt ist: Existenz, Hinrichtung unter Pilatus, Anhänger","Sachlicher Ton"],
+  transfer:"Warum ist Tacitus als Zeuge besonders glaubwürdig?",
+  sol:"<p>Tacitus (um 116 n. Chr.) schreibt, dass Christus unter Pontius Pilatus hingerichtet wurde. Flavius Josephus (um 93) erwähnt Jakobus, den „Bruder Jesu, der Christus genannt wird“. Sie belegen: Jesus hat gelebt, wurde unter Pilatus hingerichtet und hatte Anhänger.</p><p>Transfer: Er war kein Christ, eher ein Gegner, hatte also kein Interesse, Jesus aufzuwerten.</p>"},
+ {id:"m2",f:"detektiv",topic:"Evangelien",title:"Wer hat abgeschrieben?",sit:"Matthäus und Lukas erzählen viele Szenen fast wortgleich wie Markus, haben aber auch gemeinsame Jesusworte, die bei Markus fehlen.",
+  task:"<p>Erkläre den Befund mit der <b>Zwei-Quellen-Theorie</b>. Nenne Markus, Q und Sondergut.</p>",
+  w:"text",crit:["Markus als ältestes Evangelium (um 70)","Q als Spruchquelle für gemeinsame Worte","Sondergut erklärt"],
+  transfer:"Warum gehört Johannes nicht zu den Synoptikern?",
+  sol:"<p>Markus ist das älteste Evangelium (um 70). Matthäus und Lukas nutzten ihn als Vorlage, daher die gleichen Szenen. Gemeinsame Jesusworte ohne Markus stammen aus der Spruchquelle Q (Logienquelle). Was nur einer von beiden hat, ist Sondergut.</p><p>Transfer: Johannes hat einen eigenen Aufbau und eigene Theologie, er ist nicht „zusammenschaubar“.</p>"},
+ {id:"m3",f:"erklaer",topic:"Reich Gottes",title:"Schon jetzt und noch nicht",sit:"Ein Freund sagt: „Reich Gottes, das ist doch der Himmel nach dem Tod.“",
+  task:"<p>Erkläre ihm in 4 bis 5 Sätzen, was Jesus mit Reich Gottes meint, mit zwei Beispielen aus seinem Handeln.</p>",
+  w:"text",crit:["Kein Ort, sondern Gottes Herrschaft","Schon jetzt: Heilungen, Gemeinschaft mit Ausgegrenzten","Noch nicht vollendet"],
+  transfer:"Wie hängt das Reich Gottes mit dem Dekalog zusammen?",
+  sol:"<p>Reich Gottes ist kein Ort, sondern Gottes Herrschaft dort, wo Menschen nach seinem Willen miteinander umgehen. Es beginnt schon jetzt, etwa wenn Jesus Kranke heilt oder mit Ausgegrenzten isst. Vollendet ist es aber noch nicht.</p><p>Transfer: Beide beschreiben ein Leben nach Gottes Willen in Freiheit und Gerechtigkeit, nach der Befreiung durch Gott.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Gottesbilder",title:"Fromm gegen Zenger",sit:"Zwei Theologen, ein Satz: „Ich bin, der ich bin“ (Ex 3,14).",
+  task:"<p>Vergleiche Fromm und Zenger nach <b>zwei Aspekten</b> (Gottes Name/Bilder, Folgen für den Glauben). Gib die Positionen im <b>Konjunktiv</b> wieder.</p>",
+  w:"text",crit:["Indirekte Rede (Konjunktiv)","Fromm: namenlos, Bilderverbot, Intoleranz-Gefahr","Zenger: viele gleichwertige Bilder, Gott in der Geschichte da"],
+  transfer:"Welcher Position stimmst du eher zu? Ein begründeter Satz.",
+  sol:"<p>Fromm meint, Gott sei namenlos, ein Name mache ihn zu einem Ding und widerspreche dem Bilderverbot. Zenger dagegen sagt, die vielen Bilder der Bibel seien gleichwertig und zeigten verschiedene Seiten Gottes. Für Fromm folge daraus, dass niemand seine Vorstellung für die einzig richtige halten dürfe, sonst drohe Intoleranz. Zenger betont, Ex 3,14 bedeute, Gott sei in der Geschichte da, treu und lebendig.</p>"},
+ {id:"m5",f:"challenge",topic:"Ethik",title:"Boss-Vorbote: Der Dekalog",sit:"Klausurbedingungen, 10 Minuten.",
+  task:"<p>„Erläutern Sie Aufbau und Bedeutung des Dekalogs.“ 6 bis 8 Sätze.</p>",
+  w:"text",crit:["Gebote 1–3 Gott, 4–10 Mitmensch","Befreiung vor Gebot („aus Ägypten geführt“)","Ethos des Bundes statt reiner Rechtssätze"],
+  transfer:"Wo steht der Dekalog in der Bibel?",
+  sol:"<p>Der Dekalog (zehn Worte) ist über Jahrhunderte entstanden. Die Gebote 1–3 betreffen das Verhältnis zu Gott (theozentrisch), 4–10 das Zusammenleben (anthropozentrisch). Am Anfang steht die Befreiung: Gott hat Israel aus Ägypten geführt, erst dann folgen die Gebote. Sie sind Ordnung des Bundes, ein Ethos zur freiwilligen Annahme.</p><p>Transfer: Ex 20 und Dtn 5.</p>"}
+];
+M.geschichte=[
+ {id:"m1",f:"fehler",topic:"1918/19",title:"Die Legende entlarven",sit:"Ein Flugblatt von 1920: „Unser Heer war im Felde unbesiegt. Erst die Novemberverbrecher in der Heimat haben uns den Dolch in den Rücken gestoßen!“",
+  task:"<p>Entlarve die Aussage mit Fakten von 1918 und erkläre, welche Folgen die Legende für die Republik hatte.</p>",
+  w:"text",crit:["OHL forderte selbst den Waffenstillstand (29.09.1918)","Fachbegriff Dolchstoßlegende und „Novemberverbrecher“ erklärt","Folge: Demokraten diffamiert, Republik geschwächt"],
+  transfer:"Wer verbreitete die Legende 1919 öffentlich?",
+  sol:"<p>Falsch: Die OHL (Hindenburg, Ludendorff) hatte am 29.09.1918 selbst den Waffenstillstand gefordert, weil der Krieg militärisch verloren war. Die Legende schob die Schuld auf Revolutionäre, Demokraten und Juden. Folge: Demokratische Politiker wurden als „Novemberverbrecher“ diffamiert, die Republik verlor Rückhalt.</p><p>Transfer: Hindenburg vor dem Untersuchungsausschuss 1919.</p>"},
+ {id:"m2",f:"detektiv",topic:"Krisen",title:"Die Gumbel-Akte",sit:"Statistik 1919–1922: rund 350 politische Morde von rechts, 22 von links. Rechte Täter wurden viel milder bestraft.",
+  task:"<p>Was verrät die Statistik über die Justiz der Republik? Formuliere ein <b>Sachurteil</b> und ein <b>Werturteil</b>, klar getrennt.</p>",
+  w:"text",crit:["Sachurteil: Justiz „auf dem rechten Auge blind“","Werturteil als eigene Bewertung erkennbar","Zwei Mordopfer als Beispiel (Erzberger, Rathenau, Luxemburg, Liebknecht)"],
+  transfer:"Warum war das gefährlich für die Demokratie?",
+  sol:"<p>Sachurteil: Die Justiz verfolgte rechte Gewalt kaum und milde, linke Täter hart. Sie war „auf dem rechten Auge blind“, z. B. bei den Morden an Erzberger (1921) und Rathenau (1922). Werturteil: Ich halte das für einen schweren Verrat am Rechtsstaat, weil die Gerichte die Feinde der Republik schützten.</p><p>Transfer: Republikfeinde fühlten sich sicher, Gewalt wurde normal.</p>"},
+ {id:"m3",f:"erklaer",topic:"Republik",title:"Die Verfassungsfalle",sit:"Deine Klasse versteht nicht, wie eine Demokratie sich „legal“ selbst abschaffen kann.",
+  task:"<p>Erkläre das Zusammenspiel von <b>Art. 48, 54 und 25</b> in 5 Sätzen am Beispiel der Präsidialkabinette.</p>",
+  w:"text",crit:["Art. 48: Notverordnungen","Art. 54: Reichstag kann widersprechen","Art. 25: Auflösung, 60 Tage ohne Parlament"],
+  transfer:"Wer waren die drei Präsidialkanzler vor Hitler?",
+  sol:"<p>Ab 1930 regierte der Kanzler mit Notverordnungen des Reichspräsidenten (Art. 48). Der Reichstag konnte sie aufheben oder dem Kanzler das Misstrauen aussprechen (Art. 54). Dann löste der Reichspräsident den Reichstag auf (Art. 25), und es wurde bis zu 60 Tage ohne Parlament regiert. So wurde das Parlament ausgeschaltet.</p><p>Transfer: Brüning, von Papen, von Schleicher.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Stabilität",title:"Goldene Zwanziger, wirklich golden?",sit:"1924–1929 gelten als stabile Jahre.",
+  task:"<p>Nenne drei Erfolge Stresemanns und zwei Gründe, warum die Stabilität nur scheinbar war. Verbinde mit der Weltwirtschaftskrise.</p>",
+  w:"text",crit:["Dawes-Plan, Locarno, Völkerbund","Abhängigkeit von US-Krediten","Verknüpfung mit 1929"],
+  transfer:"Wofür bekam Stresemann 1926 den Friedensnobelpreis?",
+  sol:"<p>Erfolge: Dawes-Plan 1924 (Reparationen geregelt, US-Kredite), Locarno 1925 (Westgrenzen anerkannt), Völkerbund 1926. Scheinbar, weil die Wirtschaft von kurzfristigen US-Krediten abhing und Republikfeinde stark blieben. Als 1929 die Weltwirtschaftskrise kam, wurden Kredite abgezogen, Massenarbeitslosigkeit folgte.</p><p>Transfer: für die Verständigungspolitik mit Frankreich (Locarno).</p>"},
+ {id:"m5",f:"challenge",topic:"NS-Staat",title:"Boss-Vorbote: Ideologie-Check",sit:"Klausurbedingungen, LK-Niveau, 10 Minuten.",
+  task:"<p>Erläutere <b>drei Elemente der NS-Ideologie</b> und zeige an je einem Beispiel, wie Propaganda oder Gleichschaltung sie umsetzte.</p>",
+  w:"text",crit:["Führerprinzip, Volksgemeinschaft, Rassismus/Antisemitismus oder Lebensraum","Je ein konkretes Beispiel","Fachbegriffe korrekt"],
+  transfer:"Was war das Ermächtigungsgesetz?",
+  sol:"<p>Führerprinzip: absoluter Gehorsam, z. B. Gleichschaltung der Länder und Parteienverbot. Volksgemeinschaft: Einheit von Volk und Staat, z. B. das Plakat „Ganz Deutschland hört den Führer“ mit dem Volksempfänger. Rassismus und Antisemitismus: Ausgrenzung von Juden, z. B. durch Hetzpropaganda.</p><p>Transfer: Gesetz vom März 1933, das der Regierung erlaubte, Gesetze ohne Reichstag zu erlassen.</p>"}
+];
+M.englisch=[
+ {id:"m1",f:"fehler",topic:"Skills",title:"Grammar hunt",sit:"Your test said: language 05, many grammar marks. Here is a sentence like yours: “Globalization have many advantages, because it make products more cheap and people can since 1990 travel more.”",
+  task:"<p>Find all mistakes and write the correct sentence. Then write one sentence of your own about outsourcing without mistakes.</p>",
+  w:"text",crit:["has, makes (3rd person -s)","cheaper (comparative)","Word order: can travel more since 1990"],
+  transfer:"Name one more typical mistake from your list.",
+  sol:"<p>“Globalization has many advantages because it makes products cheaper, and since 1990 people have been able to travel more.”</p><p>Transfer: e.g. German word order (verb at the end), missing effect in speech analysis.</p>"},
+ {id:"m2",f:"detektiv",topic:"Globalization",title:"Which era is it?",sit:"Three headlines: (1) “Spain sends ships to the New World.” (2) “Ford opens factories in 15 countries.” (3) “Teen in Kenya sells apps worldwide.”",
+  task:"<p>Match each headline to Friedman’s Globalization 1.0, 2.0 or 3.0 and explain in one sentence each.</p>",
+  w:"text",crit:["1.0 countries, 2.0 companies, 3.0 individuals","Each with a reason","Key vocabulary used (multinational corporation, digital platforms)"],
+  transfer:"Which era are you part of when you upload a video?",
+  sol:"<p>(1) 1.0: driven by countries. (2) 2.0: driven by multinational corporations. (3) 3.0: individuals use digital platforms to act globally.</p><p>Transfer: Globalization 3.0.</p>"},
+ {id:"m3",f:"erklaer",topic:"Climate",title:"Device + effect",sit:"DiCaprio at the UN (2016): “You are the last best hope of Earth.”",
+  task:"<p>Write one analysis paragraph: name the device, quote, explain the effect. Then find a second device in his speech (from your notes) and do the same.</p>",
+  w:"text",crit:["Device named (direct address, allusion to Lincoln)","Quote included","Effect explained with “in order to” or “which makes …”"],
+  transfer:"Why does he quote Lincoln?",
+  sol:"<p>DiCaprio uses direct address (“You are the last best hope of Earth”) in order to make the politicians feel personally responsible. He also alludes to Abraham Lincoln, which gives his appeal historical weight and authority.</p><p>Transfer: to borrow authority and present the moment as historic.</p>"},
+ {id:"m4",f:"verknuepf",topic:"Society",title:"Fast fashion meets globalization",sit:"A T-shirt costs 4 euros in Germany.",
+  task:"<p>Explain in 5 sentences how this price is connected to globalization. Use at least 4 words: outsource, multinational corporation, interdependent, trade barrier, repercussion.</p>",
+  w:"text",crit:["4 key words used correctly","Cause and effect clear","One negative repercussion named"],
+  transfer:"Give one argument FOR cheap clothes.",
+  sol:"<p>Multinational corporations outsource production to countries with low wages. Low trade barriers make transport and import cheap. Countries become interdependent: Germany needs the cheap goods, Bangladesh needs the jobs. A repercussion is poor working conditions and environmental damage.</p><p>Transfer: affordable clothes for people with low income, jobs in producing countries.</p>"},
+ {id:"m5",f:"challenge",topic:"Skills",title:"Boss preview: mediation in 15 minutes",sit:"Your exchange partner from Canada asks: “What do Germans think about AI in schools?” You have a German article (ask Claude for one with „Mediation-Texte“, or use one from your notes).",
+  task:"<p>Write an informal email (about 120 words). Select only what your partner needs, explain German specifics, do not translate.</p>",
+  w:"text",crit:["Addressee and informal register","Only relevant points selected","No sentence-by-sentence translation"],
+  transfer:"Which four IQB criteria are used to grade mediation?",
+  sol:"<p>Check your email against the criteria: task fulfilment, focus on relevant aspects, addressee, structure. Use an opening (“Hi …”), a short answer to the question, two or three points, a closing question.</p><p>Transfer: task fulfilment, relevant aspects, addressee, structure.</p>"}
+];
+
+/* ============ SPIEL: XP, Level, Sterne, Abzeichen, Missionen ============
+   XP werden immer aus dem Stand berechnet (nie gespeichert), so kann nichts doppelt zählen oder verloren gehen.
+   Punkte gibt es für Ergebnisse: Mission geschafft, Projektschritt, Boss-Kampf, Quiz. Keine Strafen, keine Streaks. */
+const XP={mission:25,step:10,boss:50,quizQ:5,rate:5,leist:5};
+const LEVELS=[[0,"Neuling"],[100,"Lernling"],[250,"Entdecker"],[450,"Tüftler"],[700,"Stratege"],[1000,"Experte"],[1400,"Meister"],[1900,"Großmeister"],[2500,"Abi-Held"],[3200,"Abi-Legende"]];
+function xpTotal(){
+  let x=0;
+  Object.keys(S.mis||{}).forEach(()=>x+=XP.mission);
+  Object.keys(S.done).forEach(k=>{if(/^p:.*:check$/.test(k))x+=XP.boss;else if(k.startsWith("p:"))x+=XP.step;else if(k.startsWith("l:")||k.startsWith("d:"))x+=XP.leist;});
+  Object.values(S.quiz).forEach(q=>x+=q.best*XP.quizQ);
+  Object.keys(S.rate).forEach(()=>x+=XP.rate);
+  return x;
+}
+function levelOf(x){let i=0;LEVELS.forEach((l,k)=>{if(x>=l[0])i=k;});const cur=LEVELS[i],nxt=LEVELS[i+1];return {n:i+1,name:cur[1],from:cur[0],to:nxt?nxt[0]:cur[0],next:nxt?nxt[1]:null};}
+/* Sterne pro Thema: eigene Einschätzung nach einer Mission zählt, sonst Projekt-Fortschritt */
+function stars(s,t){
+  const c=(S.conf||{})[s+":"+t]; if(c) return c;
+  const p=proj(s); if(p&&p.covers.includes(t)){ if(projComplete(s,p)) return 2; if(projDone(s,p)>0) return 1; }
+  return 0;
+}
+const STARW=["noch offen","unsicher","geht so","sicher"];
+function starHtml(n){return `<span class="stars" aria-label="${n} von 3 Sternen">${[1,2,3].map(i=>`<i class="${i<=n?"on":""}">★</i>`).join("")}</span>`;}
+function misDone(s,id){return !!(S.mis||{})[s+":"+id];}
+/* Abzeichen: alle aus dem Stand berechnet */
+function badges(){
+  const done=Object.keys(S.mis||{}).map(k=>{const [s,id]=k.split(":");const m=(M[s]||[]).find(x=>x.id===id);return m?{s,m}:null;}).filter(Boolean);
+  const fmts=new Set(done.map(d=>d.m.f)), subs=new Set(done.map(d=>d.s));
+  const cnt=f=>done.filter(d=>d.m.f===f).length;
+  const boss=Object.keys(S.done).some(k=>/^p:.*:check$/.test(k));
+  const quizFull=Object.entries(S.quiz).some(([s,q])=>q.best===q.total);
+  const topicMaster=LEARN.some(s=>C[s].topics.every(t=>stars(s,t[0])===3));
+  const lv=levelOf(xpTotal()).n;
+  return [
+   {id:"start",i:"🚀",n:"Erste Mission",how:"Schließ deine erste Mission ab.",got:done.length>=1},
+   {id:"code",i:"💻",n:"Code-Knacker",how:"Alle 5 Info-Missionen geschafft.",got:(M.info||[]).every(m=>misDone("info",m.id))},
+   {id:"fehler",i:"🔍",n:"Fehlerjäger",how:"5 Fehlerjagden in beliebigen Fächern.",got:cnt("fehler")>=5},
+   {id:"detektiv",i:"🕵️",n:"Meisterdetektiv",how:"5 Detektivfälle gelöst.",got:cnt("detektiv")>=5},
+   {id:"allround",i:"🎲",n:"Allrounder",how:"Alle 5 Missionsarten mindestens einmal.",got:fmts.size>=5},
+   {id:"breit",i:"🧭",n:"Breit aufgestellt",how:"Missionen in 3 verschiedenen Fächern.",got:subs.size>=3},
+   {id:"boss",i:"⚔️",n:"Boss besiegt",how:"Den ersten Boss-Kampf (Abschlusscheck) geschafft.",got:boss},
+   {id:"quiz",i:"🎯",n:"Volltreffer",how:"Ein Quiz komplett richtig.",got:quizFull},
+   {id:"stern",i:"🌟",n:"Themen-Meister",how:"In einem Fach alle Themen mit 3 Sternen.",got:topicMaster},
+   {id:"lv5",i:"🏆",n:"Stratege",how:"Level 5 erreichen.",got:lv>=5}
+  ];
+}
+/* Rückmeldung bei neuen XP, Level oder Abzeichen */
+let lastXP=null,lastLv=null,lastBadges=null;
+function gameNotice(){
+  const x=xpTotal(), lv=levelOf(x).n, bg=badges().filter(b=>b.got).map(b=>b.id);
+  if(lastXP!==null){
+    const msgs=[];
+    if(x>lastXP) msgs.push(`+${x-lastXP} XP`);
+    if(lv>lastLv) msgs.push(`Level ${lv}: ${levelOf(x).name}!`);
+    bg.filter(b=>!lastBadges.includes(b)).forEach(b=>{const o=badges().find(z=>z.id===b);msgs.push(`Abzeichen: ${o.i} ${o.n}`);});
+    if(msgs.length) toast(msgs, lv>lastLv||bg.length>lastBadges.length);
+  }
+  lastXP=x;lastLv=lv;lastBadges=bg;
+}
+function toast(msgs,big){
+  let el=document.getElementById("toast"); if(!el){el=document.createElement("div");el.id="toast";el.setAttribute("role","status");el.setAttribute("aria-live","polite");document.body.appendChild(el);}
+  el.className="toast"+(big?" big":""); el.innerHTML=msgs.map(m=>`<div>${esc(m)}</div>`).join("");
+  void el.offsetWidth; el.classList.add("show"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("show"),big?4200:2400);
+}
+
+/* Missionen eines Fachs */
+const openMis={};
+function misStep(s,id){const m=M[s].find(x=>x.id===id);return {w:m.w,t:m.title,x:`<p>${m.sit}</p>${m.task}`,sol:m.sol,start:m.start};}
+function viewMissionen(s){
+  const ms=M[s]||[]; if(!ms.length) return `<div class="coach">Für dieses Fach gibt es noch keine Missionen.</div>`;
+  const id=openMis[s];
+  if(id){
+    const m=ms.find(x=>x.id===id), st=misStep(s,id), dn=misDone(s,id);
+    const allc=m.crit.every((_,k)=>S.done["mc:"+s+":"+id+":"+k]);
+    let h=`<button class="btn ghost" data-mopen="${s}|" style="justify-self:start;padding-left:0">‹ alle Missionen</button>
+      <div class="card prose mission ${dn?"won":""}"><div class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"geschafft ✓":"+"+XP.mission+" XP"}</span></div>
+      <h3>${esc(m.title)}</h3><p class="sit">${m.sit}</p><div class="small muted">Thema: ${esc(m.topic)} · etwa 10–20 Minuten, ganz ohne Druck</div></div>
+      <div class="step"><div></div><div class="body"><div class="small muted">Dein Auftrag</div><div>${m.task}</div>${workBox(s,{id:"m"},id,st)}</div></div>
+      <div class="card stack"><div class="eyebrow">Selbstkontrolle: Hast du das drin?</div><div class="crit">${m.crit.map((c,k)=>{const cid="mc:"+s+":"+id+":"+k;return `<label class="critrow"><input type="checkbox" class="check" data-id="${cid}" ${S.done[cid]?"checked":""}> <span>${esc(c)}</span></label>`;}).join("")}</div>
+      <details class="sol"><summary>Bonusfrage (Transfer)</summary><p>${m.transfer}</p></details>
+      <details class="sol"><summary>Musterlösung zum Vergleichen</summary>${m.sol}</details></div>`;
+    if(dn){const c=(S.mis[s+":"+id]||{}).conf||0;h+=`<div class="coach win">Mission geschafft! Deine Einschätzung bei <b>${esc(m.topic)}</b>: ${STARW[c]} ${starHtml(c)}. Du kannst sie unten jederzeit ändern.</div>`;}
+    h+=`<div class="card stack"><div class="eyebrow">${dn?"Wie sicher bist du jetzt?":"Mission abschließen"}</div>${allc||dn?`<p class="small">Wie sicher fühlst du dich jetzt bei <b>${esc(m.topic)}</b>?</p><div class="row">${[1,2,3].map(c=>`<button class="btn ${dn&&(S.mis[s+":"+id]||{}).conf===c?"primary":""}" data-mwin="${s}|${id}|${c}">${starHtml(c)} ${STARW[c]}</button>`).join("")}</div>`:`<p class="small muted">Hak oben alle Punkte der Selbstkontrolle ab. Dann kannst du die Mission abschließen und bekommst ${XP.mission} XP.</p>`}</div>`;
+    return h;
+  }
+  const best=bestFmt();
+  let h=`<div class="coach">Kurz-Missionen dauern 10 bis 20 Minuten. Sie sind perfekt für Tage mit wenig Lust oder als Aufwärmen vor dem Projekt. Jede bringt <b>${XP.mission} XP</b>.${best?` Bei dir laufen <b>${MF[best].n}en</b> bisher am besten.`:""}</div><div class="mgrid">`;
+  ms.forEach(m=>{const dn=misDone(s,m.id),st=stars(s,m.topic);
+    h+=`<button class="mcard ${dn?"won":""}" data-mopen="${s}|${m.id}"><span class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"✓":"+"+XP.mission+" XP"}</span></span><b>${esc(m.title)}</b><span class="small muted">${esc(m.topic)} ${starHtml(st)}</span></button>`;});
+  return h+`</div>`;
+}
+function bestFmt(){const r={};Object.entries(S.mis||{}).forEach(([k,v])=>{const [s,id]=k.split(":");const m=(M[s]||[]).find(x=>x.id===id);if(!m)return;(r[m.f]=r[m.f]||[]).push(v.conf||2);});
+  let b=null,bv=0;Object.entries(r).forEach(([f,a])=>{const av=a.reduce((x,y)=>x+y,0)/a.length;if(a.length>=2&&av>bv){bv=av;b=f;}});return b;}
+function themenKarte(s){
+  const c=C[s];
+  return `<div class="card stack"><div class="row"><div class="eyebrow">Deine Themen-Karte</div><span class="spacer"></span><span class="tag">${c.topics.reduce((a,t)=>a+stars(s,t[0]),0)} von ${c.topics.length*3} ★</span></div><div class="tmap">${c.topics.map(t=>{const n=stars(s,t[0]);return `<div class="tnode st${n}"><div class="row"><b>${esc(t[0])}</b><span class="spacer"></span>${starHtml(n)}</div><span class="small">${esc(t[1])}</span><span class="small muted">${STARW[n]}</span></div>`;}).join("")}</div><p class="small muted">Sterne bekommst du durch Projekte und Missionen. Nach jeder Mission sagst du selbst, wie sicher du bist.</p></div>`;
+}
+/* Nächste Mission auf der Startseite */
+let nextLen="kurz";
+function nextMission(){
+  const subs=LEARN.filter(s=>daysUntil(SUBJ[s].d)>=0).sort((a,b)=>SUBJ[a].d.localeCompare(SUBJ[b].d));
+  const bf=bestFmt();
+  if(nextLen==="kurz"){
+    for(const s of subs.slice(0,3)){const open=(M[s]||[]).filter(m=>!misDone(s,m.id)); if(!open.length) continue;
+      open.sort((a,b)=>(stars(s,a.topic)-stars(s,b.topic))||((b.f===bf)-(a.f===bf)));
+      const m=open[0]; return {s,kind:"mission",id:m.id,title:m.title,sub:`${MF[m.f].i} ${MF[m.f].n} · ${m.topic}`,why:`${SUBJ[s].n} ist ${cdText(daysUntil(SUBJ[s].d))} dran, und bei „${m.topic}“ hast du noch ${stars(s,m.topic)} von 3 Sternen.`,xp:XP.mission};}
+  }
+  for(const s of subs.slice(0,3)){
+    const p=proj(s);
+    if(p&&!projComplete(s,p)){const open=p.steps.map((st,i)=>({st,i})).filter(o=>!S.done[pid(s,p.id,o.i)]);
+      if(nextLen==="lang"&&open.length<=2) return {s,kind:"boss",title:"Boss-Kampf: "+p.check.t,sub:p.title,why:`Dein Projekt ist fast fertig. Zeit für den Endgegner von ${SUBJ[s].n}.`,xp:XP.boss+open.length*XP.step};
+      if(open.length){const n=nextLen==="lang"?Math.min(3,open.length):1;const sl=open.slice(0,n);return {s,kind:"proj",title:sl.map(o=>o.st.t).join(" · "),sub:p.title+` · Schritt ${sl[0].i+1}${n>1?"–"+(sl[n-1].i+1):""}`,why:`Du bist mitten im Projekt für ${SUBJ[s].n} (${cdText(daysUntil(SUBJ[s].d))}).`,xp:n*XP.step};}
+      return {s,kind:"boss",title:"Boss-Kampf: "+p.check.t,sub:p.title,why:"Alle Schritte geschafft. Jetzt der Endgegner.",xp:XP.boss};
+    }
+    if(!p&&plan(s).st!=="später"){const r=recommended(s);return {s,kind:"start",title:"Projekt starten: "+r.title,sub:SUBJ[s].n+" · "+r.effort,why:`${SUBJ[s].n} ist ${cdText(daysUntil(SUBJ[s].d))} dran. Dieses Projekt passt gerade am besten.`,xp:XP.step};}
+  }
+  if(nextLen!=="kurz"){const save=nextLen;nextLen="kurz";const r=nextMission();nextLen=save;return r;}
+  return null;
+}
+function nextBox(){
+  const x=xpTotal(), lv=levelOf(x), nm=nextMission();
+  let h=`<section class="card stack nextbox"><div class="row"><h3>Deine nächste Mission</h3><span class="spacer"></span><span class="lvl">Lv ${lv.n} · ${esc(lv.name)}</span></div>
+    <div class="row" role="group" aria-label="Wie viel Zeit hast du?"><span class="small muted">Wie viel Zeit hast du?</span>${[["kurz","kurz · 10–20 Min"],["normal","normal · 25–45 Min"],["lang","lang · 45–90 Min"]].map(([k,l])=>`<button class="btn ${nextLen===k?"primary":""}" data-nlen="${k}">${l}</button>`).join("")}</div>`;
+  if(!nm) h+=`<div class="coach">Gerade ist alles erledigt. Stark! Schau dir die nächsten Klausuren an oder gönn dir eine Pause.</div>`;
+  else h+=`<div class="nm" style="--c:${SUBJ[nm.s].c}"><div class="row">${chip(nm.s)}<span class="spacer"></span><span class="xp">+${nm.xp} XP</span></div><b class="nmt">${esc(nm.title)}</b><span class="small muted">${esc(nm.sub)}</span><span class="small">${esc(nm.why)}</span><div class="row"><a class="btn primary" href="#${nm.s}" data-go="${nm.kind}|${nm.s}|${nm.id||""}">Los geht’s</a></div></div>`;
+  h+=`<p class="small muted">Nur ein Vorschlag. Du entscheidest, was du machst.</p></section>`;
+  return h;
+}
+function badgeBox(){
+  const b=badges(), x=xpTotal(), lv=levelOf(x), pct=lv.to>lv.from?Math.round((x-lv.from)/(lv.to-lv.from)*100):100;
+  return `<section class="card stack"><div class="row"><h3>Dein Spielstand</h3><span class="spacer"></span><span class="tag">${x} XP</span></div>
+   <div class="lvrow"><div class="lvbadge">${lv.n}</div><div class="stack" style="gap:4px;flex:1;min-width:0"><b>${esc(lv.name)}</b><div class="bar"><b style="width:${pct}%"></b></div><span class="small muted">${lv.next?`Noch ${lv.to-x} XP bis Level ${lv.n+1}: ${esc(lv.next)}`:"Höchstes Level erreicht!"}</span></div></div>
+   <div class="badges">${b.map(o=>`<div class="badge2 ${o.got?"got":""}" title="${esc(o.how)}"><span class="bi">${o.got?o.i:"🔒"}</span><b>${esc(o.n)}</b><span class="small muted">${esc(o.how)}</span></div>`).join("")}</div>
+   <p class="small muted">XP gibt es für Ergebnisse: Mission ${XP.mission}, Projektschritt ${XP.step}, Boss-Kampf ${XP.boss}, jede richtige Quizfrage ${XP.quizQ} (bestes Ergebnis). Nichts geht verloren.</p></section>`;
+}
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-mopen]"), w=e.target.closest("[data-mwin]"), n=e.target.closest("[data-nlen]"), g=e.target.closest("[data-go]");
+  if(o){const [s,id]=o.dataset.mopen.split("|");openMis[s]=id||null;render();window.scrollTo(0,0);return;}
+  if(w){const [s,id,c]=w.dataset.mwin.split("|");const k=s+":"+id;S.mis=S.mis||{};S.conf=S.conf||{};
+    S.mis[k]=Object.assign({at:new Date().toISOString()},S.mis[k]||{},{conf:Number(c)});
+    const m=M[s].find(x=>x.id===id);S.conf[s+":"+m.topic]=Number(c);persist();render();return;}
+  if(n){nextLen=n.dataset.nlen;render();return;}
+  if(g){const [kind,s,id]=g.dataset.go.split("|");if(kind==="mission"){subjTab[s]="missionen";openMis[s]=id;}else{subjTab[s]="projekte";}
+    if(route()===s){e.preventDefault();render();window.scrollTo(0,0);}return;}
+});
+
 /* ============ HILFEN ============ */
 const WD=["So","Mo","Di","Mi","Do","Fr","Sa"], WDL=["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
 const MON=["Jan.","Feb.","März","Apr.","Mai","Juni","Juli","Aug.","Sep.","Okt.","Nov.","Dez."];
@@ -1391,11 +1814,10 @@ function running(){return LEARN.filter(s=>plan(s).st==="läuft");}
 const ST_LABEL={"läuft":"läuft","fertig":"fertig","jetzt":"jetzt starten","bald":"bald","später":"später","vorbei":"vorbei"};
 
 function updateOverall(){
-  const vals=LEARN.map(progress); const p=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
-  const run=running().length, fin=LEARN.filter(s=>plan(s).st==="fertig").length;
+  const x=xpTotal(), lv=levelOf(x), p=lv.to>lv.from?Math.round((x-lv.from)/(lv.to-lv.from)*100):100;
   document.getElementById("ovbar").style.width=p+"%";
-  document.getElementById("ovpct").textContent=p+" %";
-  document.getElementById("ovtxt").textContent=run+" Projekt"+(run===1?"":"e")+" laufen · "+fin+" fertig";
+  document.getElementById("ovpct").textContent=x+" XP";
+  document.getElementById("ovtxt").textContent="Level "+lv.n+" · "+lv.name;
 }
 
 /* Vorschläge für die nächsten 7 Tage. Nur Vorschläge: nichts wird automatisch abgehakt. */
@@ -1443,6 +1865,7 @@ function viewStart(){
   else if(run.length) advice=`<b>Gut im Plan.</b> Bleib bei ${run.map(x=>esc(SUBJ[x.s].n)).join(" und ")}.`;
   else advice="<b>Gerade ist nichts dringend.</b> Wenn du Lust hast, schau dir das nächste Projekt schon an.";
   let h=`<section class="stack"><div><div class="eyebrow">${esc(SEM.name)} · ${esc(SEM.sub)}</div><h2 class="big">${fmt(TODAY,true)}</h2></div></section>`;
+  h+=nextBox();
   // Fahrplan
   h+=`<section class="card stack"><div class="row"><h3>Dein Fahrplan</h3><span class="spacer"></span><span class="tag">${run.length} von max. ${c} laufen</span></div><div class="coach">${advice}</div><div class="fplan">`;
   pl.forEach(x=>{const sx=SUBJ[x.s];let hint;
@@ -1469,6 +1892,7 @@ function viewStart(){
     ms.forEach(([s,m])=>h+=`<a class="newrow" href="#${s}" data-tab="mitschriften">${chip(s)}<span><b>Mitschrift:</b> ${esc(m.title)}<br><span class="small muted">${esc(m.date||"")}</span></span></a>`);
     h+=`</section>`;
   }
+  h+=badgeBox();
   // Lerneffekt
   const ts=typeStats();
   h+=`<section class="card stack"><h3>Was zu dir passt</h3>`;
@@ -1501,7 +1925,7 @@ function viewTermine(){
 
 function tabsFor(s){
   if(L[s]){const t=[["ueberblick","Überblick"],["ablauf","Ablauf"]];if(C[s].spick.length)t.push(["spick","Spickzettel"]);if(C[s].mistakes.length)t.push(["tipps","Tipps"]);if(C[s].quiz.length)t.push(["quiz","Quiz"]);t.push(["feedback","Feedback"]);return t;}
-  return [["ueberblick","Überblick"],["projekte","Projekt"],["spick","Spickzettel"],["tipps","Klausurtipps"],["quiz","Quiz"],["mitschriften","Mitschriften"]];
+  return [["ueberblick","Überblick"],["projekte","Projekt"],["missionen","Missionen"],["spick","Spickzettel"],["tipps","Klausurtipps"],["quiz","Quiz"],["mitschriften","Mitschriften"]];
 }
 function viewSubj(s){
   const x=SUBJ[s], c=C[s]; const tabs=tabsFor(s); let tab=subjTab[s]||"ueberblick"; if(!tabs.some(t=>t[0]===tab)) tab="ueberblick";
@@ -1513,6 +1937,8 @@ function viewSubj(s){
     if(L[s]) h+=`<div class="coach"><b>So gehst du vor:</b> Unter „Ablauf“ die Vorbereitung abhaken, am Tag selbst die Checkliste. ${esc(L[s].claude)}</div>`;
     else{const pl=plan(s);h+=`<div class="coach"><b>Leitfaden:</b> ${pl.st==="läuft"||pl.st==="fertig"?"Dein Projekt: "+esc(pl.p.title)+".":pl.st==="jetzt"?"Jetzt ist ein guter Zeitpunkt, das Projekt zu starten.":pl.st==="vorbei"?"Die Klausur ist vorbei.":"Für "+esc(x.n)+" ist noch Zeit. Empfohlener Start: "+fmt(addDays(pl.startIn))+"."} Spickzettel und Quiz kannst du jederzeit nutzen, neue Mitschriften schickst du Claude im Chat.</div>`;}
   }
+  if(tab==="ueberblick"&&!L[s]&&C[s].topics.length) h+=themenKarte(s);
+  if(tab==="missionen") h+=viewMissionen(s);
   if(tab==="projekte") h+=viewProjekte(s);
   if(tab==="ablauf") h+=viewAblauf(s);
   if(tab==="spick") h+=`<div class="gloss">${c.spick.map((g,i)=>`<details ${i===0?"open":""}><summary>${esc(g[0])}</summary><div class="in">${g[1]}</div></details>`).join("")}</div>`;
@@ -1562,9 +1988,9 @@ function viewProjekte(s){
   if(p&&!browse[s]){
     const d=projDone(s,p),tot=projTotal(p);
     h+=`<div class="card prose pchosen"><div class="row"><div class="eyebrow">Dein Projekt · ${d} von ${tot} erledigt</div><span class="spacer"></span><button class="btn ghost" data-browse="${s}">vergleichen oder wechseln</button></div><h3>${esc(p.title)}</h3><p>${p.pitch}</p><p><b>Danach kannst du:</b> ${esc(p.trains)}</p>${coverChips(s,p)}<p class="small muted">Art: ${esc(TYPES[p.type])} · Umfang: ${esc(p.effort)}, frei einteilbar.</p></div>${howBox(p)}<div class="steps">`;
-    p.steps.forEach((st,i)=>{const id=pid(s,p.id,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""} aria-label="Schritt erledigt"><div class="body"><div class="small muted">Schritt ${i+1}</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label><div class="small">${st.x}</div>${stepExtra(s,p,i,st)}</div></div>`;});
+    p.steps.forEach((st,i)=>{const id=pid(s,p.id,i),dn=!!S.done[id];h+=`<div class="step ${dn?"done":""}"><input type="checkbox" class="check" id="s-${id}" data-id="${id}" ${dn?"checked":""} aria-label="Schritt erledigt"><div class="body"><div class="small muted">Schritt ${i+1} · +${XP.step} XP</div><label for="s-${id}" style="font-weight:700">${esc(st.t)}</label><div class="small">${st.x}</div>${stepExtra(s,p,i,st)}</div></div>`;});
     const cid=pid(s,p.id,"check"),cdn=!!S.done[cid];
-    h+=`<div class="step final ${cdn?"done":""}"><input type="checkbox" class="check" id="s-${cid}" data-id="${cid}" ${cdn?"checked":""} aria-label="Abschlusscheck erledigt"><div class="body"><div class="small muted">Abschlusscheck</div><label for="s-${cid}" style="font-weight:700">${esc(p.check.t)}</label><div class="small">${p.check.x}</div>${workBox(s,p,"check",p.check)}<div class="row"><button class="btn" data-stab="quiz" data-s="${s}">Zum Quiz</button><button class="btn ghost" data-stab="tipps" data-s="${s}">Typische Fehler</button></div></div></div></div>`;
+    h+=`<div class="step final ${cdn?"done":""}"><input type="checkbox" class="check" id="s-${cid}" data-id="${cid}" ${cdn?"checked":""} aria-label="Abschlusscheck erledigt"><div class="body"><div class="small muted">⚔️ Boss-Kampf · +${XP.boss} XP</div><label for="s-${cid}" style="font-weight:700">${esc(p.check.t)}</label><div class="small">${p.check.x}</div>${workBox(s,p,"check",p.check)}<div class="row"><button class="btn" data-stab="quiz" data-s="${s}">Zum Quiz</button><button class="btn ghost" data-stab="tipps" data-s="${s}">Typische Fehler</button></div></div></div></div>`;
     if(cdn){
       h+=`<div class="card stack"><div class="eyebrow">Deine Bewertung</div><p class="small muted">Daraus lernt das Cockpit, welche Art von Projekt bei dir am besten funktioniert.</p>
         ${rateRow(s,"check","Abschlusscheck",["lief schwer","okay","richtig gut"])}${rateRow(s,"gain","Gebracht",["wenig","einiges","viel"])}${rateRow(s,"fun","Spaß",["eher nicht","ging so","ja"])}</div>`;
@@ -1627,7 +2053,7 @@ function render(){
   else if(SUBJ[r]) html=viewSubj(r); else html=viewStart();
   app.innerHTML=html; initDraw();
   document.querySelectorAll("#tabs a").forEach(a=>{const on=a.dataset.r===r||(SUBJ[r]&&a.dataset.r===(L[r]?"leistungen":"lernen"))||(!MAIN.includes(r)&&!SUBJ[r]&&a.dataset.r==="start");a.removeAttribute("aria-current");if(on)a.setAttribute("aria-current","page");});
-  updateOverall();
+  updateOverall(); gameNotice();
 }
 let lastRoute=route();
 window.addEventListener("hashchange",()=>{const r=route();if(r!==lastRoute){lastRoute=r;render();window.scrollTo(0,0);}});
