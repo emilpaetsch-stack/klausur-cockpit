@@ -456,6 +456,46 @@ pre.codeshow,.tcode{font-family:var(--f-mono);font-size:.84rem;line-height:1.55;
 .lsf .mid{background:var(--accent);color:var(--card);font-weight:800;display:grid;place-items:center}
 .lsf .kon{grid-column:1/-1;background:var(--accent-soft)}
 .lsf div{overflow-wrap:anywhere;hyphens:auto;min-width:0}
+/* Musik */
+.vpic{width:100%;max-width:420px;height:auto;display:block;margin:.4em 0;background:var(--card);border:1px solid var(--line);border-radius:8px}
+.vpic .vl{fill:var(--muted);font-size:11px;font-weight:700}
+.vpic .vg{stroke:var(--line);stroke-width:1}
+.vpic .vb{fill:var(--accent);opacity:.75}
+.vpic .vb2{fill:var(--warn);opacity:.85}
+.vrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.keys{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;max-width:520px}
+.key{height:120px;border:1px solid var(--line);border-radius:0 0 8px 8px;background:#fff;color:#222;display:flex;align-items:flex-end;justify-content:center;padding:6px 2px;font-size:.72rem;cursor:pointer;font-family:inherit}
+.key:active{background:#e8ecff}
+.klbars{display:flex;gap:8px;align-items:flex-end;height:110px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.klbar{display:grid;justify-items:center;gap:2px;height:100%;align-content:end;width:28px}
+.klbar i{display:block;width:20px;background:var(--accent);border-radius:4px 4px 0 0}
+/* Mathe */
+.vcol{display:inline-flex;align-items:stretch;vertical-align:middle;margin:2px 3px}
+.vcol>span{display:grid;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:9px;padding:1px 7px;text-align:center;line-height:1.3}
+.vcol i{font-style:normal;font-variant-numeric:tabular-nums}
+.vq{font-size:1.02rem;line-height:2}
+.vin{display:inline-grid;grid-template-columns:repeat(3,64px);gap:5px}
+.vin input,.vnum{font:inherit;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%;box-sizing:border-box;text-align:center}
+.vnum{width:7em}
+.vin input:focus,.vnum:focus{outline:2px solid var(--accent)}
+.vsol{line-height:2;margin-top:4px}
+.sbsvg{width:100%;max-width:560px;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:8px;color:#222}
+.sbg{stroke:#dfe5ef;stroke-width:1}
+.sba{stroke:#222;stroke-width:1.6}
+.sbk{fill:#222}
+.sbt{font-size:13px;font-weight:700;fill:#222}
+.sbn{font-size:9px;fill:#555}
+.sbp{fill:none;stroke:#2445c9;stroke-width:1.6;stroke-dasharray:5 4}
+.sbpt{fill:#c8322a}
+.sbl{font-size:12px;font-weight:700;fill:#222}
+.pfg{cursor:pointer;color:#555}
+.pfl{stroke:currentColor;stroke-width:3}
+.pfs{fill:currentColor}
+.pfg.sel{color:#2445c9}
+.pfg.good{color:#1f8a4c}
+.pfg.bad{color:#c8322a}
+.pfg:focus{outline:none}
+.pfg:focus .pfl{stroke-width:5}
 
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
@@ -1112,7 +1152,7 @@ P.musik=[
  {id:"a",type:"sprechen",title:"Radio-Sendung „Barock-Battle“",pitch:"Du moderierst eine kurze Radiosendung mit drei Beiträgen. Den Dialog zwischen Bach und Händel hast du schon als Material.",
   trains:"Bach und Händel vergleichen, das Halleluja mit Fachbegriffen beschreiben und die Klaviergeschichte erzählen.",
   covers:["Gattungen","Werk","Satztechnik","Komponisten","Instrument"],effort:"mittel · etwa 1 Stunde",
-  how:{wo:"<b>Direkt hier im Cockpit</b> schreiben, dann optional mit der Sprachmemo-App deines Handys einsprechen. Zum Anhören des Halleluja: <a href=\"https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „Händel Halleluja“</a>.",brauchst:"Papier, Stift, Kopfhörer, den Notentext und die Unterlagen zu Bach, Händel und dem Klavier aus dem Musik-Unterricht.",ergebnis:"Ein Skript mit drei Beiträgen und fünf Rätselfragen, optional als Aufnahme.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Musik“ im Chat oder der Prüfknopf)."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> schreiben, dann optional mit der Sprachmemo-App deines Handys einsprechen. Zum Anhören des Halleluja: <a href=\"https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „Händel Halleluja“</a>.",brauchst:"Kopfhörer und das Cockpit. Halleluja-Text, Bach und Händel und die Klaviergeschichte stehen in der Werkstatt unter Material.",ergebnis:"Ein Skript mit drei Beiträgen und fünf Rätselfragen, optional als Aufnahme.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Musik“ im Chat oder der Prüfknopf)."},
   steps:[
    {w:"text",t:"Beitrag 1: Bach gegen Händel",x:"Anmoderation wie bei einem Boxkampf: „In der linken Ecke, geboren 1685 in Eisenach …“. Je Komponist 4 Fakten. Am Ende: Was haben beide gemeinsam?"},
    {w:"text",t:"Beitrag 2: Das Halleluja live kommentiert",x:"Hör das Halleluja und kommentiere wie ein Sportreporter: „Jetzt alle im gleichen Rhythmus, das ist Homophonie!“ Mindestens 5 Gestaltungsmittel.<p class=\"small muted\">Zum Anhören: <a href=\"https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „Händel Halleluja“</a>. Nimm eine Aufnahme mit Chor und Orchester, etwa 4 Minuten lang.</p>"},
@@ -1122,9 +1162,9 @@ P.musik=[
  {id:"b",type:"zeichnen",title:"Hörkarte zum Halleluja",pitch:"Du malst eine Landkarte des Stücks: Jeder Abschnitt bekommt eine Farbe (blau = homophon, rot = polyphon, grün = unisono), dazu Symbole für Trompeten und Pauken.",
   trains:"Satztechniken hörend und im Notentext erkennen und ihre Wirkung mit dem Text verbinden. Das ist der Kern der Analyseaufgabe.",
   covers:["Werk","Satztechnik","Gattungen"],effort:"mittel · etwa 1 Stunde",
-  how:{wo:"<b>Hier im Cockpit</b> (Zeichenbrett) oder auf Papier, dazu die Aufnahme über <a href=\"https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „Händel Halleluja“</a>.",brauchst:"Ein A3-Blatt oder zwei A4-Blätter quer, Buntstifte in Blau, Rot und Grün, den Notentext mit Taktzahlen, Kopfhörer.",ergebnis:"Eine farbige Hörkarte, eine Wort-Ton-Tabelle und drei Sätze zur Einordnung.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Musik“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Hier im Cockpit</b> (Zeichenbrett) oder auf Papier, dazu die Aufnahme über <a href=\"https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah\" target=\"_blank\" rel=\"noopener\">YouTube-Suche „Händel Halleluja“</a>.",brauchst:"Ein A3-Blatt oder zwei A4-Blätter quer, Buntstifte in Blau, Rot und Grün, Kopfhörer. Den Halleluja-Text mit Formplan und Taktangaben findest du in der Werkstatt.",ergebnis:"Eine farbige Hörkarte, eine Wort-Ton-Tabelle und drei Sätze zur Einordnung.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Musik“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
-   {w:"text",t:"Abschnitte finden",x:"Mit Notentext und Aufnahme: Schreibe für jeden Textabschnitt den Takt und die Satztechnik auf.<p class=\"small muted\">Tipp: Notentext neben dich legen, Aufnahme abspielen und bei jedem Wechsel auf Pause drücken. Dann Takt und Satztechnik notieren.</p>"},
+   {w:"text",t:"Abschnitte finden",x:"Mit Notentext und Aufnahme: Schreibe für jeden Textabschnitt den Takt und die Satztechnik auf.<p class=\"small muted\">Tipp: Öffne in der Werkstatt den Halleluja-Text, spiel die Aufnahme ab und drück bei jedem Wechsel auf Pause. Dann Textzeile und Satztechnik notieren.</p>"},
    {w:"draw",t:"Karte malen",x:"Eine Zeitleiste, Abschnitte farbig, Instrumente als Symbole, Höhepunkte markieren."},
    {w:"text",t:"Wort-Ton-Tabelle",x:"Drei Spalten: Textstelle → musikalisches Mittel → Wirkung. Z. B. „King of Kings“ → Tonwiederholung, Oberstimmen steigen → Spannung, Gottes Macht."},
    {w:"text",t:"Einordnen",x:"Warum ist das Halleluja ein Chor aus einem Oratorium und keine Opernszene? Drei Sätze."}],
@@ -1132,7 +1172,7 @@ P.musik=[
  {id:"c",type:"zeichnen",title:"Insta-Karussell „Vom Cembalo zum Steinway“",pitch:"Du gestaltest 8 Slides wie einen Instagram-Post: Klaviergeschichte, dazu ein Vergleichs-Slide Oratorium gegen Oper und einen über Bach und Händel.",
   trains:"Die vielen Namen und Daten sicher zuordnen, kurz und klar formulieren.",
   covers:["Instrument","Komponisten","Gattungen"],effort:"klein · etwa 45 Minuten",
-  how:{wo:"<b>Hier im Cockpit</b> (ein Feld pro Slide) oder auf Papier: 8 Karteikarten oder 8 quadratische Zettel, jede ist ein Slide. Wer mag, macht es in PowerPoint (pro Slide eine Folie).",brauchst:"Karteikarten, Stifte, die Unterlagen zur Klaviergeschichte und den Lückentext.",ergebnis:"8 Slides, die zusammen die Klaviergeschichte, den Vergleich Oratorium gegen Oper und Bach gegen Händel zeigen.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Musik“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Hier im Cockpit</b> (ein Feld pro Slide) oder auf Papier: 8 Karteikarten oder 8 quadratische Zettel, jede ist ein Slide. Wer mag, macht es in PowerPoint (pro Slide eine Folie).",brauchst:"Karteikarten oder das Cockpit. Klaviergeschichte und Lückentext stehen in der Werkstatt.",ergebnis:"8 Slides, die zusammen die Klaviergeschichte, den Vergleich Oratorium gegen Oper und Bach gegen Händel zeigen.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Musik“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"text",t:"Slides 1–5: Klaviergeschichte",x:"clavis, Cembalo (gezupft), Cristofori um 1700, Silbermann und Bach 1747, Stein und Wiener Mechanik, Broadwood, Érard 1821, Steinway 1859."},
    {w:"text",t:"Slide 6: Oratorium vs. Oper",x:"Als Vergleichstabelle oder Meme."},
@@ -1166,7 +1206,7 @@ P.mathe=[
  {id:"c",type:"ueben",title:"Fehler-Lexikon + eigene Probeklausur",pitch:"Du sammelst alle Fehlerarten aus deinem Test vom 16.09. und den Übungsblättern in einem kleinen Lexikon und baust danach deine eigene Probeklausur.",
   trains:"Genau die Stellen reparieren, die dich Punkte gekostet haben (Abstand zum Ursprung, Vielfache), und Klausurformat üben.",
   covers:["Raum","Vektoren","Rechnen","Länge","Lage","Skalarprodukt"],effort:"größer · etwa 2 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Deinen Test vom 16.09., die Übungsblätter mit Lösungen, Karteikarten, Taschenrechner.",ergebnis:"Ein Fehler-Lexikon mit mindestens 6 Einträgen und eine eigene Probeklausur mit Musterlösung.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Mathe“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Taschenrechner und das Cockpit: Deine Test-Fehler stehen in der Werkstatt unter „Formeln und Rechenwege“, Übungsaufgaben liefert der Vektor-Trainer.",ergebnis:"Ein Fehler-Lexikon mit mindestens 6 Einträgen und eine eigene Probeklausur mit Musterlösung.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Mathe“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"text",t:"Fehler sammeln",x:"Test 16.09. und Übungsblätter durchgehen. Jeder Fehler bekommt eine Karte: falsch, richtig, Merksatz."},
    {w:"text",t:"Lexikon ordnen",x:"Nach Themen sortieren. Mindestens 6 Einträge (z. B. Spitze minus Fuß, Wurzel vergessen, r nur in einer Koordinate geprüft, kein Antwortsatz)."},
@@ -1179,7 +1219,7 @@ P.deutsch=[
  {id:"a",type:"schreiben",title:"Gregors Zeitlupe",pitch:"Du wirst kurz selbst zum Autor. Wer Erzählmittel einmal selbst benutzt hat, erkennt sie in jedem Klausurtext.",
   trains:"Zeitgestaltung und Epochenmerkmale sicher erkennen und benennen, plus eine Probe-Interpretation.",
   covers:["Epochen","Epik","Erzähltechnik","Methode"],effort:"größer · etwa 2 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Papier oder Word, „Die Verwandlung“, „Gibs auf!“ und deine Epochen-Unterlagen.",ergebnis:"Drei Epochen-Profile, eine Szene in drei Versionen und ein Regiebuch mit 5 Stellen.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Deutsch“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Nur das Cockpit: Inhalt und Merkmale von „Die Verwandlung“, „Gibs auf!“ und die Epochen stehen in der Werkstatt unter Material.",ergebnis:"Drei Epochen-Profile, eine Szene in drei Versionen und ein Regiebuch mit 5 Stellen.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Deutsch“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"text",t:"Drei Epochen als Social-Media-Profile",x:"Expressionismus, Symbolismus, Neue Sachlichkeit: Profilbild (typisches Motiv), Bio (Lebenszeit), 3 Posts im typischen Stil, „Freunde“ (Autoren) und „blockiert“."},
    {w:"text",t:"Eine Szene, drei Versionen",x:"Gregors Erwachen als Käfer: zeitdeckend (Dialog durch die Tür), gerafft (drei Wochen in zwei Sätzen), gedehnt (die Sekunde, in der er seinen Körper sieht)."},
@@ -1188,7 +1228,7 @@ P.deutsch=[
  {id:"b",type:"schreiben",title:"Literarisches Gericht: Der Fall Familie Samsa",pitch:"Ist die Familie schuld an Gregors Tod? Du schreibst Anklage und Verteidigung, beide mit Textbelegen, und am Ende das Urteil.",
   trains:"Argumentieren mit Zitaten und eine ausgewogene Stellungnahme schreiben. Genau dort hast du im Test Punkte verloren (1,5 von 4).",
   covers:["Epik","Autoren","Epochen","Methode"],effort:"mittel · etwa 1,5 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"„Die Verwandlung“ mit Seitenzahlen, Klebezettel zum Markieren, Papier oder Word.",ergebnis:"Anklage, Verteidigung, Gutachten und Urteil, jeweils mit Zitaten und Seitenangabe.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Deutsch“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
+  how:{wo:"<b>Direkt hier im Cockpit</b> in den Feldern bei den Schritten. Papier geht auch, wenn dir das lieber ist.",brauchst:"Das Cockpit (Werkstatt, Material: Inhalt der Verwandlung nach Teilen). Hast du das Buch, kannst du Zitate mit Seitenzahl ergänzen.",ergebnis:"Anklage, Verteidigung, Gutachten und Urteil, jeweils mit Zitaten und Seitenangabe.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Deutsch“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
    {w:"text",t:"Beweismittel sammeln",x:"8 Zitate mit Seitenangabe: Wie behandeln Vater, Mutter und Grete Gregor vor und nach der Verwandlung?"},
    {w:"text",t:"Anklageschrift",x:"Drei Argumente, je mit Zitat und Deutung („Das zeigt …“). Bezug: Umkehrung der Abhängigkeit, Macht des Vaters."},
@@ -1199,9 +1239,9 @@ P.deutsch=[
  {id:"c",type:"sprechen",title:"Gedicht-Galerie",pitch:"Du richtest ein kleines Museum ein: 4 Gedichte als Ausstellungsstücke, jedes mit Schild, dazu ein Vergleichsraum Expressionismus gegen Neue Sachlichkeit.",
   trains:"Lyrik analysieren und vergleichend interpretieren, mit Epochenbezug. Das kann als Vergleichsaufgabe drankommen.",
   covers:["Epochen","Lyrik","Autoren","Methode"],effort:"mittel · etwa 1,5 Stunden",
-  how:{wo:"<b>Direkt hier im Cockpit</b>, am Ende optional mit der Sprachmemo-App deines Handys einsprechen.",brauchst:"Die vier Gedichte aus deinen Unterlagen (das Kästner-Gedicht deiner Wahl auch), Papier, Textmarker.",ergebnis:"4 Museumsschilder, eine Vergleichstafel und optional 4 kurze Audioguides.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Deutsch“ im Chat oder der Prüfknopf)."},
+  how:{wo:"<b>Direkt hier im Cockpit</b>, am Ende optional mit der Sprachmemo-App deines Handys einsprechen.",brauchst:"Das Cockpit: Inhalt und Merkmale aller Gedichte stehen in der Werkstatt unter Material, dort ist auch ein Link zu den vollständigen gemeinfreien Texten.",ergebnis:"4 Museumsschilder, eine Vergleichstafel und optional 4 kurze Audioguides.",zeigen:"Die Aufnahme kann Claude nicht anhören. Schreib dein Skript in die Felder, dann sieht Claude es automatisch („Feedback Deutsch“ im Chat oder der Prüfknopf)."},
   steps:[
-   {t:"Exponate wählen",x:"„Weltende“ (van Hoddis), „Kleine Aster“ (Benn), „Der Gott der Stadt“ (Heym), ein Kästner-Gedicht.<p class=\"small muted\">Die Gedichte stehen in deinen Deutsch-Unterlagen. Fehlt eins, frag Claude im Chat danach.</p>"},
+   {t:"Exponate wählen",x:"„Weltende“ (van Hoddis), „Kleine Aster“ (Benn), „Der Gott der Stadt“ (Heym), ein Kästner-Gedicht.<p class=\"small muted\">Inhalt und Merkmale der Gedichte findest du in der Werkstatt unter Material.</p>"},
    {w:"text",t:"Museumsschilder",x:"Pro Gedicht: Epoche, Thema in einem Satz, 3 Stilmittel mit Zitat und Wirkung."},
    {w:"text",t:"Vergleichsraum",x:"Eine Tafel: Wie sieht der Expressionismus die Großstadt, wie die Neue Sachlichkeit? Sprache, Haltung, Bilder."},
    {w:"text",t:"Audioguide",x:"Sprich für jedes Exponat einen 1-Minuten-Audioguide ein. Beim Anhören merkst du, wo die Deutung noch dünn ist."}],
@@ -1406,7 +1446,7 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T19:48:10.681636Z", "stand": {"choice": {"info": "a", "sport": "b"}, "conf": {}, "done": {"p:info:a:0": true}, "lvl": {}, "mis": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T19:22:14.211Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T20:05:52.778561Z", "stand": {"choice": {"info": "a", "sport": "b"}, "conf": {}, "done": {"p:info:a:0": true}, "lvl": {}, "mis": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T19:22:14.211Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
@@ -2146,7 +2186,7 @@ function misSol(m){return (m.sol||(m.pz?pzSolHtml(m.pz):""))+(m.tsol?`<p><b>Bonu
 const WS={}, TOOLS={}, openWs={};
 function wsItem(s,id){return ((WS[s]||{}).items||[]).find(x=>x.id===id);}
 function wsTaskKey(s,ex,n){return wkey(s,"x"+ex.id,String(n).replace(/\W/g,"_"));}
-function wsTask(s,exId,i){const ex=wsItem(s,exId);return ex&&ex.tasks.find(t=>String(t.n).replace(/\W/g,"_")===i);}
+function wsTask(s,exId,i){const ex=wsItem(s,exId);if(ex&&!ex.tasks&&ex.pz)return {n:"pz",t:ex.title,w:"sort",pz:ex.pz,sol:""};return ex&&ex.tasks&&ex.tasks.find(t=>String(t.n).replace(/\W/g,"_")===i);}
 function npFromPct(p){const T=[[95,15],[90,14],[85,13],[80,12],[75,11],[70,10],[65,9],[60,8],[55,7],[50,6],[45,5],[40,4],[33,3],[27,2],[20,1]];for(const [g,n] of T)if(p>=g)return n;return 0;}
 function examScore(s,ex){let got=0,max=0,done=0;ex.tasks.forEach(t=>{max+=t.be;const w=W[wsTaskKey(s,ex,t.n)];if(w&&w.pts!=null){got+=w.pts;done++;}});return {got,max,done,n:ex.tasks.length};}
 function viewWerkstatt(s){
@@ -2649,6 +2689,411 @@ WS.sport={intro:"Alle Folien aus dem Unterricht stecken hier drin, dazu Werkzeug
   {h:"Gesetzmäßigkeiten",items:["Trainingswirksamer Reiz und die vier Belastungsgrößen","Dosierung nach Alter, Leistungsstand, Geschlecht, Ziel","Spezifität mit dem Barfuß-Beispiel","Nicht lineare Leistungsentwicklung","Kontinuität"]},
   {h:"Kraft",items:["Ich kann Kraft definieren (Nerv-Muskel-System, über 30 %)","Ich kenne alle vier Kraftformen mit Definition und Sportart","Ich kann konzentrisch, exzentrisch und isometrisch an einer Übung zeigen","Ich kann Agonist und Antagonist erklären und weiß, warum beide trainiert werden","Ich kenne präventive, rehabilitative und weitere Ziele und die Risiken von Krafttraining"]}]},
  {id:"folien",kind:"mat",icon:"📄",title:"Alle Folien zum Nachlesen",desc:"„Training und Kraft aus sportwissenschaftlicher Sicht“ komplett, mit den Lücken der Folien schon ausgefüllt.",html:SP_FOLIEN}
+]};
+/* Werkstatt Musik: Halleluja mit Text und Formplan, Stimmen-Bilder, Oratorium/Oper, Bach und Händel, Klaviergeschichte. */
+
+/* Stimmen-Bild: so sehen die Satztechniken aus, ohne Noten lesen zu müssen. */
+function voicePic(type,lbl){
+  const V=["S","A","T","B"],W0=320,H0=128,lane=28,x0=26;
+  let g=`<svg viewBox="0 0 ${W0} ${H0}" class="vpic" role="img" aria-label="${esc(lbl||"Stimmen-Bild")}">`;
+  V.forEach((v,k)=>{g+=`<text x="4" y="${18+k*lane+4}" class="vl">${v}</text><line x1="${x0}" y1="${18+k*lane}" x2="${W0-6}" y2="${18+k*lane}" class="vg"/>`;});
+  const blk=(k,a,b,cl="vb")=>`<rect class="${cl}" x="${a}" y="${18+k*lane-8}" width="${b-a}" height="16" rx="4"/>`;
+  const rh=[[0,22],[30,44],[50,64],[72,100],[110,124],[130,144],[152,180],[190,204],[210,224],[232,272],[280,300]];
+  if(type==="homo") V.forEach((v,k)=>rh.forEach(([a,b])=>g+=blk(k,x0+a,x0+b)));
+  if(type==="uni") {rh.forEach(([a,b])=>g+=`<rect class="vb" x="${x0+a}" y="${18-8}" width="${b-a}" height="${3*lane+16}" rx="6"/>`);g+=`<text x="${W0/2}" y="${H0-4}" text-anchor="middle" class="vl">alle Stimmen auf demselben Ton</text>`;}
+  if(type==="poly") V.forEach((v,k)=>{const off=[150,100,50,0][k];for(let a=off;a<290;){const len=[14,22,10,30,16][(a/10+k)%5|0];g+=blk(k,x0+a,x0+Math.min(a+len,292));a+=len+6+(k%2)*2;}});
+  if(type==="cf"){g+=blk(0,x0,x0+90,"vb2")+blk(0,x0+100,x0+190,"vb2")+blk(0,x0+200,x0+290,"vb2");[1,2,3].forEach(k=>rh.forEach(([a,b])=>g+=blk(k,x0+a,x0+b)));}
+  return g+`</svg>`;
+}
+const HAL_TXT=`<table class="mini"><tr><th>Englisch (Originaltext, Bibel)</th><th>Deutsch (sinngemäß)</th><th>Satztechnik</th></tr>
+<tr><td>Hallelujah!</td><td>Halleluja! (Lobet Gott!)</td><td>homophon, kurze kräftige Rufe</td></tr>
+<tr><td>For the Lord God omnipotent reigneth.</td><td>Denn Gott, der Herr, der Allmächtige, regiert.</td><td>Unisono, dann im Wechsel mit „Hallelujah“-Rufen; später Sopran in langen Tönen gegen die Halleluja-Rufe der anderen</td></tr>
+<tr><td>The kingdom of this world is become the kingdom of our Lord, and of His Christ;</td><td>Das Königreich der Welt ist nun das Königreich unseres Herrn und seines Christus;</td><td>homophon, leise, choralartig, ruhiger Kontrast</td></tr>
+<tr><td>and He shall reign for ever and ever.</td><td>und er wird regieren für immer und ewig.</td><td>polyphon: Fugato, die Stimmen setzen nacheinander ein (Bass, Tenor, Alt, Sopran)</td></tr>
+<tr><td>King of Kings, and Lord of Lords.</td><td>König der Könige und Herr der Herren.</td><td>Sopran und Alt auf lang gehaltenen Tonwiederholungen, die Stufe für Stufe höher steigen; die Männerstimmen rufen „for ever and ever, Hallelujah“ dazwischen</td></tr>
+<tr><td>Hallelujah!</td><td>Halleluja!</td><td>homophon, Steigerung, Generalpause, langsamer Schluss (Adagio) mit Pauken und Trompeten</td></tr></table>
+<p class="small muted">Der Text stammt aus der Offenbarung des Johannes (Kapitel 11 und 19). Taktangaben in den Ausgaben, etwa: „The kingdom“ ab Takt 33, „And He shall reign“ ab Takt 41, „King of Kings“ ab Takt 51, Schluss in Takt 94.</p>`;
+const MU_MAT=`<h4>Das Oratorium im Vergleich zur Oper</h4><table class="mini"><tr><th></th><th>Oratorium</th><th>Oper</th></tr>
+<tr><td>Ort der Aufführung</td><td>Kirche oder Konzertsaal</td><td>Theater</td></tr><tr><td>Texte</td><td>geistlich geprägt, meist aus der Bibel</td><td>weltlich geprägt</td></tr>
+<tr><td>Aufbau</td><td>mehrteilig, aber ohne Bühnenhandlung, Kostüme und Bühnenbild</td><td>mehrere Akte, szenisch gespielt</td></tr>
+<tr><td>Untergliederung</td><td><b>Instrumentalsätze</b> (z. B. die Ouvertüre „Sinfony“), <b>Rezitative</b> vom Orchester begleitet (z. B. „Comfort ye, my people“), <b>Arien</b> (z. B. „Every valley shall be exalted“), <b>Chöre</b> (z. B. „Hallelujah“)</td><td>Ouvertüre (Einleitung), Rezitativ (eine Art Sprechgesang, die Handlung wird erzählt), Arie (das Geschehen wird kommentiert), verschiedene Zwischenspiele (in Barockopern z. B. Ritornelle: immer wiederkehrende instrumentale Formteile)</td></tr>
+<tr><td>Besetzung</td><td>Solisten, Chor, Orchester</td><td>Solisten (Opernsänger), Chor, Orchester</td></tr></table>
+<p><b>Oratorium:</b> mehrteiliges Werk meist geistlichen Inhalts für Soli, Chor und Orchester. Es enthält vom Orchester begleitete Rezitative und Arien, Chöre und reine Instrumentalsätze.</p>
+<h4>Händels „Messias“</h4><ul><li>Inhalt: die Prophezeiungen zur Ankunft des Messias und ihre Erfüllung durch Geburt, Leben, Opfertod und Auferstehung Jesu. Er soll den Menschen Hoffnung auf die eigene Auferstehung geben.</li><li>Händel schrieb die Musik in nur <b>24 Tagen</b>.</li><li>Uraufführung <b>1742 in Dublin</b> (Irland) für wohltätige Zwecke. Mit dem Erlös wurden unter anderem 142 Insassen eines Schuldgefängnisses freigekauft.</li><li>Kleine Besetzung: vor allem Orgel und einige Streicher, an passenden Stellen Trompeten und Pauken, ein Chor von nur 32 Sängern.</li><li>Später immer größere Aufführungen (z. B. Gedenkfeier 1784 in der Westminster Abbey). <b>Mozart</b> orchestrierte das Werk 1789 neu und ergänzte vor allem Bläser, weil die großen Chöre einen volleren Orchesterklang brauchten.</li><li>Als König Georg II. das „Halleluja“ zum ersten Mal hörte, stand er auf und mit ihm das ganze Publikum. Bis heute stehen in England und Amerika viele Zuhörer beim Halleluja auf.</li></ul>
+<h4>Das „Halleluja“: Text und Satztechnik</h4>${HAL_TXT}
+<h4>Die zwei Kompositionstechniken</h4><div class="vrow"><div><b>Homophonie</b><br>${voicePic("homo","Homophonie")}<span class="small">Die Stimmen wirken im gleichen Rhythmus zusammen, Melodie und Harmonie stehen im Vordergrund.</span></div><div><b>Polyphonie</b><br>${voicePic("poly","Polyphonie")}<span class="small">Jede Stimme hat einen selbstständigen Verlauf, die Stimmen sind kunstvoll zeitlich versetzt geordnet.</span></div></div>
+<p><b>Unisono</b> (lat. „ein Klang“): Alle Stimmen singen dieselbe Melodie, im Halleluja bei „For the Lord God omnipotent reigneth“. Deutung: Die Bibel spricht von <b>einem</b> Gott, also singen alle „mit einer Stimme“. <b>Trompeten und Pauken</b> waren im Barock Instrumente der Könige und Fürsten. Im Halleluja zeigen sie Gott als den „König der Könige“.</p>
+<h4>Bach und Händel: zwei Lebenswege</h4><table class="mini"><tr><th></th><th>Johann Sebastian Bach</th><th>Georg Friedrich Händel</th></tr>
+<tr><td>Geburt</td><td>1685 in Eisenach (Thüringen)</td><td>1685 in Halle</td></tr>
+<tr><td>Jugend</td><td>Mit 10 Jahren Vollwaise, der älteste Bruder Johann Christoph nimmt ihn auf und lässt ihn Orgel, Violine und Komponieren lernen. Schreibt nachts heimlich Noten ab. Gymnasium in Lüneburg, Sänger im Motettenchor.</td><td>Wohlhabendes Elternhaus, unbeschwerte Jugend, gute Bildung. Der Vater will, dass er Jurist wird, erlaubt aber zusätzlich Musikunterricht.</td></tr>
+<tr><td>Familie</td><td>Musikerfamilie (Vater und Großvater Stadtpfeifer). Zweimal verheiratet, 20 Kinder, viele starben früh. Finanziell abhängig von seinen Dienstherren.</td><td>Junggeselle, finanziell meist gut gestellt.</td></tr>
+<tr><td>Laufbahn</td><td>Mit 18 Hofmusiker in Weimar, dann Organist in Arnstadt, Mühlhausen, wieder Weimar. Gute Stelle beim Fürsten von Anhalt-Köthen (Brandenburgische Konzerte). Mit 38 Jahren (1723) Thomaskantor in Leipzig: jede Woche eine Kantate, Oratorien für die Festtage, Unterricht am Thomasgymnasium.</td><td>Als 18-Jähriger in Hamburg: Geiger und Cembalist im Opernorchester, Freundschaft mit Johann Mattheson, viele Opern. Reisen nach Italien (Venedig, Mailand, Rom, Neapel). 1710 Hofkapellmeister in Hannover, ab 1712 dauerhaft in London. Wassermusik für Georg I. (auf der Themse aufgeführt), Feuerwerksmusik. Insgesamt 47 Jahre in London.</td></tr>
+<tr><td>Instrumente</td><td>Orgel, Cembalo, Violine, berühmter Orgelsachverständiger</td><td>Violine, Cembalo, Orgel</td></tr>
+<tr><td>Reisen</td><td>Große Studienreisen, etwa nach Italien, konnte er sich nie leisten.</td><td>Reisen waren seine Leidenschaft, er traf Musiker wie Corelli.</td></tr>
+<tr><td>Gemeinsam</td><td colspan="2">Geburtsjahr 1685, beide aus Mitteldeutschland, beide Meister im Improvisieren, beide spielten Orgel und Cembalo.</td></tr></table>
+<h4>Die Geschichte und Technik des Klaviers</h4><ul>
+<li>„Klavier“ kommt vom lateinischen <i>clavis</i> (Schlüssel) bzw. mittellateinisch <i>clavis</i> (Taste). <b>Pianoforte</b> verweist auf die Neuerung: Anders als beim <b>Cembalo</b>, bei dem die Saiten gezupft werden und keine Dynamik möglich ist, kann man beim Hammerklavier die Lautstärke über die <b>Anschlagstärke</b> stufenlos zwischen leise (piano) und laut (forte) verändern.</li>
+<li>Um 1700: Der italienische Instrumentenbauer <b>Bartolomeo Cristofori</b> baut das erste dynamische Tasteninstrument. Unabhängig davon erfindet Christoph Gottlieb Schröter 1717 zwei Hammermechaniken, kann sie aber aus Geldmangel nicht weiterentwickeln.</li>
+<li><b>Gottfried Silbermann</b>, Orgelbauer, lernt 1717 ein Instrument aus Cristoforis Werkstatt kennen und baut um 1730 eigene Hammerflügel mit Prellmechanik und einer <b>Dämpferaufhebung</b> mit Handhebeln (Vorläufer der Pedale). Nach fast zehn Jahren Verbesserung ist auch <b>Johann Sebastian Bach</b> überzeugt und improvisiert 1747 in Potsdam vor Friedrich II.</li>
+<li><b>Johann Andreas Stein</b> gründet 1750 in Augsburg eine Werkstatt und baut eine <b>Auslösung</b> in die Prellmechanik ein. Diese Mechanik (um 1781) wird als <b>Wiener Mechanik</b> bekannt: heller, durchdringender Klang, das Klavier wird Soloinstrument.</li>
+<li>England: Das günstige <b>Tafelklavier</b> wird ein Verkaufserfolg, auch das <b>Bürgertum</b> kann sich ein Instrument leisten. John Broadwood findet heraus, dass Saiten am besten bei etwa einem <b>Achtel</b> bis Neuntel ihrer Länge angeschlagen werden.</li>
+<li>Anfang des 19. Jahrhunderts konkurrieren die Wiener Mechanik (zart, süßer Klang) und die <b>englische Mechanik</b> (Stoßzungenmechanik). Die Romantik verlangt mehr Kraft und Lautstärke, darum setzt sich die englische durch: schwerere Hämmer, dickere Saiten, Eisenspreizen und schließlich der <b>Gusseisenrahmen</b>, mit dem Steinway &amp; Sons 1859 die heutige Form patentiert.</li>
+<li><b>Sébastien Érard</b> patentiert 1821 die <b>Repetitionsmechanik</b>: Ein Ton kann schnell wiederholt werden, ohne die Taste ganz loszulassen. Mit Henri Herz entsteht daraus die <b>doppelte Auslösung</b>, die bis heute verwendet wird.</li>
+<li>In der zweiten Hälfte des 19. Jahrhunderts wird das Klavier Statussymbol der bürgerlichen Mittelklasse. Das <b>Pianino</b> (Hochklavier) verdrängt das Tafelklavier als Hausinstrument.</li></ul>`;
+
+/* Werkzeug: Cembalo oder Hammerklavier? Anschlag ausprobieren */
+let KL={inst:"cem",hits:[]};
+TOOLS.anschlag=(s,it)=>{
+  const vol=f=>KL.inst==="cem"?60:Math.round(15+f*85);
+  return `<div class="card stack"><div class="chips"><button class="btn ${KL.inst==="cem"?"primary":""}" data-kl="cem">Cembalo (Saiten gezupft)</button><button class="btn ${KL.inst==="pf"?"primary":""}" data-kl="pf">Pianoforte (Hammer schlägt an)</button></div>
+   <p class="small">Tipp auf die Tasten: links ganz sanft, rechts mit voller Kraft. Die Balken zeigen, wie laut der Ton wird.</p>
+   <div class="keys">${[.1,.3,.5,.7,.9,1].map((f,k)=>`<button class="key" data-klhit="${f}" aria-label="Anschlag ${Math.round(f*100)} Prozent"><span>${["ganz sanft","sanft","mittel","kräftig","stark","volle Kraft"][k]}</span></button>`).join("")}</div>
+   <div class="klbars">${KL.hits.slice(-8).map(h=>`<div class="klbar"><i style="height:${h.v}%"></i><span class="small">${h.i==="cem"?"C":"P"}</span></div>`).join("")||`<p class="small muted">Noch keine Töne gespielt.</p>`}</div>
+   <div class="jmsg">${KL.inst==="cem"?"Beim Cembalo reißt ein Kiel die Saite an. Egal wie fest du drückst: Der Ton ist immer gleich laut. Dynamik geht nur über Register oder ein zweites Manual.":"Beim Pianoforte schlägt ein Hammer die Saite an. Je kräftiger der Anschlag, desto lauter der Ton: piano und forte, daher der Name."}</div>
+   <button class="btn ghost" data-klreset="1">Balken löschen</button></div>`;
+};
+document.addEventListener("click",e=>{const i=e.target.closest("[data-kl]"),h=e.target.closest("[data-klhit]"),r=e.target.closest("[data-klreset]");
+  if(i){KL.inst=i.dataset.kl;render();return;}
+  if(h){const f=Number(h.dataset.klhit);KL.hits.push({i:KL.inst,v:KL.inst==="cem"?60:Math.round(15+f*85)});
+    try{const A=window.AudioContext||window.webkitAudioContext;if(A){const c=KL.ac||(KL.ac=new A()),o=c.createOscillator(),g=c.createGain();o.type=KL.inst==="cem"?"sawtooth":"triangle";o.frequency.value=440;const v=(KL.inst==="cem"?.6:(.15+f*.85))*.25;g.gain.setValueAtTime(v,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+(KL.inst==="cem"?.6:1.2));o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+1.3);}}catch(err){}
+    render();return;}
+  if(r){KL.hits=[];render();}
+});
+
+WS.musik={intro:"Alles aus dem Musikunterricht steckt hier drin: der Halleluja-Text mit Formplan, der Vergleich Oratorium und Oper, das Gespräch zwischen Bach und Händel als Tabelle und der komplette Lückentext zum Klavier. Zum Anhören brauchst du nur eine Aufnahme, z. B. über "+'<a href="https://www.youtube.com/results?search_query=H%C3%A4ndel+Halleluja+Messiah" target="_blank" rel="noopener">YouTube</a>.',items:[
+ {id:"stimmen",kind:"tool",tool:"blitz",icon:"🎶",title:"Satztechnik-Detektiv",desc:"Stimmen-Bilder und Textstellen: homophon, polyphon oder Unisono? 14 Karten.",
+  opts:["Homophonie","Polyphonie","Unisono"],cards:[
+  {q:"Welche Satztechnik zeigt das Bild?"+voicePic("homo"),a:"Homophonie",why:"Alle Stimmen haben den gleichen Rhythmus, die Blöcke stehen genau übereinander."},
+  {q:"Welche Satztechnik zeigt das Bild?"+voicePic("poly"),a:"Polyphonie",why:"Die Stimmen setzen nacheinander ein und haben eigene Rhythmen."},
+  {q:"Welche Satztechnik zeigt das Bild?"+voicePic("uni"),a:"Unisono",why:"Alle Stimmen singen dasselbe: ein einziger breiter Strang."},
+  {q:"„Hallelujah!“ ganz am Anfang des Chors",a:"Homophonie",why:"Kurze, kräftige Rufe aller Stimmen im gleichen Rhythmus."},
+  {q:"„For the Lord God omnipotent reigneth“, erster Einsatz",a:"Unisono",why:"Alle Stimmen gemeinsam auf derselben Melodie: ein Gott, eine Stimme."},
+  {q:"„And He shall reign for ever and ever“",a:"Polyphonie",why:"Ein Fugato: Bass, dann Tenor, Alt und Sopran setzen nacheinander mit demselben Thema ein."},
+  {q:"„The kingdom of this world is become …“",a:"Homophonie",why:"Leise und choralartig, alle Stimmen im gleichen Rhythmus."},
+  {q:"Die Stimmen sind kunstvoll ineinander verflochten, jede hat eine eigene Melodie.",a:"Polyphonie",why:"poly = viele (eigenständige Stimmen)."},
+  {q:"Melodie oben, die anderen Stimmen begleiten im gleichen Rhythmus.",a:"Homophonie",why:"homo = gleich (gleicher Rhythmus)."},
+  {q:"Der Sopran hält lange Töne, die anderen Stimmen rufen „Hallelujah“ dazwischen. Was zeigt das Bild?"+voicePic("cf"),a:"Polyphonie",opts:["Homophonie","Polyphonie","Unisono"],why:"Die Stimmen laufen nicht im gleichen Rhythmus: lange Töne oben, kurze Rufe darunter. Das ist eine polyphone Schichtung (Kontrast der Stimmen)."},
+  {q:"Was wird bei „King of Kings“ musikalisch dargestellt?",a:"Die Stimmen steigen Stufe für Stufe höher",opts:["Die Stimmen steigen Stufe für Stufe höher","Alle verstummen","Ein Solo der Pauke"],why:"Tonwiederholungen, die immer eine Stufe höher rücken: Gottes Macht steigt bis zum Höhepunkt."},
+  {q:"Wofür stehen Trompeten und Pauken?",a:"Königliche Macht",opts:["Trauer","Königliche Macht","Natur"],why:"Barocke Herrscher-Instrumente: Gott als König der Könige."},
+  {q:"Warum setzt Händel bei „For the Lord God omnipotent“ ein Unisono?",a:"Ein Gott wird hörbar",opts:["Ein Gott wird hörbar","Der Chor ist müde","Es ist leiser"],why:"Wort-Ton-Beziehung: Alle singen mit einer Stimme, wie der eine allmächtige Gott."},
+  {q:"Wie heißt das langsame Ende des Halleluja?",a:"Adagio",opts:["Adagio","Presto","Allegro"],why:"Nach einer Generalpause folgt das letzte „Hallelujah“ breit und langsam."}]},
+ {id:"oratop",kind:"tool",tool:"puzzlews",icon:"🧩",title:"Arbeitsblatt Oratorium und Oper",desc:"Das Arbeitsblatt aus dem Unterricht, die Lücken füllst du per Ziehen.",
+  pz:{layout:"gap",intro:"Zieh jeden Baustein in die passende Lücke in der Oratorium-Spalte.",done:"Das Arbeitsblatt ist komplett. Merk dir zu jedem Teil ein Beispiel aus dem Messias.",
+   text:"<p><b>Ort der Aufführung:</b> [[g1]]. Die Texte sind [[g2]].</p><p><b>Aufbau:</b> [[g3]].</p><p><b>Untergliederung mit Beispiel aus dem Messias:</b> Instrumentalsatz, z. B. [[g4]] · Rezitativ, z. B. [[g5]] · Arie, z. B. [[g6]] · Chor, z. B. [[g7]]</p><p><b>Besetzung:</b> [[g8]]</p>",
+   pieces:[{t:"Kirche oder Konzertsaal",z:"g1"},{t:"geistlich geprägt",z:"g2"},{t:"mehrteilig, ohne Bühnenhandlung und Kostüme",z:"g3"},{t:"die Ouvertüre „Sinfony“",z:"g4"},{t:"„Comfort ye, my people“",z:"g5"},{t:"„Every valley shall be exalted“",z:"g6"},{t:"„Hallelujah“",z:"g7"},{t:"Solisten, Chor, Orchester",z:"g8"},{t:"Theater",z:"x",why:"Das Theater ist der Ort der Oper."},{t:"mehrere Akte",z:"x",why:"Akte gibt es in der Oper, die gespielt wird."}]}},
+ {id:"lueck",kind:"tool",tool:"puzzlews",icon:"🎹",title:"Lückentext Klavier, komplett",desc:"Alle 20 Lücken aus dem Arbeitsblatt, mit Lösung beim Prüfen.",
+  pz:{layout:"gap",intro:"Zieh jedes Wort in die passende Lücke.",done:"Der ganze Lückentext sitzt. Genau so kann er in der Klausur kommen.",
+   text:"<p><b>1. Die Ursprünge und das Pianoforte.</b> „Klavier“ kommt vom lateinischen <i>clavis</i> (Schlüssel) und dem mittellateinischen <i>clavis</i> für [[g1]]. Die Bezeichnung [[g2]] verweist auf die Neuerung: Im Gegensatz zum [[g3]], bei dem die Saiten gezupft werden, konnte man die Lautstärke durch die [[g4]] verändern. Der erste, dem das gelang, war der Italiener [[g5]].</p><p><b>2. Silbermann und Stein.</b> Der Orgelbauer [[g6]] lernte 1717 ein Instrument von Cristofori kennen und baute [[g7]] seinen ersten Hammerflügel, mit Prellmechanik und einer [[g8]] mit Handhebeln. Später überzeugte er auch [[g9]], der 1747 in Potsdam vor Friedrich II. spielte. In Augsburg gründete [[g10]] 1750 eine Werkstatt. Er baute eine [[g11]] ein. Diese Mechanik wurde als [[g12]] Mechanik bekannt.</p><p><b>3. England.</b> Das [[g13]] wurde ein Verkaufserfolg, weil es auch dem [[g14]] ein Instrument erlaubte. Broadwood fand heraus, dass Saiten bei etwa einem [[g15]] ihrer Länge angeschlagen werden sollten. Die [[g16]] Mechanik setzte sich durch. Am Ende stand der [[g17]], mit dem Steinway 1859 die heutige Form patentierte.</p><p><b>4. Moderne.</b> Érard patentierte 1821 die [[g18]]. Daraus entstand die [[g19]] Auslösung. Das Tafelklavier wurde vom [[g20]] verdrängt.</p>",
+   pieces:[{t:"Taste",z:"g1"},{t:"Pianoforte",z:"g2"},{t:"Cembalo",z:"g3"},{t:"Anschlagstärke",z:"g4"},{t:"Bartolomeo Cristofori",z:"g5"},{t:"Gottfried Silbermann",z:"g6"},{t:"um 1730",z:"g7"},{t:"Dämpferaufhebung",z:"g8"},{t:"Johann Sebastian Bach",z:"g9"},{t:"Johann Andreas Stein",z:"g10"},{t:"Auslösung",z:"g11"},{t:"Wiener",z:"g12"},{t:"Tafelklavier",z:"g13"},{t:"Bürgertum",z:"g14"},{t:"Achtel",z:"g15"},{t:"englische",z:"g16"},{t:"Gusseisenrahmen",z:"g17"},{t:"Repetitionsmechanik",z:"g18"},{t:"doppelten",z:"g19"},{t:"Pianino",z:"g20"},{t:"Händel",z:"x",why:"Händel spielte Cembalo, mit der Klaviergeschichte im Lückentext hat er nichts zu tun."},{t:"Orgel",z:"x",why:"Die Orgel ist ein Blasinstrument mit Pfeifen, keine Saiten."}]}},
+ {id:"zeit",kind:"tool",tool:"puzzlews",icon:"⏳",title:"Zeitreise des Klaviers",desc:"Bring die Erfindungen in die richtige Reihenfolge.",
+  pz:{layout:"slots",intro:"Zieh jede Erfindung zu ihrer Jahreszahl.",done:"Die Zeitleiste sitzt: vom Cristofori-Hammerklavier bis zum Steinway.",slots:[["s1","um 1700"],["s2","1717"],["s3","um 1730"],["s4","1747"],["s5","1781"],["s6","1821"],["s7","1859"]],
+   pieces:[{t:"Cristofori baut in Florenz das erste Pianoforte",z:"s1"},{t:"Schröter erfindet zwei Hammermechaniken",z:"s2"},{t:"Silbermann baut seinen ersten Hammerflügel",z:"s3"},{t:"Bach spielt in Potsdam vor Friedrich II.",z:"s4"},{t:"Steins Wiener Mechanik entsteht",z:"s5"},{t:"Érard patentiert die Repetitionsmechanik",z:"s6"},{t:"Steinway patentiert den Flügel mit Gusseisenrahmen",z:"s7"}]}},
+ {id:"anschlag",kind:"tool",tool:"anschlag",icon:"🔊",title:"Cembalo gegen Pianoforte",desc:"Tipp sanft und kräftig auf die Tasten und sieh, warum das Pianoforte so heißt."},
+ {id:"wer",kind:"tool",tool:"blitz",icon:"⚡",title:"Bach oder Händel?",desc:"16 Karten aus dem Gespräch der beiden.",opts:["Bach","Händel","beide"],cards:[
+  {q:"Geboren 1685",a:"beide",why:"Das ist ihre wichtigste Gemeinsamkeit."},{q:"Geboren in Eisenach",a:"Bach",why:"Eisenach in Thüringen."},{q:"Geboren in Halle",a:"Händel",why:"Aus einem wohlhabenden Elternhaus."},
+  {q:"Mit 10 Jahren Vollwaise",a:"Bach",why:"Sein ältester Bruder nahm ihn auf."},{q:"Sollte eigentlich Jurist werden",a:"Händel",why:"Sein Vater wollte das, erlaubte aber Musikunterricht."},
+  {q:"Schrieb nachts heimlich Noten bei Kerzenlicht ab",a:"Bach",why:"So lernte er neue Werke kennen."},{q:"Geiger und Cembalist an der Hamburger Oper",a:"Händel",why:"Mit 18 Jahren, dort traf er Johann Mattheson."},
+  {q:"Thomaskantor in Leipzig",a:"Bach",why:"Ab 1723, jede Woche eine Kantate für den Gottesdienst."},{q:"Brandenburgische Konzerte",a:"Bach",why:"Entstanden in seiner Zeit in Anhalt-Köthen."},
+  {q:"Wassermusik und Feuerwerksmusik",a:"Händel",why:"Für den englischen König, die Wassermusik auf der Themse."},{q:"47 Jahre in London",a:"Händel",why:"Die Engländer sehen ihn als ihren Komponisten."},
+  {q:"20 Kinder",a:"Bach",why:"Aus zwei Ehen, viele starben früh."},{q:"Junggeselle mit genug Geld für große Reisen",a:"Händel",why:"Venedig, Mailand, Rom, Neapel, London."},
+  {q:"Meister der Improvisation",a:"beide",why:"„Beide verstehen wir uns auf die Improvisierkunst!“"},{q:"Konnte sich nie eine Studienreise nach Italien leisten",a:"Bach",why:"Er war von seinen Dienstherren finanziell abhängig."},
+  {q:"Komponierte den „Messias“",a:"Händel",why:"In nur 24 Tagen, Uraufführung 1742 in Dublin."}]},
+ {id:"pk1",kind:"exam",icon:"📝",title:"Probeklausur: Händel, Oratorium und Klavier",desc:"Wie die echte Klausur, von „beschreiben“ bis „beurteilen“.",minutes:90,
+  intro:"<p>Grundlage ist das „Halleluja“ aus Händels „Messias“. Text und Satztechniken findest du unter Material. Wenn du kannst, hör die Aufnahme einmal ganz, bevor du anfängst.</p>",tasks:[
+  {part:"Gattung",n:"1",be:6,t:"<b>Vergleichen</b> Sie das Oratorium mit der Oper nach mindestens vier Kriterien.",sol:"<p>Je Kriterium mit beiden Seiten 1,5 BE: Ort (Kirche/Konzertsaal gegen Theater), Texte (geistlich gegen weltlich), Darstellung (ohne Bühne und Kostüm gegen szenisch in Akten), Bestandteile (Rezitative, Arien, Chöre, Instrumentalsätze gegen Ouvertüre, Rezitativ, Arie, Zwischenspiele/Ritornelle), Besetzung (bei beiden Solisten, Chor, Orchester).</p>"},
+  {part:"Gattung",n:"2",be:4,t:"<b>Erläutern</b> Sie den Unterschied zwischen Rezitativ und Arie.",sol:"<p>Rezitativ: sprechnaher Gesang, freier Rhythmus, erzählt die Handlung, treibt sie voran (2). Arie: liedhaft, melodisch, oft mit Wiederholungen, kommentiert das Geschehen und zeigt Gefühle, die Handlung steht still (2).</p>"},
+  {part:"Halleluja",n:"3",be:8,pre:voicePic("homo","Bild A")+voicePic("poly","Bild B")+voicePic("uni","Bild C"),t:"<b>Ordnen</b> Sie die drei Stimmen-Bilder den Satztechniken und je einer Textstelle des Halleluja <b>zu</b> und <b>beschreiben</b> Sie die Satztechniken.",sol:"<p>A Homophonie, z. B. „Hallelujah“ am Anfang oder „The kingdom of this world“: gleicher Rhythmus, Melodie oben (3). B Polyphonie, „And He shall reign for ever and ever“: Fugato, Einsätze nacheinander, selbstständige Stimmen (3). C Unisono, „For the Lord God omnipotent reigneth“: alle singen dieselbe Melodie (2).</p>"},
+  {part:"Halleluja",n:"4",be:6,t:"<b>Erläutern</b> Sie an zwei Stellen, wie Händel den Text musikalisch deutet (Wort-Ton-Beziehung).",sol:"<p>Je 3 BE (Stelle, Mittel, Deutung): „For the Lord God omnipotent“ im Unisono, ein Gott, alle mit einer Stimme. „King of Kings“: Tonwiederholungen, die Stufe für Stufe steigen, Gottes Macht wächst bis zum Höhepunkt. „The kingdom of this world“: plötzlich leise und schlicht, Kontrast Welt gegen Gottes Reich. „for ever and ever“: endlose Wiederholung und Fugato, die Ewigkeit wird hörbar.</p>"},
+  {part:"Halleluja",n:"5",be:3,t:"<b>Erklären</b> Sie die Bedeutung von Trompeten und Pauken in diesem Werk geistlicher Musik.",sol:"<p>Im Barock Instrumente der Könige und Fürsten, Zeichen von Macht und Glanz (1,5). Hier stehen sie für Gott als „König der Könige“, seine Herrschaft wird festlich und triumphierend gezeigt (1,5).</p>"},
+  {part:"Komponisten",n:"6",be:8,t:"<b>Vergleichen</b> Sie die Lebenswege von Bach und Händel.",sol:"<p>Gemeinsamkeiten (2): 1685, Mitteldeutschland, Improvisation, Orgel und Cembalo. Unterschiede (6): Jugend (Bach Vollwaise, Händel wohlhabend, Vater wollte Jurist), Laufbahn (Bach Kirchendienst: Weimar, Köthen, Thomaskantor Leipzig; Händel Oper: Hamburg, Italien, Hannover, London), Reisen (Bach kaum, Händel viel), Familie (Bach 20 Kinder, abhängig; Händel Junggeselle, wohlhabend), Werke (Bach Kantaten, Brandenburgische Konzerte; Händel Opern, Oratorien, Wassermusik).</p>"},
+  {part:"Klavier",n:"7",be:6,t:"<b>Erläutern</b> Sie die Entwicklung vom Cembalo zum Pianoforte und warum sie für die Musik so wichtig war.",sol:"<p>Cembalo: Saiten werden gezupft, Lautstärke unabhängig vom Anschlag (1,5). Pianoforte (Cristofori um 1700): Hammermechanik, Lautstärke über die Anschlagstärke (1,5). Weiterentwicklung Silbermann, Stein (Wiener Mechanik), Érard (Repetition), Steinway (Gusseisenrahmen) (1,5). Bedeutung: Dynamik, Ausdruck, Crescendo, Kontraste; das Klavier wird Soloinstrument und Hausinstrument des Bürgertums (1,5).</p>"},
+  {part:"Klavier",n:"8",be:3,t:"<b>Begründen</b> Sie, warum sich im 19. Jahrhundert die englische Mechanik gegen die Wiener Mechanik durchsetzte.",sol:"<p>Die Musiker der Romantik wollten mehr Kraft und Lautstärke (1). Die englische Mechanik erlaubte schwerere Hämmer und dickere Saiten (1). Dafür brauchte man stabile Rahmen bis zum Gusseisenrahmen (1).</p>"},
+  {part:"Bewertung",n:"9",be:6,pre:"<p>„Das Halleluja klingt eher nach Krönungsfeier als nach Kirche.“</p>",t:"<b>Beurteilen</b> Sie diese Aussage.",sol:"<p>Pro (bis 3): Trompeten und Pauken als Herrscher-Instrumente, festlicher Jubel, Georg II. stand auf, Händel kam von der Oper, „King of Kings“. Contra (bis 2): geistlicher Bibeltext, Oratorium ohne Bühne, Lob Gottes, Unisono als Bild für den einen Gott. Eigenes begründetes Urteil (1), z. B.: Händel nutzt bewusst Mittel der Krönungsmusik, um Gott als König zu feiern, also beides.</p>"}]},
+ {id:"checkl",kind:"tool",tool:"check",icon:"✅",title:"Checkliste vor der Klausur",desc:"Abhaken, was sitzt.",groups:[
+  {h:"Gattung",items:["Oratorium und Oper nach fünf Kriterien vergleichen","Rezitativ und Arie unterscheiden","Daten zum Messias: Dublin 1742, 24 Tage, kleine Besetzung, Mozart 1789"]},
+  {h:"Halleluja",items:["Homophonie, Polyphonie und Unisono erkennen und je eine Textstelle nennen","Wort-Ton-Beziehung an „For the Lord God“ und „King of Kings“ erklären","Bedeutung von Trompeten und Pauken erklären"]},
+  {h:"Bach und Händel",items:["Gemeinsamkeiten nennen","Unterschiede in Jugend, Laufbahn, Reisen, Familie und Werken vergleichen"]},
+  {h:"Klavier",items:["Cembalo und Pianoforte technisch unterscheiden","Cristofori, Silbermann, Stein, Érard, Steinway mit ihrer Erfindung nennen","Wiener und englische Mechanik vergleichen"]}]},
+ {id:"mat",kind:"mat",icon:"📄",title:"Alles zum Nachlesen",desc:"Oratorium und Oper, Messias, Halleluja-Text mit Formplan, Bach und Händel, Klaviergeschichte.",html:MU_MAT}
+]};
+
+/* Werkzeug: freies Puzzle in der Werkstatt (nutzt den Puzzle-Baukasten) */
+TOOLS.puzzlews=(s,it)=>`<div class="card stack">${workBox(s,{id:"x"+it.id},"pz",{w:"sort",t:it.title,pz:it.pz})}</div>`;
+/* Werkstatt Mathe: Vektor-Trainer mit unendlich vielen Aufgaben, Schrägbild-Labor, Pfeil-Detektiv, Probeklausuren. */
+function vcol(v){return `<span class="vcol"><span>${v.map(x=>`<i>${fmtN(x)}</i>`).join("")}</span></span>`;}
+function fmtN(x){if(typeof x==="string")return x;const r=Math.round(x*100)/100;return String(r).replace("-","−").replace(".",",");}
+function ptS(n,p){return `${n}(${p.map(fmtN).join("|")})`;}
+const vSub=(p,q)=>q.map((x,i)=>x-p[i]), vAdd=(p,q)=>p.map((x,i)=>x+q[i]), vMul=(r,p)=>p.map(x=>r*x), vDot=(p,q)=>p.reduce((s,x,i)=>s+x*q[i],0), vLen=p=>Math.sqrt(vDot(p,p));
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)), rv=(a=-6,b=6)=>[rnd(a,b),rnd(a,b),rnd(a,b)], nz=()=>{let r=0;while(!r)r=rnd(-3,3);return r;};
+function sq(v){return `√(${v.map(x=>x<0?`(${fmtN(x)})²`:`${fmtN(x)}²`).join(" + ")}) = √${vDot(v,v)}`;}
+function lenTxt(v){const q=vDot(v,v),r=Math.sqrt(q);return Number.isInteger(r)?`${sq(v)} = ${r}`:`${sq(v)} ≈ ${fmtN(r)}`;}
+function pnum(t){t=String(t||"").trim().replace(",",".").replace("−","-");if(t==="")return NaN;return Number(t);}
+/* Aufgabentypen: q (HTML), f (Felder: v = Vektor, n = Zahl, yn = ja/nein), ok(a), sol (Rechenweg) */
+const VT={
+ vec:{n:"Verbindungsvektor",g:()=>{const A=rv(),B=rv(),v=vSub(A,B);return {A:{v},q:`Gegeben sind ${ptS("A",A)} und ${ptS("B",B)}. Bestimme den Vektor AB.`,f:["v"],ok:a=>a.v.every((x,i)=>x===v[i]),sol:`AB = B − A = ${vcol(B.map((b,i)=>`${fmtN(b)} − ${A[i]<0?"("+fmtN(A[i])+")":fmtN(A[i])}`))} = ${vcol(v)}. Merke: Spitze minus Fuß.`};}},
+ punkt:{n:"Punkt aus Vektor",g:()=>{const A=rv(),v=rv(-5,5),B=vAdd(A,v);return {A:{v:B},q:`Gegeben sind ${ptS("A",A)} und der Vektor AB = ${vcol(v)}. Bestimme die Koordinaten von B.`,f:["v"],ok:a=>a.v.every((x,i)=>x===B[i]),sol:`OB = OA + AB = ${vcol(A)} + ${vcol(v)} = ${vcol(B)}, also ${ptS("B",B)}.`};}},
+ rechnen:{n:"Rechnen mit Vektoren",g:()=>{const a=rv(-5,5),b=rv(-5,5),r=nz(),s=nz(),res=vAdd(vMul(r,a),vMul(s,b));const t=`${r===1?"":r===-1?"−":fmtN(r)+" · "}a ${s<0?"−":"+"} ${Math.abs(s)===1?"":Math.abs(s)+" · "}b`;
+   return {A:{v:res},q:`a = ${vcol(a)}, b = ${vcol(b)}. Berechne ${t}.`,f:["v"],ok:x=>x.v.every((y,i)=>y===res[i]),sol:`${t} = ${vcol(vMul(r,a))} ${s<0?"−":"+"} ${vcol(vMul(Math.abs(s),b))} = ${vcol(res)}. Tipp: Minus vor dem Vektor dreht jedes Vorzeichen um, rechne Zeile für Zeile.`};}},
+ laenge:{n:"Länge eines Vektors",g:()=>{const v=rv(-6,6);return {A:{n:vLen(v)},q:`Berechne die Länge von a = ${vcol(v)} (auf zwei Nachkommastellen).`,f:["n"],ok:a=>Math.abs(a.n-vLen(v))<.011,sol:`|a| = ${lenTxt(v)} LE.`};}},
+ abstand:{n:"Abstand zweier Punkte",g:()=>{const A=rv(),B=rv(),v=vSub(A,B);return {A:{n:vLen(v)},q:`Wie weit sind ${ptS("A",A)} und ${ptS("B",B)} voneinander entfernt? (zwei Nachkommastellen)`,f:["n"],ok:a=>Math.abs(a.n-vLen(v))<.011,sol:`Erst AB = B − A = ${vcol(v)}, dann |AB| = ${lenTxt(v)} LE.`};}},
+ ursprung:{n:"Abstand zum Ursprung",g:()=>{const P=rv();return {A:{n:vLen(P)},q:`Wie weit ist ${ptS("P",P)} vom Koordinatenursprung entfernt? (zwei Nachkommastellen)`,f:["n"],ok:a=>Math.abs(a.n-vLen(P))<.011,sol:`Der Abstand zum Ursprung ist die Länge des Ortsvektors OP = ${vcol(P)}: |OP| = ${lenTxt(P)} LE. (Im Test am 16.09. gab es hier 0 von 2 Punkten. Jetzt nicht mehr!)`};}},
+ mitte:{n:"Mittelpunkt",g:()=>{let A,B;do{A=rv();B=rv();}while(A.some((x,i)=>(x+B[i])%2));const M=vMul(.5,vAdd(A,B));return {A:{v:M},q:`Bestimme den Mittelpunkt M der Strecke zwischen ${ptS("A",A)} und ${ptS("B",B)}.`,f:["v"],ok:a=>a.v.every((x,i)=>x===M[i]),sol:`M = ½ · (A + B) = ½ · ${vcol(vAdd(A,B))} = ${vcol(M)}.`};}},
+ kolli:{n:"Vielfaches prüfen",g:()=>{const b=rv(-4,4).map(x=>x||1),r=[2,3,-2,-1,-3,.5][rnd(0,5)],yes=Math.random()<.55;let a=vMul(r,b);if(r===.5)a=vMul(2,b);const rr=r===.5?2:r;if(!yes)a=a.map((x,i)=>i===rnd(0,2)?x+1:x);if(!yes&&a.every((x,i)=>x===rr*b[i]))a[0]+=1;
+   const coll=a.every((x,i)=>x===rr*b[i]);const rs=a.map((x,i)=>x/b[i]);
+   return {A:{yn:coll?"ja":"nein",n:rr},q:`Prüfe rechnerisch: Ist a = ${vcol(a)} ein Vielfaches von b = ${vcol(b)}? Wenn ja, gib r mit a = r · b an.`,f:["yn","n?"],ok:x=>x.yn===(coll?"ja":"nein")&&(!coll||Math.abs(x.n-rr)<.001),sol:`Für jede Koordinate r ausrechnen: ${rs.map((q,i)=>`${fmtN(a[i])} : ${b[i]<0?"("+fmtN(b[i])+")":fmtN(b[i])} = ${fmtN(q)}`).join(" · ")}. ${coll?`Überall r = ${fmtN(rr)}, also ist a = ${fmtN(rr)} · b. Die Vektoren sind kollinear (parallel).`:`Die Werte sind nicht alle gleich, also gibt es kein r. a ist kein Vielfaches von b, die Vektoren sind nicht kollinear.`} Antwortsatz nicht vergessen!`};}},
+ ortho:{n:"Orthogonalität",g:()=>{const a=rv(-5,5);let b;if(Math.random()<.5){const u=rv(-4,4);b=[a[1]*u[2]-a[2]*u[1],a[2]*u[0]-a[0]*u[2],a[0]*u[1]-a[1]*u[0]];if(b.every(x=>!x)||b.some(x=>Math.abs(x)>30))b=[a[1],-a[0],0];}else b=rv(-5,5);const d=vDot(a,b);
+   return {A:{n:d,yn:d===0?"ja":"nein"},q:`Sind a = ${vcol(a)} und b = ${vcol(b)} orthogonal? Berechne zuerst das Skalarprodukt.`,f:["n","yn"],ok:x=>x.n===d&&x.yn===(d===0?"ja":"nein"),sol:`a · b = ${a.map((x,i)=>`${fmtN(x)} · ${b[i]<0?"("+fmtN(b[i])+")":fmtN(b[i])}`).join(" + ")} = ${fmtN(d)}. ${d===0?"Das Skalarprodukt ist 0, also sind die Vektoren orthogonal.":"Das Skalarprodukt ist nicht 0, also sind die Vektoren nicht orthogonal."}`};}},
+ winkel:{n:"Winkel zwischen Vektoren",g:()=>{let a,b;do{a=rv(-4,4);b=rv(-4,4);}while(!vLen(a)||!vLen(b));const c=vDot(a,b)/(vLen(a)*vLen(b)),g=Math.acos(Math.max(-1,Math.min(1,c)))*180/Math.PI;
+   return {A:{n:g},q:`Berechne den Winkel zwischen a = ${vcol(a)} und b = ${vcol(b)} in Grad (eine Nachkommastelle).`,f:["n"],ok:x=>Math.abs(x.n-g)<.15,sol:`cos γ = (a · b) / (|a| · |b|) = ${fmtN(vDot(a,b))} / (√${vDot(a,a)} · √${vDot(b,b)}) ≈ ${fmtN(Math.round(c*10000)/10000)}, also γ = cos⁻¹(…) ≈ ${fmtN(Math.round(g*10)/10)}°.`};}},
+ linab:{n:"Lineare Abhängigkeit",g:()=>{const a=rv(-3,3),b=rv(-3,3),r=nz(),s=nz(),yes=Math.random()<.5;let c=vAdd(vMul(r,a),vMul(s,b));if(!yes)c=c.map((x,i)=>i===2?x+rnd(1,3):x);
+   const det=a[0]*(b[1]*c[2]-b[2]*c[1])-a[1]*(b[0]*c[2]-b[2]*c[0])+a[2]*(b[0]*c[1]-b[1]*c[0]);const dep=det===0;
+   return {A:{yn:dep?"ja":"nein"},q:`Sind a = ${vcol(a)}, b = ${vcol(b)} und c = ${vcol(c)} linear abhängig?`,f:["yn"],ok:x=>x.yn===(dep?"ja":"nein"),sol:`Ansatz: c = r · a + s · b, also ein Gleichungssystem mit drei Zeilen. Aus zwei Zeilen r und s bestimmen, mit der dritten prüfen. ${yes?`Hier passt r = ${r}, s = ${s} in allen drei Zeilen: c = ${r} · a + ${s} · b. Die Vektoren sind linear abhängig (komplanar, sie liegen in einer Ebene).`:dep?"Es gibt eine passende Kombination, die Vektoren sind linear abhängig.":"Die dritte Zeile geht nicht auf, es gibt keine Lösung. Die Vektoren sind linear unabhängig."}`};}}
+};
+const VT_WEAK=["laenge","abstand","ursprung","kolli","rechnen"];
+let VTS={mode:"mix",cur:null,ans:{},res:null,right:0,n:0};
+function vtNew(){const keys=VTS.mode==="mix"?Object.keys(VT):VTS.mode==="weak"?VT_WEAK:[VTS.mode];const k=keys[rnd(0,keys.length-1)];VTS.cur=Object.assign({k},VT[k].g());VTS.ans={};VTS.res=null;}
+TOOLS.vtrain=(s,it)=>{
+  if(!VTS.cur)vtNew();const c=VTS.cur;
+  const fld=f=>f==="v"?`<span class="vin">${[0,1,2].map(i=>`<input inputmode="numeric" data-vtv="${i}" aria-label="Koordinate ${i+1}" value="${esc(VTS.ans["v"+i]||"")}" ${VTS.res?"disabled":""}>`).join("")}</span>`:f.startsWith("n")?`<label class="small">${c.k==="ortho"?"Skalarprodukt":c.k==="kolli"?"r (nur bei ja)":"Ergebnis"} <input class="vnum" inputmode="decimal" data-vtn="1" value="${esc(VTS.ans.n||"")}" ${VTS.res?"disabled":""}></label>`:`<span class="chips">${["ja","nein"].map(x=>`<button class="btn ${VTS.ans.yn===x?"primary":""}" data-vtyn="${x}" ${VTS.res?"disabled":""}>${x}</button>`).join("")}</span>`;
+  return `<div class="card stack vt">
+   <div class="chips"><button class="btn ${VTS.mode==="mix"?"primary":""}" data-vtm="mix">Alles gemischt</button><button class="btn ${VTS.mode==="weak"?"primary":""}" data-vtm="weak">Meine Test-Fehler</button><select class="tsel" data-vtsel="1"><option value="">Nur ein Thema …</option>${Object.entries(VT).map(([k,v])=>`<option value="${k}" ${VTS.mode===k?"selected":""}>${v.n}</option>`).join("")}</select></div>
+   <div class="row"><span class="mfmt">${esc(VT[c.k].n)}</span><span class="spacer"></span><span class="xp">${VTS.right} von ${VTS.n} richtig</span></div>
+   <div class="vq">${c.q}</div>
+   <div class="row vfields">${c.f.map(fld).join("")}</div>
+   ${VTS.res?`<div class="pzres ${VTS.res.ok?"good":"bad"}"><b>${VTS.res.ok?"Richtig! 🎉":"Noch nicht."}</b> <div class="vsol">${c.sol}</div></div>`:""}
+   <div class="row">${VTS.res?`<button class="btn primary" data-vtnext="1">Nächste Aufgabe ›</button>`:`<button class="btn primary" data-vtcheck="1">Prüfen</button><button class="btn ghost" data-vtshow="1">Lösungsweg zeigen</button>`}</div>
+   <p class="small muted">Jede Aufgabe ist neu ausgewürfelt, du kannst also so lange üben, wie du willst. Schreib den Rechenweg trotzdem auf Papier mit, so wie in der Klausur.</p></div>`;
+};
+document.addEventListener("input",e=>{const v=e.target.closest("[data-vtv]"),n=e.target.closest("[data-vtn]");if(v)VTS.ans["v"+v.dataset.vtv]=v.value;if(n)VTS.ans.n=n.value;});
+document.addEventListener("click",e=>{
+  const m=e.target.closest("[data-vtm]"),y=e.target.closest("[data-vtyn]"),c=e.target.closest("[data-vtcheck]"),sh=e.target.closest("[data-vtshow]"),nx=e.target.closest("[data-vtnext]");
+  if(m){VTS.mode=m.dataset.vtm;vtNew();render();return;}
+  if(y){VTS.ans.yn=y.dataset.vtyn;render();return;}
+  if(c){const a={v:[0,1,2].map(i=>pnum(VTS.ans["v"+i])),n:pnum(VTS.ans.n),yn:VTS.ans.yn};const ok=VTS.cur.ok(a);VTS.res={ok};VTS.n++;if(ok)VTS.right++;render();return;}
+  if(sh){VTS.res={ok:false};VTS.n++;render();return;}
+  if(nx){vtNew();render();setTimeout(()=>{const f=document.querySelector("[data-vtv],[data-vtn]");if(f)f.focus();},30);}
+});
+document.addEventListener("change",e=>{const s=e.target.closest("[data-vtsel]");if(s&&s.value){VTS.mode=s.value;vtNew();render();}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.closest&&e.target.closest("[data-vtv],[data-vtn]")){e.preventDefault();const b=document.querySelector("[data-vtcheck]");if(b)b.click();}});
+
+/* ---------- Schrägbild-Labor ---------- */
+let SB={mode:"draw",pts:[{n:"A",p:[2,3,4]}],goal:null,ans:["","",""],res:null};
+function sbXY(p,o,b){return [o[0]+p[1]*2*b-p[0]*b,o[1]-p[2]*2*b+p[0]*b];}
+function sbSvg(pts,showPath){
+  const b=14,W0=28*b,H0=22*b,o=[9*b,13*b];
+  let g=`<svg viewBox="0 0 ${W0} ${H0}" class="sbsvg" role="img" aria-label="Schrägbild mit Punkten">`;
+  for(let x=0;x<=W0;x+=b)g+=`<line x1="${x}" y1="0" x2="${x}" y2="${H0}" class="sbg"/>`;for(let y=0;y<=H0;y+=b)g+=`<line x1="0" y1="${y}" x2="${W0}" y2="${y}" class="sbg"/>`;
+  const ax=(p,lab)=>{const [x,y]=sbXY(p,o,b);g+=`<line x1="${o[0]}" y1="${o[1]}" x2="${x}" y2="${y}" class="sba"/><text x="${x+4}" y="${y-4}" class="sbt">${lab}</text>`;};
+  ax([8,0,0],"x₁");ax([0,8,0],"x₂");ax([0,0,6],"x₃");
+  for(let i=1;i<=7;i++){[[i,0,0],[0,i,0],[0,0,i]].forEach((p,k)=>{if(k===2&&i>6)return;const [x,y]=sbXY(p,o,b);g+=`<circle cx="${x}" cy="${y}" r="1.8" class="sbk"/>`;if(i%2===0||i===1)g+=`<text x="${x+(k===2?-12:k===0?-12:-3)}" y="${y+(k===1?13:k===0?4:4)}" class="sbn">${i}</text>`;});}
+  pts.forEach(q=>{const p=q.p;if(showPath){const s1=[p[0],0,0],s2=[p[0],p[1],0];const [x1,y1]=sbXY(s1,o,b),[x2,y2]=sbXY(s2,o,b),[x3,y3]=sbXY(p,o,b);g+=`<path d="M${o[0]} ${o[1]} L${x1} ${y1} L${x2} ${y2} L${x3} ${y3}" class="sbp"/>`;}
+    const [x,y]=sbXY(p,o,b);g+=`<circle cx="${x}" cy="${y}" r="5" class="sbpt"/><text x="${x+7}" y="${y-6}" class="sbl">${esc(q.n)}${q.hide?"":"("+p.map(fmtN).join("|")+")"}</text>`;});
+  return g+`</svg>`;
+}
+TOOLS.schraeg=(s,it)=>{
+  let h=`<div class="card stack"><div class="chips"><button class="btn ${SB.mode==="draw"?"primary":""}" data-sbm="draw">Punkte eintragen</button><button class="btn ${SB.mode==="read"?"primary":""}" data-sbm="read">Punkte ablesen (Spiel)</button></div>`;
+  if(SB.mode==="draw"){
+    h+=`<p class="small">So zeichnest du im Heft: x₂ nach rechts und x₃ nach oben, je 1 Einheit = 2 Kästchen. x₁ zeigt schräg nach vorne links, 1 Einheit = 1 Kästchendiagonale. Der gestrichelte Koordinatenweg zeigt, wie du hinkommst: erst x₁, dann x₂, dann x₃.</p>${sbSvg(SB.pts,true)}
+    <div class="row"><label class="small">Punkt <input class="vnum" data-sbn="1" value="${String.fromCharCode(65+SB.pts.length)}" style="width:3em"></label><span class="vin">${[0,1,2].map(i=>`<input inputmode="numeric" data-sbc="${i}" aria-label="x${i+1}" placeholder="x${i+1}">`).join("")}</span><button class="btn primary" data-sbadd="1">Eintragen</button><button class="btn ghost" data-sbclr="1">Alle löschen</button></div>`;
+  }else{
+    if(!SB.goal)SB.goal=[rnd(0,5),rnd(0,6),rnd(0,5)];
+    h+=`<p class="small">Lies die Koordinaten des Punktes P ab. Der Koordinatenweg hilft dir.</p>${sbSvg([{n:"P",p:SB.goal,hide:true}],true)}
+    <div class="row"><span class="small">P(</span><span class="vin">${[0,1,2].map(i=>`<input inputmode="numeric" data-sbr="${i}" aria-label="x${i+1}" value="${esc(SB.ans[i])}">`).join("")}</span><span class="small">)</span><button class="btn primary" data-sbchk="1">Prüfen</button><button class="btn ghost" data-sbnew="1">Neuer Punkt</button></div>
+    ${SB.res?`<div class="pzres ${SB.res.ok?"good":"bad"}">${SB.res.ok?"Richtig! 🎉":`Nicht ganz. P(${SB.goal.join("|")}): x₁ ist der Weg schräg nach vorne, x₂ nach rechts, x₃ nach oben.`}</div>`:""}`;
+  }
+  return h+`</div>`;
+};
+document.addEventListener("click",e=>{const m=e.target.closest("[data-sbm]"),a=e.target.closest("[data-sbadd]"),cl=e.target.closest("[data-sbclr]"),ck=e.target.closest("[data-sbchk]"),nw=e.target.closest("[data-sbnew]");
+  if(m){SB.mode=m.dataset.sbm;SB.res=null;render();return;}
+  if(a){const p=[0,1,2].map(i=>pnum(document.querySelector(`[data-sbc="${i}"]`).value));if(p.some(isNaN))return;const n=(document.querySelector("[data-sbn]").value||"P").slice(0,3);SB.pts.push({n,p:p.map(x=>Math.max(-3,Math.min(8,x)))});if(SB.pts.length>6)SB.pts.shift();render();return;}
+  if(cl){SB.pts=[];render();return;}
+  if(ck){SB.ans=[0,1,2].map(i=>document.querySelector(`[data-sbr="${i}"]`).value);SB.res={ok:SB.ans.every((x,i)=>pnum(x)===SB.goal[i])};render();return;}
+  if(nw){SB.goal=null;SB.ans=["","",""];SB.res=null;render();}
+});
+
+/* ---------- Pfeil-Detektiv (wie Aufgabe 2 im Test) ---------- */
+let PF=null;
+function pfNew(){let v;do{v=[rnd(-4,4),rnd(-3,3)];}while(Math.abs(v[0])+Math.abs(v[1])<2||!v[0]);
+  const kinds=[["same","gleicher Vektor"],["same","gleicher Vektor"],["opp","Gegenvektor: gleiche Länge, aber entgegengesetzte Richtung"],["long","gleiche Richtung, aber doppelt so lang"],["swap","gleich lang, aber andere Richtung"],["same","gleicher Vektor"],["near","fast gleich, aber eine Koordinate weicht um 1 ab"]];
+  const arr=[];const used=[];
+  kinds.sort(()=>Math.random()-.5).forEach(([k,why],i)=>{let w=k==="same"?v:k==="opp"?vMul(-1,v):k==="long"?vMul(2,v):k==="swap"?[v[1]||1,-v[0]]:[v[0],v[1]+(v[1]>=0?-1:1)];
+    if(k==="near"&&w[0]===v[0]&&w[1]===v[1])w=[v[0]+1,v[1]];
+    let st,tries=0;do{st=[rnd(-7,7),rnd(-1,8)];tries++;}while(tries<60&&(st[0]+w[0]<-7||st[0]+w[0]>7||st[1]+w[1]<-1||st[1]+w[1]>8||used.some(u=>Math.abs(u[0]-st[0])<2&&Math.abs(u[1]-st[1])<2)));used.push(st);
+    arr.push({st,w,k,why,lab:"ABCDEFGHJK"[i]});});
+  PF={v,arr,sel:{},res:null};}
+function pfHead(x1,y1,x2,y2){const a=Math.atan2(y2-y1,x2-x1),L=12,W=6,p=[[x2,y2],[x2-L*Math.cos(a)+W*Math.sin(a),y2-L*Math.sin(a)-W*Math.cos(a)],[x2-L*Math.cos(a)-W*Math.sin(a),y2-L*Math.sin(a)+W*Math.cos(a)]];return `<path d="M${p.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" L")}Z" class="pfs"/>`;}
+TOOLS.pfeile=(s,it)=>{
+  if(!PF)pfNew();const b=24,X=x=>(x+8)*b,Y=y=>(9-y)*b;
+  let g=`<svg viewBox="0 0 ${16*b} ${11*b}" class="sbsvg" role="img" aria-label="Pfeile im Koordinatensystem"><defs><marker id="pfa" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12Z" fill="context-stroke"/></marker></defs>`;
+  for(let x=-8;x<=8;x++)g+=`<line x1="${X(x)}" y1="0" x2="${X(x)}" y2="${11*b}" class="sbg"/>`;for(let y=-2;y<=9;y++)g+=`<line x1="0" y1="${Y(y)}" x2="${16*b}" y2="${Y(y)}" class="sbg"/>`;
+  g+=`<line x1="${X(0)}" y1="0" x2="${X(0)}" y2="${11*b}" class="sba"/><line x1="0" y1="${Y(0)}" x2="${16*b}" y2="${Y(0)}" class="sba"/>`;
+  PF.arr.forEach((a,i)=>{const sel=PF.sel[i],cl=PF.res?(a.k==="same"?"good":sel?"bad":""):sel?"sel":"";const x1=X(a.st[0]),y1=Y(a.st[1]),x2=X(a.st[0]+a.w[0]),y2=Y(a.st[1]+a.w[1]);
+    g+=`<g class="pfg ${cl}" data-pfa="${i}" tabindex="0" role="button" aria-pressed="${!!sel}" aria-label="Pfeil ${a.lab}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="transparent" stroke-width="18"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="pfl"/>${pfHead(x1,y1,x2,y2)}<circle cx="${x1}" cy="${y1}" r="4" class="pfs"/><text x="${x1-14}" y="${y1-6}" class="sbl">${a.lab}</text></g>`;});
+  g+=`</svg>`;
+  return `<div class="card stack"><p>Gesucht sind alle Pfeile, die den Vektor <b>v = ${vcol(PF.v)}</b> darstellen: gleiche Länge, gleiche Richtung, gleiche Orientierung. Tipp auf die passenden Pfeile.</p>${g}
+   <div class="row"><button class="btn primary" data-pfchk="1" ${PF.res?"disabled":""}>Prüfen</button><button class="btn ghost" data-pfnew="1">Neue Pfeile</button></div>
+   ${PF.res?`<div class="pzres ${PF.res.ok?"good":"bad"}"><b>${PF.res.ok?"Alle richtig! 🎉":"Schau dir die Pfeile noch einmal an:"}</b><ul>${PF.arr.map(a=>`<li>Pfeil ${a.lab}: ${vcol(a.w)}, ${a.why}</li>`).join("")}</ul><p class="small">Merke: Ein Vektor ist durch Länge und Richtung festgelegt, nicht durch seinen Startpunkt. Alle Pfeile mit derselben Verschiebung gehören zum selben Vektor.</p></div>`:""}</div>`;
+};
+document.addEventListener("click",e=>{const a=e.target.closest("[data-pfa]"),c=e.target.closest("[data-pfchk]"),n=e.target.closest("[data-pfnew]");
+  if(a&&PF&&!PF.res){const i=a.dataset.pfa;PF.sel[i]=!PF.sel[i];render();return;}
+  if(c){PF.res={ok:PF.arr.every((x,i)=>!!PF.sel[i]===(x.k==="same"))};render();return;}
+  if(n){pfNew();render();}
+});
+
+const MA_MAT=`<h4>Punkte im Raum</h4><p>Ein kartesisches Koordinatensystem im Raum besteht aus dem Ursprung O und drei Achsen x₁, x₂, x₃, die paarweise senkrecht aufeinander stehen. Im Heft: x₂ nach rechts, x₃ nach oben (1 Einheit = 2 Kästchen), x₁ schräg nach vorne links (1 Einheit = 1 Kästchendiagonale). Punkte zeichnest du über den Koordinatenweg.</p>
+<h4>Vektoren</h4><table class="mini"><tr><th>Was</th><th>Formel</th><th>Beispiel</th></tr>
+<tr><td>Verbindungsvektor</td><td>AB = B − A (Spitze minus Fuß)</td><td>A(1|2|3), B(4|6|3): AB = (3, 4, 0)</td></tr>
+<tr><td>Gegenvektor</td><td>BA = −AB</td><td>BA = (−3, −4, 0)</td></tr>
+<tr><td>Punkt aus Vektor</td><td>OB = OA + AB</td><td>A(1|2|3), AB = (2, 0, 1): B(3|2|4)</td></tr>
+<tr><td>Addition, Vielfache</td><td>zeilenweise rechnen</td><td>2 · (1, −2, 3) − (4, 0, 1) = (−2, −4, 5)</td></tr>
+<tr><td>Länge (Betrag)</td><td>|a| = √(a₁² + a₂² + a₃²)</td><td>|(3, 4, 0)| = √25 = 5 LE</td></tr>
+<tr><td>Abstand zweier Punkte</td><td>|AB|</td><td>Abstand von A und B oben: 5 LE</td></tr>
+<tr><td>Abstand zum Ursprung</td><td>|OP|, die Länge des Ortsvektors</td><td>P(2|3|6): √49 = 7 LE</td></tr>
+<tr><td>Mittelpunkt</td><td>M = ½ · (A + B)</td><td>A(1|2|3), B(5|6|7): M(3|4|5)</td></tr>
+<tr><td>Schwerpunkt eines Dreiecks</td><td>S = ⅓ · (A + B + C)</td><td></td></tr>
+<tr><td>Einheitsvektor</td><td>a₀ = a / |a|</td><td>(2, −1, 2) / 3</td></tr>
+<tr><td>Kollinear (Vielfaches)</td><td>a = r · b, r in allen Koordinaten gleich</td><td>(2, −4, 6) = 2 · (1, −2, 3)</td></tr>
+<tr><td>Linear abhängig (3 Vektoren)</td><td>c = r · a + s · b lösbar</td><td>dann komplanar, sonst linear unabhängig</td></tr>
+<tr><td>Skalarprodukt</td><td>a · b = a₁b₁ + a₂b₂ + a₃b₃ (eine Zahl)</td><td>(1, 2, −1) · (3, −1, 1) = 0</td></tr>
+<tr><td>Orthogonal</td><td>a · b = 0</td><td>rechter Winkel</td></tr>
+<tr><td>Winkel</td><td>cos γ = (a · b) / (|a| · |b|)</td><td>danach γ = cos⁻¹(…)</td></tr></table>
+<h4>Besondere Vierecke prüfen</h4><ul><li><b>Parallelogramm:</b> AB = DC.</li><li><b>Raute:</b> Parallelogramm und alle Seiten gleich lang (oder Diagonalen orthogonal).</li><li><b>Rechteck:</b> Parallelogramm und AB · AD = 0.</li><li><b>Quadrat:</b> Raute und Rechteck zugleich.</li><li><b>Dreieck gleichschenklig:</b> zwei Seiten gleich lang. <b>Rechtwinklig:</b> ein Skalarprodukt zweier Seitenvektoren am selben Eckpunkt ist 0.</li></ul>
+<h4>Deine Fehler aus dem Test vom 16.09. (15,5 von 27 BE)</h4><table class="mini"><tr><th>Aufgabe</th><th>Punkte</th><th>Was du jetzt weißt</th></tr>
+<tr><td>Längen der Vektoren</td><td>3 von 6</td><td>Wurzel nicht vergessen, Minuszeichen in Klammern quadrieren: (−4)² = 16.</td></tr>
+<tr><td>Abstand A zum Ursprung</td><td>0 von 2</td><td>Das ist einfach die Länge von OA.</td></tr>
+<tr><td>Rechnen</td><td>7,5 von 8</td><td>Bei „− b“ jedes Vorzeichen umdrehen.</td></tr>
+<tr><td>Gleiche Pfeile finden</td><td>2 von 5</td><td>Gleiche Länge und Richtung, Startpunkt egal. Gegenvektoren zählen nicht.</td></tr>
+<tr><td>Vielfaches prüfen</td><td>0 von 3</td><td>r für jede Koordinate ausrechnen und vergleichen, dann Antwortsatz.</td></tr></table>
+<p class="small muted">Genau diese Typen übst du im Vektor-Trainer mit „Meine Test-Fehler“.</p>`;
+
+WS.mathe={intro:"Statt Übungsblätter abzuschreiben: Der Vektor-Trainer würfelt dir unendlich viele Aufgaben aus und prüft sofort, mit Lösungsweg. Dazu das Schrägbild-Labor, der Pfeil-Detektiv und zwei Probeklausuren. <b>Tipp:</b> Starte mit „Meine Test-Fehler“.",items:[
+ {id:"vt",kind:"tool",tool:"vtrain",icon:"🎯",title:"Vektor-Trainer",desc:"11 Aufgabentypen, jedes Mal neue Zahlen, sofortige Kontrolle mit Rechenweg."},
+ {id:"sb",kind:"tool",tool:"schraeg",icon:"🧊",title:"Schrägbild-Labor",desc:"Punkte im 3D-Koordinatensystem eintragen und ablesen, mit Koordinatenweg."},
+ {id:"pf",kind:"tool",tool:"pfeile",icon:"🏹",title:"Pfeil-Detektiv",desc:"Welche Pfeile stellen denselben Vektor dar? Wie Aufgabe 2 im Test."},
+ {id:"revanche",kind:"exam",icon:"📝",title:"Test-Revanche (wie der Test vom 16.09.)",desc:"Gleicher Aufbau, neue Zahlen. Diesmal holst du die fehlenden Punkte.",minutes:45,
+  intro:"<p>Gegeben sind die Punkte <b>A(2|5|1)</b>, <b>B(4|1|3)</b> und <b>C(−2|3|5)</b> sowie die Vektoren a = (−1, 3, 2), b = (4, −2, 1), c = (2, 0, −3).</p>",tasks:[
+  {n:"1a",be:3,t:"<b>Zeichnen</b> Sie die Punkte in ein geeignetes Koordinatensystem ein. (Im Heft, kontrollieren kannst du im Schrägbild-Labor.)",sol:"<p>Je Punkt 1 BE, mit Koordinatenweg: A: 2 schräg nach vorne, 5 nach rechts, 1 nach oben. B: 4 schräg, 1 rechts, 3 hoch. C: 2 schräg nach hinten (−2), 3 rechts, 5 hoch. Achsen beschriften!</p>"},
+  {n:"1b",be:6,t:"<b>Bestimmen</b> Sie die Vektoren AB, BC und AC und <b>berechnen</b> Sie ihre Länge.",sol:"<p>AB = (2, −4, 2), |AB| = √24 ≈ 4,90 LE. BC = (−6, 2, 2), |BC| = √44 ≈ 6,63 LE. AC = (−4, −2, 4), |AC| = √36 = 6 LE. Je Vektor 1 BE, je Länge 1 BE.</p>"},
+  {n:"1c",be:2,t:"<b>Bestimmen</b> Sie den Abstand des Punktes A zum Koordinatenursprung.",sol:"<p>|OA| = √(2² + 5² + 1²) = √30 ≈ 5,48 LE.</p>"},
+  {n:"1d",be:8,t:"<b>Berechnen</b> Sie a + 2b, a − 2b − c, 3c − 2a und a + b + c.",sol:"<p>a + 2b = (7, −1, 4). a − 2b − c = (−11, 7, 3). 3c − 2a = (8, −6, −13). a + b + c = (5, 1, 0). Je 2 BE.</p>"},
+  {n:"2a",be:5,t:"Im Pfeil-Detektiv: <b>Kennzeichnen</b> Sie alle Pfeile, die denselben Vektor darstellen. Spiel zwei Runden ohne Fehler, dann gibst du dir die Punkte.",sol:"<p>Gleicher Vektor heißt: gleiche Länge, gleiche Richtung, gleiche Orientierung. Gegenvektoren, doppelt lange Pfeile und gedrehte Pfeile gehören nicht dazu.</p>"},
+  {n:"2b",be:3,pre:"<p>Gegeben sind KL = (−6, 3, 9) und OP = (2, −1, −3).</p>",t:"<b>Prüfen</b> Sie rechnerisch, ob einer der beiden Vektoren ein Vielfaches des anderen ist.",sol:"<p>−6 : 2 = −3, 3 : (−1) = −3, 9 : (−3) = −3 (2 BE). In allen Koordinaten r = −3, also KL = −3 · OP. Die Vektoren sind kollinear, KL ist ein Vielfaches von OP (1 BE für den Antwortsatz).</p>"}]},
+ {id:"pk",kind:"exam",icon:"📝",title:"Probeklausur: Vektoren im Raum",desc:"Vierecke, Dreiecke, Orthogonalität, Winkel, lineare Abhängigkeit.",minutes:90,
+  intro:"<p>Gegeben sind die Punkte <b>A(2|1|0)</b>, <b>B(6|3|4)</b>, <b>C(4|7|8)</b> und <b>D(0|5|4)</b>.</p>",tasks:[
+  {part:"Viereck ABCD",n:"1a",be:4,t:"<b>Zeigen</b> Sie, dass ABCD ein Parallelogramm ist.",sol:"<p>AB = (4, 2, 4), DC = C − D = (4, 2, 4). Da AB = DC, sind die Seiten AB und DC parallel und gleich lang: ABCD ist ein Parallelogramm.</p>"},
+  {part:"Viereck ABCD",n:"1b",be:5,t:"<b>Untersuchen</b> Sie, ob ABCD sogar eine Raute oder ein Rechteck ist.",sol:"<p>AD = (−2, 4, 4). |AB| = √36 = 6, |AD| = √36 = 6: benachbarte Seiten gleich lang, also Raute (2,5). AB · AD = −8 + 8 + 16 = 16 ≠ 0: kein rechter Winkel, also kein Rechteck und kein Quadrat (2,5).</p>"},
+  {part:"Viereck ABCD",n:"1c",be:4,t:"<b>Zeigen</b> Sie, dass die Diagonalen senkrecht aufeinander stehen, und <b>berechnen</b> Sie den Schnittpunkt der Diagonalen.",sol:"<p>AC = (2, 6, 8), BD = (−6, 2, 0), AC · BD = −12 + 12 + 0 = 0, also orthogonal (2). Schnittpunkt = Mittelpunkt von AC: M = ½ · (A + C) = (3|4|4) (2).</p>"},
+  {part:"Viereck ABCD",n:"1d",be:4,t:"<b>Berechnen</b> Sie den Innenwinkel bei A.",sol:"<p>cos α = (AB · AD) / (|AB| · |AD|) = 16 / 36 ≈ 0,444, α ≈ 63,6°.</p>"},
+  {part:"Dreieck",n:"2",be:5,pre:"<p>Gegeben ist das Dreieck PQR mit P(1|1|1), Q(4|5|1) und R(1|1|6).</p>",t:"<b>Zeigen</b> Sie, dass das Dreieck gleichschenklig und rechtwinklig ist.",sol:"<p>PQ = (3, 4, 0), |PQ| = 5. PR = (0, 0, 5), |PR| = 5: gleichschenklig (2,5). PQ · PR = 0 + 0 + 0 = 0: rechter Winkel bei P (2,5).</p>"},
+  {part:"Lagebeziehungen",n:"3",be:4,t:"<b>Prüfen</b> Sie, ob a = (3, −6, 9) und b = (−1, 2, −3) bzw. a und c = (2, −4, 5) kollinear sind.",sol:"<p>a = −3 · b (in allen Koordinaten r = −3), also kollinear (2). 3 : 2 = 1,5, −6 : (−4) = 1,5, 9 : 5 = 1,8: nicht überall gleich, a und c sind nicht kollinear (2).</p>"},
+  {part:"Lagebeziehungen",n:"4",be:5,t:"<b>Untersuchen</b> Sie u = (1, 2, −1), v = (0, 1, 3) und w = (2, 7, 7) auf lineare Abhängigkeit.",sol:"<p>Ansatz w = r · u + s · v: I 2 = r, II 7 = 2r + s, III 7 = −r + 3s (2). Aus I: r = 2, aus II: s = 3, Probe III: −2 + 9 = 7 ✓ (2). Also w = 2u + 3v: Die Vektoren sind linear abhängig (komplanar) (1).</p>"},
+  {part:"Länge",n:"5",be:4,t:"a) <b>Geben</b> Sie einen Vektor der Länge 6 an, der die gleiche Richtung wie a = (2, −1, 2) hat. b) <b>Bestimmen</b> Sie b₂ so, dass A(1|2|3) und B(3|b₂|4) den Abstand 3 haben.",sol:"<p>a) |a| = 3, also 2 · a = (4, −2, 4) (2). b) 2² + (b₂ − 2)² + 1² = 9, also (b₂ − 2)² = 4, b₂ = 4 oder b₂ = 0 (2).</p>"}]},
+ {id:"checkl",kind:"tool",tool:"check",icon:"✅",title:"Checkliste vor der Klausur",desc:"Abhaken, was sitzt.",groups:[
+  {h:"Grundlagen",items:["Punkte im Schrägbild eintragen und ablesen","Verbindungsvektor: Spitze minus Fuß","Punkt aus Punkt und Vektor bestimmen","Mit Vektoren rechnen, Vorzeichen sicher"]},
+  {h:"Länge",items:["Länge eines Vektors mit Wurzel","Abstand zweier Punkte und zum Ursprung","Mittelpunkt und Schwerpunkt","Unbekannte Koordinate bei gegebenem Abstand"]},
+  {h:"Lage",items:["Vielfaches prüfen mit Antwortsatz","Drei Vektoren auf lineare Abhängigkeit untersuchen","Skalarprodukt und Orthogonalität","Winkel zwischen Vektoren","Besondere Vierecke und Dreiecke nachweisen"]}]},
+ {id:"mat",kind:"mat",icon:"📄",title:"Formeln und Rechenwege",desc:"Alles aus den Übungsblättern auf einer Seite, dazu deine Fehler aus dem Test.",html:MA_MAT}
+]};
+/* Werkstatt Deutsch (LK): Texte als Zusammenfassung mit kurzen Zitaten, Einleitungs-Check, Stilmittel-Jäger, Kafka-Deutungen, Probeklausuren. */
+const DE_LINK=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+const DE_MAT=`<h4>Die Texte im Überblick</h4>
+<p><b>Franz Kafka: „Gibs auf!“</b> (entstanden 1922, Parabel, Ich-Erzähler). Ein Ich-Erzähler geht sehr früh am Morgen durch leere Straßen zum Bahnhof. Beim Vergleich mit einer Turmuhr merkt er, dass es viel später ist als gedacht. Der Schreck macht ihn unsicher, er kennt die Stadt kaum. Er fragt einen Schutzmann nach dem Weg. Der lächelt, fragt zurück, ob er den Weg ausgerechnet von ihm erfahren wolle, sagt zweimal „Gibs auf“ und wendet sich ab wie jemand, der mit seinem Lachen allein sein will.</p>
+<p><b>Deutungsansätze:</b> Orientierungslosigkeit des modernen Menschen, Zeit als Bedrohung (Uhrenvergleich), Verlust von Sicherheit, die Autorität (Schutzmann) verweigert Hilfe, das Ziel bleibt unerreichbar. Form: ein einziger langer Satz am Anfang mit Kommas (Hast, Atemlosigkeit), dann knapper Dialog, offenes Ende.</p>
+<p><b>Franz Kafka: „Die Verwandlung“</b> (1915, Erzählung, drei Teile, personaler Er-Erzähler nah an Gregor).</p><ul>
+<li><b>Teil I:</b> Gregor Samsa, Handlungsreisender (Tuchreisender), erwacht als „ungeheueres Ungeziefer“. Er denkt zuerst an seinen Zug und seinen Beruf. Der Prokurist erscheint, um ihn zur Arbeit zu holen. Als Gregor sich zeigt, flieht der Prokurist, der Vater treibt Gregor mit Stock und Zeitung zurück ins Zimmer.</li>
+<li><b>Teil II:</b> Die Schwester Grete versorgt ihn mit Essen. Gregor erfährt, dass der Vater Geld zurückgelegt hat. Grete und die Mutter räumen das Zimmer aus, Gregor klammert sich an das Bild der Dame im Pelz. Der Vater, jetzt in Uniform als Bankdiener, bewirft ihn mit Äpfeln, ein Apfel bleibt im Rücken stecken. Die Mutter bittet um Gregors Leben.</li>
+<li><b>Teil III:</b> Die Familie arbeitet (Vater Bankdiener, Mutter Näharbeiten, Grete Verkäuferin) und nimmt drei Zimmerherren auf. Gregor kriecht beim Geigenspiel der Schwester ins Wohnzimmer, die Zimmerherren kündigen. Grete fordert, „es“ loszuwerden. Gregor stirbt in der Nacht, er denkt „mit Rührung und Liebe“ an seine Familie. Die Familie macht erleichtert einen Ausflug, die Eltern denken an einen Mann für Grete.</li></ul>
+<p><b>Zentrale Themen:</b> doppelte Abhängigkeit (Gregor ernährt die Familie und arbeitet die Schulden der Eltern beim Chef ab, nach der Verwandlung ist er von ihr abhängig), Machtumkehr zwischen Vater und Sohn, Entfremdung und Ausgrenzung, Entmenschlichung durch Arbeit, die Familie blüht nach Gregors Tod auf.</p>
+<p><b>Jakob van Hoddis: „Weltende“</b> (1911, zwei Strophen mit je vier Versen, Kreuzreim bzw. umarmender Reim, fünfhebiger Jambus). Lauter unverbundene Katastrophenbilder: dem Bürger fliegt der Hut vom Kopf, Dachdecker stürzen ab, die Flut steigt („liest man“), Sturm, Meere zerdrücken Dämme, die meisten Menschen haben einen Schnupfen, Eisenbahnen fallen von Brücken. <b>Merkmale:</b> Reihungs- bzw. Simultanstil, Zeilenstil, Verharmlosung neben Katastrophe (Schnupfen), Groteske, Ironie gegenüber dem Bürger, Weltuntergangsstimmung vor dem Ersten Weltkrieg. Gilt als Startschuss der expressionistischen Lyrik.</p>
+<p><b>Georg Heym: „Der Gott der Stadt“</b> (1910, fünf Strophen, Kreuzreim, fünfhebiger Jambus). Ein riesiger Gott (Baal) sitzt auf einem Häuserblock, die Städte knien um ihn, Kirchenglocken, Musik und Fabrikrauch steigen zu ihm auf wie Weihrauch. Am Ende streckt er seine „Fleischerfaust“ aus und ein Feuermeer frisst eine Straße. <b>Merkmale:</b> Personifikation der Großstadt als zerstörerischer Götze, Farbsymbolik (schwarz, rot), religiöse Bildsprache (Baal, knien, Weihrauch) als Kritik an der Vergötterung von Industrie und Stadt, apokalyptisches Ende.</p>
+<p><b>Gottfried Benn: „Morgue“ (1912)</b> mit „Kleine Aster“ und „Schöne Jugend“. In „Kleine Aster“ findet ein Arzt bei der Obduktion eines ertrunkenen Bierfahrers eine Aster zwischen den Zähnen und legt sie beim Zunähen in die Brusthöhle. In „Schöne Jugend“ wird im Körper eines ertrunkenen Mädchens ein Nest junger Ratten gefunden. <b>Merkmale:</b> nüchterner, medizinischer Ton, Ästhetik des Hässlichen, Zynismus, Schock statt Gefühl, Tabubruch gegenüber dem schönen Gedicht. (Die Gedichte sind bis Ende 2026 urheberrechtlich geschützt, darum hier nur zusammengefasst.)</p>
+<p><b>Erich Kästner</b> (Neue Sachlichkeit): „Sachliche Romanze“ (1929) zeigt ein Paar, dessen Liebe nach Jahren einfach weg ist, nüchtern und alltagsnah erzählt, die Gefühllosigkeit wird gerade dadurch spürbar. „Kennst du das Land, wo die Kanonen blühn?“ parodiert Goethes Mignon-Lied und kritisiert den Militarismus in Deutschland.</p>
+<p class="small muted">Die vollständigen gemeinfreien Texte von Kafka, van Hoddis und Heym kannst du bei ${DE_LINK("https://www.projekt-gutenberg.org/","Projekt Gutenberg")} nachlesen.</p>
+<h4>Epochen</h4><table class="mini"><tr><th>Epoche</th><th>Hintergrund</th><th>Themen</th><th>Stil</th></tr>
+<tr><td>Symbolismus (1880–1910)</td><td>Abkehr vom Naturalismus</td><td>Traum, Schönheit, Vergänglichkeit, Mystik</td><td>Symbole, Musikalität, Synästhesie, Stimmung</td></tr>
+<tr><td>Expressionismus (1905–1925)</td><td>Industrialisierung, Großstadt, soziale Spannungen, Erster Weltkrieg</td><td>Großstadt, Krieg, Apokalypse, Ich-Zerfall, Verfall, Wahnsinn, neuer Mensch</td><td>Reihungsstil, grelle Farben, Neologismen, Satzfragmente, Ästhetik des Hässlichen, Montage</td></tr>
+<tr><td>Neue Sachlichkeit (1919–1933)</td><td>Weimarer Republik, Inflation, Arbeitslosigkeit</td><td>Alltag, Großstadt, Neue Frau, Kriegsfolgen</td><td>nüchtern, präzise, Alltagssprache, Distanz, Ironie</td></tr></table>
+<h4>Vier Deutungsrichtungen der Kafka-Forschung</h4><ol><li><b>Philosophisch-religiös:</b> Kluft zwischen göttlicher Macht und dem Sinn suchenden Menschen; die Kommunikation zwischen „oben“ und „unten“ scheitert.</li><li><b>Biografisch:</b> Das Verhältnis zum übermächtigen Vater ist der Schlüssel, die Hauptfiguren gestalten Kafkas eigene Erfahrungen.</li><li><b>Politisch-gesellschaftlich:</b> Individuum gegen eine anonyme Staatsmacht, die entweder schwach und ohnmächtig oder allgewaltig und bedrohlich ist (Vorwegnahme totalitärer Systeme). Der Mensch bleibt allein und unverstanden.</li><li><b>Psychologisch:</b> Nach Freud kämpfen Über-Ich (verinnerlichte Anforderungen der Eltern und Gesellschaft) und Es (unbewusste Triebe) im Ich.</li></ol>
+<h4>Aufbau einer Interpretation</h4><ol><li><b>Einleitung:</b> Autor, Titel, Textsorte, Entstehungsjahr, Epoche und <b>Thema</b> in einem Satz, dazu eine Deutungshypothese.</li><li><b>Inhalt:</b> knapp, im Präsens, ohne Zitate.</li><li><b>Analyse:</b> Aufbau, Erzähler bzw. lyrisches Ich, Zeit, Sprache. Immer: Mittel → Zitat mit Zeile → Wirkung → Deutung.</li><li><b>Einordnung:</b> Epoche, Biografie, Werkzusammenhang.</li><li><b>Schluss:</b> Hypothese bestätigen oder anpassen, eigene Stellungnahme.</li></ol>
+<h4>Formulierungshilfen</h4><p><b>Statt „zeigt“:</b> verdeutlicht, unterstreicht, hebt hervor, veranschaulicht, betont, spiegelt wider, deutet an, kontrastiert. <b>Wirkung:</b> erzeugt den Eindruck, dass …; wirkt bedrohlich, weil …; dadurch wird deutlich, dass …. <b>Zitat:</b> „…“ (Z. 4) bzw. (V. 3).</p>`;
+
+/* Werkzeug: Einleitungs-Check (läuft im Cockpit, ohne Claude) */
+const EIN_T={gibs:{n:"Kafka: „Gibs auf!“",a:/kafka/i,t:/gibs auf/i,s:/parabel|kurzprosa|erzählung|prosa/i,j:/1922/},verw:{n:"Kafka: „Die Verwandlung“",a:/kafka/i,t:/verwandlung/i,s:/erzählung|novelle/i,j:/1915|1912/},welt:{n:"van Hoddis: „Weltende“",a:/hoddis/i,t:/weltende/i,s:/gedicht/i,j:/1911/},gott:{n:"Heym: „Der Gott der Stadt“",a:/heym/i,t:/gott der stadt/i,s:/gedicht/i,j:/1910/}};
+function einCheck(txt,T){return [["Autor",T.a.test(txt)],["Titel",T.t.test(txt)],["Textsorte",T.s.test(txt)],["Entstehungsjahr",T.j.test(txt)],["Epoche",/expressionis|moderne|neue sachlichkeit/i.test(txt)],["Thema (z. B. „thematisiert“, „handelt von“, „geht es um“)",/themati|handelt von|geht es um|setzt sich mit|befasst sich|im mittelpunkt|thema/i.test(txt)],["Deutungshypothese (z. B. „zeigt, dass“, „verdeutlicht“, „kritisiert“)",/zeigt,? dass|verdeutlicht|kritisiert|deutet|wird deutlich|veranschaulicht|spiegelt/i.test(txt)]];}
+TOOLS.einl=(s,it)=>{const key=wkey(s,"xeinl","v"),w=W[key]||{},sel=w.sel||"gibs",T=EIN_T[sel],txt=w.v||"",r=w.checked?einCheck(txt,T):null;
+  return `<div class="card stack"><p class="small">Im Test zur „Verwandlung“ gab es für die Einleitung 4 von 6 Punkten, am Rand stand „Thema“. Hier übst du so lange, bis alle sieben Bausteine drin sind.</p>
+   <div class="chips">${Object.entries(EIN_T).map(([k,v])=>`<button class="btn ${sel===k?"primary":""}" data-einsel="${s}|${k}">${esc(v.n)}</button>`).join("")}</div>
+   <div class="work" data-w="${key}"><textarea class="wta" data-wk="${key}" data-einv="${s}" rows="5" placeholder="Schreib hier deine Einleitung zu ${esc(T.n)} …">${esc(txt)}</textarea><span class="small muted wstat">Claude sieht deinen Text bei „Feedback Deutsch“</span></div>
+   <div class="row"><button class="btn primary" data-einchk="${s}">Einleitung prüfen</button></div>
+   ${r?`<div class="tpres">${r.map(([n,ok])=>`<div class="${ok?"":"w"}">${ok?"✓":"✗"} ${esc(n)}</div>`).join("")}</div><p class="small muted">${r.every(x=>x[1])?"Alles drin. Lass Claude noch prüfen, ob die Deutungshypothese überzeugt.":"Ergänze die rot markierten Bausteine. Der Check sucht nur nach Stichwörtern, ob es inhaltlich stimmt, sagt dir die Musterlösung."}</p>`:""}
+   <details class="sol"><summary>Musterlösung</summary>${{gibs:"In der Parabel „Gibs auf!“ von Franz Kafka, entstanden 1922 und damit in der Zeit der literarischen Moderne bzw. des späten Expressionismus, geht es um einen Ich-Erzähler, der auf dem Weg zum Bahnhof die Orientierung verliert und von einem Schutzmann keine Hilfe bekommt. Der Text thematisiert die Orientierungslosigkeit des modernen Menschen und verdeutlicht, dass Autoritäten keinen Halt mehr bieten.",verw:"Franz Kafkas Erzählung „Die Verwandlung“, 1912 geschrieben und 1915 veröffentlicht, handelt von dem Handlungsreisenden Gregor Samsa, der eines Morgens als Ungeziefer erwacht und von seiner Familie zunehmend ausgegrenzt wird. Die Erzählung thematisiert Entfremdung und Abhängigkeit und zeigt, dass Gregor für seine Familie nur so lange zählt, wie er ihr nützt.",welt:"Das Gedicht „Weltende“ von Jakob van Hoddis aus dem Jahr 1911 gehört zum frühen Expressionismus. Es thematisiert den Weltuntergang und verdeutlicht durch unverbundene, teils lächerliche Katastrophenbilder die Bedrohung und Gleichgültigkeit der bürgerlichen Welt vor dem Ersten Weltkrieg.",gott:"Georg Heyms Gedicht „Der Gott der Stadt“ von 1910 ist ein typisches Gedicht des Expressionismus. Es handelt von einem riesigen Gott, der über der Großstadt thront und sie schließlich zerstört, und kritisiert die Vergötterung der Großstadt und Industrie als bedrohliche, zerstörerische Macht."}[sel]}</details></div>`;};
+document.addEventListener("click",e=>{const a=e.target.closest("[data-einsel]"),c=e.target.closest("[data-einchk]");
+  if(a){const [s,k]=a.dataset.einsel.split("|"),key=wkey(s,"xeinl","v");W[key]=Object.assign({},W[key],{sel:k,checked:false});wSave(key);render();return;}
+  if(c){const s=c.dataset.einchk,key=wkey(s,"xeinl","v");W[key]=Object.assign({},W[key],{checked:true});wSave(key);render();}});
+document.addEventListener("input",e=>{const t=e.target.closest("[data-einv]");if(!t)return;const key=wkey(t.dataset.einv,"xeinl","v");W[key]=Object.assign({},W[key],{v:t.value,checked:false});});
+
+WS.deutsch={intro:"Alles für die LK-Klausur steckt hier: die Texte mit Inhalt und Deutung, Epochen, die vier Kafka-Deutungen, ein Einleitungs-Check, Stilmittel-Training und drei Probeklausuren. Deine Fehler aus dem Verwandlungs-Test sind eingebaut.",items:[
+ {id:"einl",kind:"tool",tool:"einl",icon:"✍️",title:"Einleitungs-Check",desc:"Schreib eine Einleitung, der Check zeigt sofort, welcher Baustein fehlt."},
+ {id:"stil",kind:"tool",tool:"blitz",icon:"🔍",title:"Stilmittel-Jäger",desc:"Kurze Stellen aus den Texten: Welches Mittel steckt drin, und was bewirkt es?",
+  opts:["Reihungsstil","Personifikation","Vergleich","Metapher","Ironie / Groteske","Farbsymbolik"],cards:[
+  {q:"„Weltende“: Hut weg, Dachdecker stürzen, Flut steigt, Schnupfen, Eisenbahnen fallen. Jede Zeile ein neues Bild.",a:"Reihungsstil",why:"Unverbundene Bilder nebeneinander (Simultanstil): Die Welt zerfällt in Einzelteile."},
+  {q:"„Weltende“: Zwischen Sturm und Dammbruch steht, dass die meisten Menschen einen Schnupfen haben.",a:"Ironie / Groteske",why:"Banales neben Katastrophe: Die Bürger nehmen den Weltuntergang nicht ernst."},
+  {q:"„Der Gott der Stadt“: Ein Gott sitzt breit auf einem Häuserblock.",a:"Personifikation",why:"Die Großstadt wird als übermächtiges Wesen dargestellt."},
+  {q:"„Der Gott der Stadt“: Der Fabrikrauch zieht zu ihm auf „wie Duft von Weihrauch“.",a:"Vergleich",why:"Industrie ersetzt die Religion, die Stadt wird angebetet."},
+  {q:"„Der Gott der Stadt“: „Fleischerfaust“",a:"Metapher",why:"Neologismus und Metapher: brutale, schlachtende Gewalt."},
+  {q:"„Der Gott der Stadt“: der rote Bauch, schwarze Winde, schwarze Türme",a:"Farbsymbolik",why:"Rot (Feuer, Blut, Gewalt) und Schwarz (Tod, Bedrohung), typisch für den Expressionismus."},
+  {q:"„Die Verwandlung“: Gregor erwacht als „ungeheueres Ungeziefer“.",a:"Metapher",why:"Die Verwandlung macht sichtbar, wie wertlos und fremd Gregor für Familie und Beruf schon vorher war."},
+  {q:"„Gibs auf!“: Der Schutzmann wendet sich ab wie Leute, die mit ihrem Lachen allein sein wollen.",a:"Vergleich",why:"Die Autorität verspottet den Hilfesuchenden, Hilfe gibt es nicht."},
+  {q:"Kästner, „Sachliche Romanze“: Die Liebe kommt den beiden abhanden wie ein Hut oder ein Stock.",a:"Vergleich",why:"Ein Gefühl wird wie ein Gebrauchsgegenstand behandelt: Neue Sachlichkeit."},
+  {q:"„Weltende“: „liest man“ in einer Zeile über die steigende Flut",a:"Ironie / Groteske",why:"Die Katastrophe ist nur eine Zeitungsmeldung, man ist bloß Zuschauer."}]},
+ {id:"epoche",kind:"tool",tool:"blitz",icon:"⚡",title:"Epoche oder Erzähltechnik?",desc:"14 Karten: Epoche erkennen, Zeitgestaltung, Erzähler.",opts:["Symbolismus","Expressionismus","Neue Sachlichkeit"],cards:[
+  {q:"Großstadt als Monster, grelle Farben, Weltuntergang",a:"Expressionismus",why:"Typisch: Großstadtkritik und Apokalypse."},{q:"Traum, Schönheit, Synästhesie, musikalische Sprache",a:"Symbolismus",why:"Stimmung statt Handlung."},
+  {q:"Nüchtern, Alltagssprache, Arbeitslosigkeit, Neue Frau",a:"Neue Sachlichkeit",why:"Weimarer Republik, beobachtende Distanz."},{q:"Ästhetik des Hässlichen, Leichen, Obduktion",a:"Expressionismus",why:"Benns „Morgue“."},
+  {q:"Kästner, „Fabian“",a:"Neue Sachlichkeit",why:"Roman von 1931."},{q:"Ich-Zerfall, Wahnsinn, Schrei nach dem neuen Menschen",a:"Expressionismus",why:"Leitideen des Expressionismus."},
+  {q:"Ein Dialog wird Wort für Wort wiedergegeben.",a:"Zeitdeckung",opts:["Zeitdeckung","Zeitraffung","Zeitdehnung"],why:"Erzählzeit und erzählte Zeit sind gleich lang."},
+  {q:"„Jahre vergingen.“",a:"Zeitraffung",opts:["Zeitdeckung","Zeitraffung","Zeitdehnung"],why:"Lange Zeit in einem Satz."},
+  {q:"Gregors Gedanken in einer Sekunde nehmen eine halbe Seite ein.",a:"Zeitdehnung",opts:["Zeitdeckung","Zeitraffung","Zeitdehnung"],why:"Erzählzeit länger als erzählte Zeit."},
+  {q:"Wer erzählt „Gibs auf!“?",a:"Ich-Erzähler",opts:["Ich-Erzähler","lyrisches Ich","auktorialer Erzähler"],why:"Prosa hat einen Erzähler, das lyrische Ich gibt es nur im Gedicht."},
+  {q:"Wer erzählt „Die Verwandlung“ (meistens)?",a:"personaler Er-Erzähler",opts:["Ich-Erzähler","personaler Er-Erzähler","auktorialer Erzähler"],why:"Wir sehen fast alles aus Gregors Sicht, bis zu seinem Tod."},
+  {q:"Wer spricht im Gedicht „Weltende“?",a:"keine Sprecherfigur, ein distanzierter Sprecher",opts:["Ich-Erzähler","keine Sprecherfigur, ein distanzierter Sprecher","Gregor"],why:"Kein lyrisches Ich tritt hervor, die Bilder werden nüchtern aneinandergereiht."},
+  {q:"Gregor ernährt die Familie und zahlt die Schulden der Eltern ab. Wie nennt man das im Test?",a:"doppelte Abhängigkeit",opts:["doppelte Abhängigkeit","Machtumkehr","Homöostase"],why:"Beruflich vom Chef, familiär als Ernährer, später umgekehrt von der Familie."},
+  {q:"Der Vater ist erst kraftlos, später in Uniform das Familienoberhaupt.",a:"Machtumkehr",opts:["doppelte Abhängigkeit","Machtumkehr","Zeitraffung"],why:"Gregor verliert seine Rolle, der Vater gewinnt sie zurück."}]},
+ {id:"satz",kind:"tool",tool:"puzzlews",icon:"🧩",title:"Der perfekte Analysesatz",desc:"Bau aus vier Bausteinen einen Satz, der die volle Punktzahl bringt.",
+  pz:{layout:"slots",intro:"Ein Analysesatz hat immer vier Teile. Zieh die Bausteine in die richtige Reihenfolge.",done:"Genau so: Mittel, Zitat mit Zeile, Wirkung, Deutung. Diese Kette brauchst du in jeder Analyse.",slots:[["s1","① Mittel benennen"],["s2","② Zitat mit Zeilen- oder Versangabe"],["s3","③ Wirkung"],["s4","④ Deutung im Textzusammenhang"]],
+   pieces:[{t:"Heym personifiziert die Großstadt als Gott,",z:"s1"},{t:"der „auf einem Häuserblocke“ thront (V. 1).",z:"s2"},{t:"Dadurch wirkt die Stadt übermächtig und bedrohlich.",z:"s3"},{t:"Das verdeutlicht die Kritik der Expressionisten an der Vergötterung von Industrie und Großstadt.",z:"s4"},{t:"Das Gedicht ist schön.",z:"x",why:"Eine Wertung ohne Begründung bringt keine Punkte."},{t:"Der Gott sitzt auf einem Haus.",z:"x",why:"Das ist Nacherzählen, keine Analyse."}]}},
+ {id:"deut",kind:"tool",tool:"puzzlews",icon:"🗝️",title:"Vier Wege, Kafka zu deuten",desc:"Ordne Beobachtungen aus der „Verwandlung“ den vier Deutungsrichtungen zu.",
+  pz:{layout:"buckets",zones:[["rel","philosophisch-religiös"],["bio","biografisch"],["pol","politisch-gesellschaftlich"],["psy","psychologisch"]],done:"In der Klausur bringt es Punkte, wenn du eine Stelle aus zwei Deutungsrichtungen beleuchtest.",
+   pieces:[{t:"Der Vater wirft Äpfel nach Gregor, wie Kafkas übermächtiger Vater",z:"bio"},{t:"Kafka schrieb seinem Vater einen langen Brief über seine Angst",z:"bio"},{t:"Gregor ist nur wertvoll, solange er Geld verdient",z:"pol"},{t:"Der Prokurist steht für eine kalte, anonyme Arbeitswelt",z:"pol"},{t:"Gregor sucht vergeblich einen Sinn in seiner Lage",z:"rel"},{t:"Niemand „oben“ erklärt, warum die Verwandlung geschah",z:"rel"},{t:"Gregors Pflichtgefühl (Über-Ich) kämpft gegen seinen Wunsch nach Freiheit (Es)",z:"psy"},{t:"Das Ungeziefer als Bild für Schuldgefühle",z:"psy"}]}},
+ {id:"test",kind:"exam",icon:"📝",title:"Test-Revanche: Die Verwandlung",desc:"Der Test vom September noch einmal. Damals 16 von 23, jetzt holst du den Rest.",minutes:45,tasks:[
+  {n:"1",be:1,t:"<b>Nennen</b> Sie den Beruf des Hauptprotagonisten.",sol:"<p>Handlungsreisender (Tuchreisender, Vertreter).</p>"},
+  {n:"2",be:1,t:"Wer ist der Vorgesetzte des Hauptprotagonisten?",sol:"<p>Der Chef der Firma, bei dem die Eltern Schulden haben. In Teil I kommt der Prokurist als sein Vertreter in die Wohnung.</p>"},
+  {n:"3",be:4,t:"<b>Charakterisieren</b> Sie die Mutter in zwei Worten und <b>begründen</b> Sie Ihre Entscheidung.",sol:"<p>z. B. schwach und liebevoll (je 1 Begriff, je 1 Begründung): schwach: Asthma, fällt in Ohnmacht, setzt sich gegen Vater und Grete nicht durch. Liebevoll: will Gregor sehen, fleht den Vater an, Gregors Leben zu schonen (Apfelszene).</p>"},
+  {n:"4",be:4,t:"Die Hauptfigur befindet sich in zweifacher Abhängigkeit. <b>Erläutern</b> Sie diese.",sol:"<p>Beruflich: Gregor muss die Schulden der Eltern beim Chef abarbeiten und hasst seinen Beruf, kann aber nicht kündigen (2). Familiär: Er ernährt die Familie, nach der Verwandlung ist er umgekehrt völlig von ihr abhängig (2).</p>"},
+  {n:"5",be:1,t:"Welche Arbeit sucht sich der Vater?",sol:"<p>Er wird Bankdiener (Diener bzw. Bote bei einer Bank) und trägt eine Uniform. (Im Test 0 Punkte, jetzt sitzt es.)</p>"},
+  {n:"6",be:2,t:"Inwiefern ändert sich durch die Verwandlung die Stellung des Vaters innerhalb der Familie?",sol:"<p>Vorher alt, träge, von Gregor versorgt. Danach wieder Familienoberhaupt mit Uniform und Arbeit, autoritär und gewalttätig (Apfelwurf). Machtumkehr zwischen Vater und Sohn.</p>"},
+  {n:"7",be:6,t:"<b>Formulieren</b> Sie eine Einleitung zur Erzählung.",sol:"<p>Autor, Titel, Textsorte, Entstehung (1912) und Veröffentlichung (1915), Epoche (Moderne, Expressionismus) (3). <b>Thema</b> in einem Satz, z. B. Entfremdung und Ausgrenzung eines Menschen, der nur so lange zählt, wie er nützt (2). Kurze Deutungshypothese (1). Übe es im Einleitungs-Check.</p>"},
+  {n:"8",be:4,pre:"<p>„Gregor Samsas Schicksal dient als Spiegelbild des moralischen Zustands der Gesellschaft und der Zerbrechlichkeit des Menschen in einer sinnentleerten Welt!“</p>",t:"<b>Nehmen</b> Sie Stellung zu dieser These und stellen Sie Bezüge zur Erzählung her.",sol:"<p>Zustimmung mit mindestens zwei Belegen (2): Gregor wird nach seinem Nutzen beurteilt (Arbeitswelt, Familie), die Familie ist nach seinem Tod erleichtert; niemand fragt nach dem Warum der Verwandlung, die Welt bietet keinen Sinn. Einschränkung (1): Gregor ist auch selbst passiv, die Mutter zeigt Mitgefühl, manches ist eher biografisch (Vater) zu deuten. Klares Fazit (1). Damals 1,5 Punkte, weil Belege und Fazit fehlten.</p>"}]},
+ {id:"pk1",kind:"exam",icon:"📝",title:"LK-Probeklausur: „Gibs auf!“ und „Die Verwandlung“",desc:"Interpretation mit Vergleich, wie im Abitur.",minutes:180,
+  intro:"<p><b>Aufgabe:</b> Interpretieren Sie Franz Kafkas Parabel „Gibs auf!“. Vergleichen Sie anschließend die Situation des Ich-Erzählers mit der Gregor Samsas in „Die Verwandlung“ unter dem Aspekt der Orientierungslosigkeit und Ausgrenzung.</p><p class=\"small\">Den Inhalt und die wichtigsten Merkmale findest du unter Material. Schreib jeden Teil in sein Feld, so kannst du ihn einzeln bewerten.</p>",tasks:[
+  {part:"Interpretation",n:"1",be:6,t:"Einleitung mit Thema und Deutungshypothese",sol:"<p>Kafka, „Gibs auf!“, Parabel, 1922, Moderne. Thema: Orientierungslosigkeit und Verlust von Halt. Hypothese: Der Text zeigt einen Menschen, dem Zeit und Autoritäten keine Sicherheit mehr geben.</p>"},
+  {part:"Interpretation",n:"2",be:4,t:"Kurze Inhaltsangabe",sol:"<p>Präsens, ohne Zitate, nur das Wichtigste: früher Morgen, Uhrenvergleich, Schreck, Schutzmann, Antwort „Gibs auf“, Abwendung.</p>"},
+  {part:"Interpretation",n:"3",be:12,t:"Analyse von Aufbau, Erzähler, Zeit und Sprache mit Deutung",sol:"<p>Aufbau: Steigerung von Ruhe (reine, leere Straßen) zu Panik, Wendepunkt beim Uhrenvergleich, offenes Ende (3). Ich-Erzähler: subjektive Sicht, Unsicherheit wird miterlebt (2). Zeit: Diskrepanz zwischen eigener Uhr und Turmuhr, Zeit als Bedrohung (2). Sprache: langer erster Satz mit Kommas (Hast, Atemlosigkeit), knapper Dialog, Wiederholung „Gibs auf, gibs auf“, Vergleich am Schluss (3). Jede Beobachtung mit Zitat und Deutung (2).</p>"},
+  {part:"Interpretation",n:"4",be:8,t:"Deutung der Parabel und Einordnung (Epoche, Biografie, Deutungsrichtungen)",sol:"<p>Bildebene in Sachebene übertragen: der Weg als Lebensweg, der Bahnhof als Ziel, der Schutzmann als Autorität bzw. Gott bzw. Staat (3). Mindestens zwei Deutungsrichtungen: philosophisch-religiös (kein Sinn, „oben“ hilft nicht), gesellschaftlich (Autorität verspottet den Einzelnen), biografisch (Vater) (3). Epoche: Krise des modernen Menschen, Entfremdung (2).</p>"},
+  {part:"Vergleich",n:"5",be:14,t:"Vergleich mit Gregor Samsa: Orientierungslosigkeit und Ausgrenzung",sol:"<p>Gemeinsamkeiten (6): beide plötzlich aus der gewohnten Ordnung gerissen (Uhr, Verwandlung), beide suchen Hilfe bei Autoritäten (Schutzmann, Familie/Prokurist) und werden abgewiesen, beide bleiben allein, nüchterne Sprache für Absurdes, kein Grund wird erklärt. Unterschiede (6): Kurzer Augenblick gegen langen Prozess, Spott des Fremden gegen Ausgrenzung durch die eigene Familie, offenes Ende gegen Tod, Ich-Erzähler gegen personalen Erzähler. Fazit (2).</p>"},
+  {part:"Darstellung",n:"6",be:6,t:"Darstellungsleistung: Aufbau, Zitiertechnik, Fachsprache, Rechtschreibung",sol:"<p>Gegliederter Aufsatz mit Überleitungen, korrekte Zitate mit Zeilenangabe, Fachbegriffe, sichere Sprache. Achtung: „Familie“, „Tod“, „Ich-Erzähler“ statt „lyrisches Ich“.</p>"}]},
+ {id:"pk2",kind:"exam",icon:"📝",title:"LK-Probeklausur: Gedichtvergleich Großstadt und Weltende",desc:"„Weltende“ und „Der Gott der Stadt“ vergleichend interpretieren.",minutes:180,
+  intro:"<p><b>Aufgabe:</b> Interpretieren Sie Georg Heyms Gedicht „Der Gott der Stadt“ (1910). Vergleichen Sie es anschließend mit Jakob van Hoddis’ „Weltende“ (1911) hinsichtlich der Darstellung von Bedrohung und Untergang.</p><p class=\"small\">Inhalt und Merkmale der Gedichte stehen unter Material, die vollständigen Texte findest du über den Link dort.</p>",tasks:[
+  {part:"Interpretation",n:"1",be:5,t:"Einleitung mit Thema und Deutungshypothese",sol:"<p>Heym, „Der Gott der Stadt“, 1910, Expressionismus. Thema: die Großstadt als zerstörerischer Götze. Hypothese: Kritik an Industrialisierung und Vergötterung der Stadt.</p>"},
+  {part:"Interpretation",n:"2",be:5,t:"Formale Analyse: Strophen, Reim, Metrum, Aufbau",sol:"<p>Fünf Strophen à vier Verse, Kreuzreim, fünfhebiger Jambus: strenge Form gegen chaotischen Inhalt. Aufbau: thronender Gott, Anbetung, Steigerung bis zur Zerstörung in der letzten Strophe.</p>"},
+  {part:"Interpretation",n:"3",be:14,t:"Sprachliche Analyse und Deutung",sol:"<p>Personifikation des Gottes (Baal, biblischer Götze), religiöse Bildfelder (knien, Kirchenglocken, Weihrauch) als Umdeutung: Industrie wird angebetet. Farbsymbolik schwarz und rot. Neologismus „Fleischerfaust“, Vergleich mit Geiern, Steigerung bis zum Feuermeer. Jede Beobachtung mit Zitat und Deutung.</p>"},
+  {part:"Interpretation",n:"4",be:6,t:"Einordnung in den Expressionismus",sol:"<p>Großstadt, Anonymität, Untergangsstimmung vor dem Ersten Weltkrieg, Protest gegen Fortschrittsglauben, Apokalypse, Ästhetik des Bedrohlichen.</p>"},
+  {part:"Vergleich",n:"5",be:14,t:"Vergleich mit „Weltende“: Bedrohung und Untergang",sol:"<p>Gemeinsam: Untergangsvision, Kritik am Bürgertum und an der modernen Welt, strenge Form gegen Chaos, Expressionismus kurz vor 1914. Unterschiede: Heym zeigt eine zentrale, mythische Figur und eine logische Steigerung, van Hoddis reiht unverbundene Bilder (Simultanstil); Heym pathetisch und düster, van Hoddis grotesk-ironisch (Schnupfen, „liest man“); Heym Großstadt als Täter, van Hoddis Natur und Technik als Bedrohung, die Menschen nehmen es kaum wahr. Fazit.</p>"},
+  {part:"Darstellung",n:"6",be:6,t:"Darstellungsleistung",sol:"<p>Gliederung, Verszitate mit (V. x), Fachbegriffe (lyrisches Ich bzw. Sprecher, Metrum, Personifikation), Rechtschreibung.</p>"}]},
+ {id:"checkl",kind:"tool",tool:"check",icon:"✅",title:"Checkliste vor der Klausur",desc:"Abhaken, was sitzt.",groups:[
+  {h:"Texte",items:["Ich kann „Die Verwandlung“ in drei Teilen zusammenfassen","Ich kenne die doppelte Abhängigkeit und die Machtumkehr","Ich kann „Gibs auf!“ als Parabel deuten","Ich kenne Inhalt und Merkmale von „Weltende“, „Der Gott der Stadt“ und den Benn-Gedichten"]},
+  {h:"Methode",items:["Einleitung mit Thema und Hypothese","Analysesatz: Mittel, Zitat, Wirkung, Deutung","Zeitgestaltung und Erzählertypen","Vergleich nach Aspekten mit Fazit","Vier Deutungsrichtungen zu Kafka"]},
+  {h:"Darstellung",items:["„Familie“, „Tod“ richtig schreiben","Ich-Erzähler statt lyrisches Ich in Prosa","Stellungnahme mit zwei Argumenten, Gegenargument, Fazit"]}]},
+ {id:"mat",kind:"mat",icon:"📄",title:"Texte, Epochen, Deutungen",desc:"Inhalt und Merkmale aller Texte, Epochen, Kafka-Deutungen, Aufbau, Formulierungshilfen.",html:DE_MAT}
 ]};
 
 /* ============ SPIEL: XP, Level, Sterne, Abzeichen, Missionen ============
