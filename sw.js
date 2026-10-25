@@ -1,5 +1,5 @@
 // Offline-Speicher: zuerst Netz (damit Updates ankommen), sonst die gespeicherte Version.
-const CACHE="cockpit-20261025183635";
+const CACHE="cockpit-20261025193552";
 const FILES=["./","index.html","manifest.webmanifest","icon-180.png","icon-192.png","icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));self.skipWaiting();});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))));self.clients.claim();});
