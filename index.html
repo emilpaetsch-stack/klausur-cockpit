@@ -275,6 +275,31 @@ tr:last-child td{border-bottom:0}
 .help{display:grid;gap:8px;min-width:0}
 .hbox{background:var(--card);border:1px solid var(--line);border-left:4px solid #e0a100;border-radius:8px;padding:10px 12px;min-width:0}
 .hbox ol,.hbox ul{margin:.3em 0;padding-left:1.3em}.hbox p{margin:.3em 0}
+.umlb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+@media (max-width:700px){.umlb{grid-template-columns:minmax(0,1fr)}}
+.umlf{display:grid;gap:10px;min-width:0}
+.umlf fieldset{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:6px;margin:0;min-width:0;background:var(--card)}
+.umlf legend{font-weight:700;font-size:.85rem;padding:0 4px}
+.umlf label{display:grid;gap:3px;font-size:.82rem;color:var(--muted)}
+.umlf input,.umlf textarea,.umlf select,.umlb select{font:inherit;font-size:.88rem;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-width:0}
+.umlf textarea{font-family:var(--f-mono);font-size:.82rem;resize:vertical}
+.umlp,.skp,.kwrap{background:#fff;color:#1c2230;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0;overflow-x:auto}
+.umlrow{display:flex;flex-direction:column;gap:0;align-items:center}
+.umlc{border:2px solid #1c2230;min-width:150px;font-family:var(--f-mono);font-size:.78rem;background:#fff}
+.umlc>div{padding:4px 8px}.umln{font-weight:800;text-align:center;border-bottom:2px solid #1c2230}.umla{border-bottom:2px solid #1c2230;min-height:22px}.umlm{min-height:22px}
+.umlc .muted{color:#9aa2b1}
+.umll{display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--f-mono);font-weight:800;padding:4px 0}.umll i{display:block;width:2px;height:34px;background:#1c2230}
+.sk{border:1.5px solid #1c2230;margin:-1.5px 0 0 0;font-family:var(--f-mono);font-size:.8rem;background:#fff}
+.sk.st{padding:6px 8px}
+.sk.loop>.skh{padding:6px 8px}.sk.loop>.skb{margin-left:22px;border-left:1.5px solid #1c2230}
+.sk.if>.skh{display:grid;grid-template-columns:auto 1fr auto;gap:6px;padding:6px 8px;text-align:center;background:linear-gradient(to bottom right,transparent 49%,#1c223022 50%,transparent 51%),linear-gradient(to bottom left,transparent 49%,#1c223022 50%,transparent 51%)}
+.sk.if>.skh span{font-size:.7rem;align-self:end}
+.sk.if>.sky{display:grid;grid-template-columns:1fr 1fr}.sk.if>.sky>div{min-width:0}.sk.if>.sky>div+div{border-left:1.5px solid #1c2230}
+.kurve{width:100%;min-width:520px;height:auto}.kurve .k0{stroke:#9aa2b1;stroke-dasharray:4 4}.kurve .kp{fill:none;stroke:#2445c9;stroke-width:3}
+.kurve .kneg{fill:#c8322a}.kurve .kpos{fill:#1f8a4c}.kurve .kl,.kurve .ke{font-size:11px;fill:#5b6372}.kurve .kj{font-size:12px;font-weight:700;fill:#1c2230}
+.dmode{gap:6px}
+.wimg{max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.mbar{display:flex;flex-wrap:wrap;gap:4px}.mbar .btn{padding:4px 10px;font-family:var(--f-mono)}
 
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
@@ -715,13 +740,13 @@ P.info=[
  {id:"a",type:"bauen",title:"Deine eigene Playlist-App",pitch:"Du baust eine Mini-App, die genau die Bausteine der Klausur enthält. Statt Bücher in einer Bibliothek verwaltest du Songs in einer Playlist.",
   trains:"Klassen mit Konstruktor und Kapselung selbst schreiben, eine 1 : n-Beziehung als Liste umsetzen und eine Schleife als Struktogramm darstellen.",
   covers:["OOP","UML","Listen","Algorithmen"],effort:"klein · etwa 1 Stunde",
-  how:{wo:"<b>Direkt hier im Cockpit</b>: Bei den Schritten gibt es einen Code-Editor und ein Zeichenbrett, und Claude kann deinen Code auf Knopfdruck prüfen. Papier geht auch, so wie in der Klausur. Wer den Code wirklich laufen lassen will, kann das freiwillig auf programiz.com tun (Schritt 5 erklärt jeden Klick).",
+  how:{wo:"<b>Direkt hier im Cockpit</b>: Bei den Schritten gibt es einen Code-Editor und Baukästen für Klassendiagramm und Struktogramm, in die du nur eintippst. Claude kann deinen Code auf Knopfdruck prüfen. Papier geht auch, so wie in der Klausur. Wer den Code wirklich laufen lassen will, kann das freiwillig auf programiz.com tun (Schritt 5 erklärt jeden Klick).",
    brauchst:"Nur den Laptop. Als Vorbild das Merkblatt Bibliothek aus deinem Info-Ordner.",
    ergebnis:"Ein Blatt mit Klassendiagramm, deinem Java-Code für zwei Klassen und einem Struktogramm. Optional ein Programm, das wirklich läuft.",
    zeigen:"Was du hier einträgst, sieht Claude automatisch. Schreib im Chat „Feedback Info“, dann bekommst du eine Rückmeldung wie in der Klausur. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
-   {w:"draw",t:"Klassendiagramm zeichnen",x:"<p>Zeichne zwei Kästen, jeder hat drei Fächer: oben der Name, in der Mitte die Attribute, unten die Methoden.</p><ul><li><b>Song</b>: <code>- titel: String</code>, <code>- dauerSek: int</code>, darunter <code>+ Song(pTitel: String, pDauerSek: int)</code>, <code>+ getTitel(): String</code>, <code>+ getDauerSek(): int</code>, <code>+ setDauerSek(pDauerSek: int)</code></li><li><b>Playlist</b>: <code>- name: String</code>, <code>- songs: ArrayList&lt;Song&gt;</code>, darunter <code>+ Playlist(pName: String)</code>, <code>+ gesamtdauer(): int</code>, <code>+ laengsterSong(): Song</code></li></ul><p>Verbinde die Kästen mit einer Linie. An die Seite von Playlist schreibst du <b>1</b>, an die Seite von Song <b>n</b>. Bedeutet: Eine Playlist verwaltet viele Songs.</p><p class=\"small muted\">Merke: − heißt privat, + heißt öffentlich. Bei setDauerSek steht kein Rückgabetyp, also void.</p>"},
-   {w:"code",start:"class Song {\n    \n}",t:"Klasse Song auf Papier schreiben",x:"<p>Schreib die Klasse unten in den Code-Editor. Orientiere dich am Merkblatt (Klasse Buch). Diese Teile brauchst du:</p><ol><li>Zwei <b>private</b> Attribute.</li><li>Den <b>Konstruktor</b>: gleicher Name wie die Klasse, <b>kein void</b>, er übernimmt die Parameter in die Attribute.</li><li>Zwei <b>Getter</b>, die den Wert zurückgeben.</li><li>Einen <b>Setter</b> <code>setDauerSek</code>, der den Wert nur übernimmt, wenn er größer als 0 ist. Das ist Robustheit.</li></ol><p>Erst selbst versuchen, dann aufklappen und vergleichen.</p>",
+   {w:"uml",start:"{\"classes\": [{\"n\": \"Song\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Playlist\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 1, \"b\": 0, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Klassendiagramm erstellen",x:"<p>Ein Klassendiagramm hat pro Klasse drei Fächer: oben der Name, in der Mitte die Attribute, unten die Methoden. Trag alles unten im Baukasten ein, das Diagramm entsteht rechts von selbst. In der Klausur zeichnest du es genauso von Hand.</p><ul><li><b>Song</b>: <code>- titel: String</code>, <code>- dauerSek: int</code>, darunter <code>+ Song(pTitel: String, pDauerSek: int)</code>, <code>+ getTitel(): String</code>, <code>+ getDauerSek(): int</code>, <code>+ setDauerSek(pDauerSek: int)</code></li><li><b>Playlist</b>: <code>- name: String</code>, <code>- songs: ArrayList&lt;Song&gt;</code>, darunter <code>+ Playlist(pName: String)</code>, <code>+ gesamtdauer(): int</code>, <code>+ laengsterSong(): Song</code></li></ul><p>Bei „Beziehung“ steht schon: Playlist <b>1</b> —— <b>n</b> Song. Bedeutet: Eine Playlist verwaltet viele Songs.</p><p class=\"small muted\">Merke: − heißt privat, + heißt öffentlich. Bei setDauerSek steht kein Rückgabetyp, also void.</p>"},
+   {w:"code",start:"class Song {\n    \n}",t:"Klasse Song schreiben",x:"<p>Schreib die Klasse unten in den Code-Editor. Orientiere dich am Merkblatt (Klasse Buch). Diese Teile brauchst du:</p><ol><li>Zwei <b>private</b> Attribute.</li><li>Den <b>Konstruktor</b>: gleicher Name wie die Klasse, <b>kein void</b>, er übernimmt die Parameter in die Attribute.</li><li>Zwei <b>Getter</b>, die den Wert zurückgeben.</li><li>Einen <b>Setter</b> <code>setDauerSek</code>, der den Wert nur übernimmt, wenn er größer als 0 ist. Das ist Robustheit.</li></ol><p>Erst selbst versuchen, dann aufklappen und vergleichen.</p>",
     sol:`class Song {
     private String titel;
     private int dauerSek;
@@ -771,7 +796,7 @@ P.info=[
         return best;
     }
 }`},
-   {w:"draw",t:"Struktogramm für gesamtdauer() zeichnen",x:"<p>Ein Struktogramm ist ein Kasten, in dem die Befehle von oben nach unten stehen. Zeichne:</p><ol><li>Einen Balken: <code>summe = 0</code></li><li>Einen Schleifenkasten mit Kopf: <code>für i von 0 bis songs.size() − 1</code>. Rechts ist der Kasten eingerückt, dort steht der Befehl, der wiederholt wird: <code>summe = summe + songs.get(i).getDauerSek()</code></li><li>Einen letzten Balken: <code>gib summe zurück</code></li></ol><p class=\"small muted\">Vergleiche mit dem Arbeitsblatt Struktogramm aus deinem Info-Ordner.</p>"},
+   {w:"struk",t:"Struktogramm für gesamtdauer() erstellen",x:"<p>Ein Struktogramm ist ein Kasten, in dem die Befehle von oben nach unten stehen. Tipp die drei Teile unten in den Baukasten, mit den Knöpfen „+ Anweisung“, „+ Schleife“ und „+ Rückgabe“ geht es noch schneller:</p><ol><li>Einen Balken: <code>summe = 0</code></li><li>Einen Schleifenkasten mit Kopf: <code>für i von 0 bis songs.size() − 1</code>. Rechts ist der Kasten eingerückt, dort steht der Befehl, der wiederholt wird: <code>summe = summe + songs.get(i).getDauerSek()</code></li><li>Einen letzten Balken: <code>gib summe zurück</code></li></ol><p class=\"small muted\">Vergleiche mit dem Arbeitsblatt Struktogramm aus deinem Info-Ordner.</p>"},
    {join:{"// Hier deine Klasse Song einfügen":1,"// Hier deine Klasse Playlist einfügen":2},t:"Optional: Code wirklich laufen lassen",x:"<p>Claude kann deinen Code schon im Cockpit prüfen. Wenn du ihn trotzdem wirklich laufen lassen willst, geht das so, ganz ohne Vorwissen:</p><ol><li>Öffne <a href=\"https://www.programiz.com/java-programming/online-compiler/\" target=\"_blank\" rel=\"noopener\">programiz.com/java-programming/online-compiler</a>. Wenn ein Cookie-Hinweis kommt, wähle „Ablehnen“ oder nur Notwendige.</li><li>Links steht Beispielcode. Klick hinein, drück <b>Strg + A</b> und dann <b>Entf</b>. Das Feld ist jetzt leer.</li><li>Klick unten auf „Alles zusammen kopieren“ und füge den Code links mit <b>Strg + V</b> ein.</li><li>Der Knopf „Alles zusammen kopieren“ setzt deine Klassen aus Schritt 2 und 3 automatisch in die Vorlage ein.</li><li>Klick oben auf den blauen Knopf <b>Run</b>. Rechts erscheint die Ausgabe. Richtig ist: <code>Gesamtdauer: 900 Sekunden</code> und <code>Laengster Song: Track 5</code>.</li><li>Steht rechts eine rote Fehlermeldung? Meist fehlt ein <code>;</code> oder eine <code>}</code>. Die Meldung nennt die Zeile. Kommst du nicht weiter, kopier die Meldung in den Chat zu Claude.</li></ol>",
     code:`import java.util.ArrayList;
 
@@ -827,13 +852,13 @@ if (genre == "Krimi") { ... }`,sol:"<p><code>double</code>, <code>boolean</code>
  {id:"c",type:"zeichnen",title:"Ein-Blatt-Poster „Java auf einen Blick“",pitch:"Ein Poster am Beispiel Kino-Kartenverkauf: in der Mitte das Klassendiagramm, außen herum Code, Struktogramm und eine Theorie-Ecke.",
   trains:"Den ganzen Stoff in einem Bild zusammenbringen. Gut für alle, die visuell lernen und für die Theoriefragen.",
   covers:["OOP","UML","Listen","Algorithmen","Theorie"],effort:"mittel · etwa 1,5 Stunden",
-  how:{wo:"<b>Auf Papier</b> ist ein Poster am schönsten. Das Klassendiagramm und das Struktogramm kannst du auch hier auf dem Zeichenbrett machen, die Theorie-Ecke im Schreibfeld.",
+  how:{wo:"<b>Auf Papier</b> ist ein Poster am schönsten. Klassendiagramm und Struktogramm baust du hier im Baukasten (nur eintippen) und überträgst sie dann aufs Poster. Die Theorie-Ecke schreibst du im Schreibfeld vor.",
    brauchst:"Ein A3-Blatt (oder zwei A4-Blätter nebeneinander), Bleistift zum Vorzeichnen, zwei bis drei Farben.",
    ergebnis:"Ein Poster mit vier Bereichen, das du in 3 Minuten erklären kannst.",
    zeigen:"Foto vom Poster an Claude mit „Feedback Info“. Was du im Cockpit einträgst, sieht Claude automatisch."},
   steps:[
    {t:"Blatt einteilen",x:"Mit Bleistift: ein großes Feld in der Mitte, links ein Streifen, rechts ein Streifen, unten ein Streifen. Oben die Überschrift „Java auf einen Blick: Kino“."},
-   {w:"draw",t:"Mitte: Klassendiagramm",x:"<ul><li><b>Kino</b>: <code>- name: String</code>, <code>- tickets: ArrayList&lt;Ticket&gt;</code>, <code>+ Kino(pName: String)</code>, <code>+ umsatz(): double</code></li><li><b>Ticket</b>: <code>- film: String</code>, <code>- preis: double</code>, <code>+ Ticket(pFilm: String, pPreis: double)</code>, <code>+ getPreis(): double</code>, <code>+ setPreis(pPreis: double)</code></li></ul><p>Linie dazwischen, 1 bei Kino, n bei Ticket. Daneben in Farbe: „1 : n wird in Java als ArrayList umgesetzt.“</p>"},
+   {w:"uml",start:"{\"classes\": [{\"n\": \"Kino\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Ticket\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 0, \"b\": 1, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Mitte: Klassendiagramm",x:"<p class=\"small muted\">Im Cockpit über den Baukasten unten, auf dem Poster dann von Hand abzeichnen.</p><ul><li><b>Kino</b>: <code>- name: String</code>, <code>- tickets: ArrayList&lt;Ticket&gt;</code>, <code>+ Kino(pName: String)</code>, <code>+ umsatz(): double</code></li><li><b>Ticket</b>: <code>- film: String</code>, <code>- preis: double</code>, <code>+ Ticket(pFilm: String, pPreis: double)</code>, <code>+ getPreis(): double</code>, <code>+ setPreis(pPreis: double)</code></li></ul><p>Linie dazwischen, 1 bei Kino, n bei Ticket. Daneben in Farbe: „1 : n wird in Java als ArrayList umgesetzt.“</p>"},
    {t:"Links: drei Code-Schnipsel",x:"Schreib ab und markiere farbig, was Konstruktor, Getter und Setter ist.",code:`public Kino(String pName) {
     name = pName;
     tickets = new ArrayList<Ticket>();
@@ -854,7 +879,7 @@ public double umsatz() {
     }
     return summe;
 }`},
-   {w:"draw",t:"Rechts: Struktogramm für umsatz()",x:"Drei Teile untereinander: Balken <code>summe = 0</code>, Schleifenkasten <code>für i von 0 bis tickets.size() − 1</code> mit eingerücktem <code>summe = summe + tickets.get(i).getPreis()</code>, Balken <code>gib summe zurück</code>."},
+   {w:"struk",t:"Rechts: Struktogramm für umsatz()",x:"Im Baukasten unten eintippen, dann aufs Poster übertragen. Drei Teile untereinander: Balken <code>summe = 0</code>, Schleifenkasten <code>für i von 0 bis tickets.size() − 1</code> mit eingerücktem <code>summe = summe + tickets.get(i).getPreis()</code>, Balken <code>gib summe zurück</code>."},
    {w:"text",t:"Unten: Theorie-Ecke",x:"Je ein Satz zu: imperativ vs. objektorientiert, die 5 Eigenschaften eines Algorithmus, die 4 Qualitätskriterien von Software, die Generationen der Programmiersprachen. Die Sätze findest du im Spickzettel, schreib sie in deinen eigenen Worten."},
    {t:"Laut erklären",x:"Nimm mit der Sprachmemo-App deines Handys auf, wie du das Poster in 3 Minuten erklärst. Hör es dir an. Wo du stockst, ergänzt du das Poster."}],
   check:{t:"Aufgabenblatt Softwareprojekt + Checkliste",x:"Das Blatt „Aufgabenblatt_Softwareprojekt_GK“ aus deinem Info-Ordner lösen, besonders die Theoriefragen. Danach die Checkliste ankreuzen und das Info-Quiz."}}
@@ -1068,7 +1093,7 @@ P.geschichte=[
   covers:["1918/19","Republik","Krisen","Stabilität","Ende","NS-Staat","Methode"],effort:"größer · etwa 2,5 Stunden",
   how:{wo:"<b>Hier im Cockpit</b> oder auf Papier. Das Plakat und die Goebbels-Rede findest du in deinen Geschichts-Unterlagen.",brauchst:"Papier, deine Unterlagen zu Weimar und zum NS-Staat, für die Fieberkurve ein Blatt quer.",ergebnis:"Eine Fieberkurve, ein Talkshow-Skript mit vier Gästen und eine Plakatanalyse.",zeigen:"Was du hier einträgst, sieht Claude automatisch: Schreib im Chat „Feedback Geschichte“ oder nutze bei einem Schritt den Knopf „Von Claude prüfen lassen“. Auf Papier gearbeitet? Dann schick ein Foto. Für die Talkshow kann Claude auch einen der Gäste spielen: schreib „Weimar-Talkshow“."},
   steps:[
-   {w:"draw",t:"Fieberkurve der Republik",x:"Eine Kurve von 1918 bis 1933, oben stabil, unten Krise. Mindestens 12 Ereignisse mit Datum."},
+   {w:"kurve",t:"Fieberkurve der Republik",x:"Eine Kurve von 1918 bis 1933, oben stabil, unten Krise. Mindestens 12 Ereignisse mit Datum."},
    {w:"text",t:"Talkshow „Hat die Republik noch eine Chance?“ (Herbst 1932)",x:"Vier Gäste: arbeitslose Arbeiterin (KPD), Kriegsheimkehrer (glaubt an die Dolchstoßlegende), Bankier (Stresemann-Fan), Student (Präsidialkabinette, Art. 48). Je 3 Argumente mit Fachbegriffen, du moderierst kritisch.<p class=\"small muted\">Alleine üben: Schreib im Chat „Weimar-Talkshow“. Claude spielt die vier Gäste nacheinander, du moderierst und hakst nach.</p>"},
    {w:"text",t:"Propaganda-Decoder",x:"Plakat „Ganz Deutschland hört den Führer“: Art, Datum, Urheber, Adressat, Bildelemente, Absicht, Ideologieelemente."}],
   check:{w:"text",t:"Probe-Quellenanalyse",x:"Goebbels’ Rede zur Rundfunkausstellung (18.08.1933): Einleitung mit Datum, Inhalt im Konjunktiv mit Zeilen, Einordnung, Urteil. Dann Quiz und Fehlerliste."}},
@@ -1191,7 +1216,7 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T17:55:02.897995Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T18:06:20.394515Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
@@ -1268,19 +1293,24 @@ function wLoad(byId){
   try{const l=await sm.limits(); SAMPLE_IMG=!!(l&&l.images);}catch(e){}
   render();}catch(e){}})();
 
+const WST={};
 function workBox(s,p,i,st){
   if(!st.w) return "";
-  const key=wkey(s,p.id,i), w=W[key]||{}, kind=st.w;
+  const key=wkey(s,p.id,i), w=W[key]||{}, kind=st.w; WST[key]=st;
   let h=`<div class="work" data-w="${key}" data-kind="${kind}">`;
   if(kind==="code"||kind==="text"){
     const val=w.v!=null?w.v:(st.start||"");
     const lines=String(val).split("\n").length;
-    h+=`<div class="small muted">${kind==="code"?"Dein Code":"Deine Antwort"}</div><textarea class="wta ${kind}" data-wk="${key}" rows="${Math.max(kind==="code"?8:5,lines+1)}" spellcheck="${kind==="code"?"false":"true"}" autocomplete="off" placeholder="${kind==="code"?"Hier deinen Java-Code schreiben":"Hier schreiben"}">${esc(val)}</textarea>`;
-  } else {
-    h+=`<div class="small muted">Zeichenbrett (Maus, Touchpad oder Stift)</div><div class="dtools" role="toolbar" aria-label="Zeichenwerkzeuge">${[["#1c2230","Schwarz"],["#2445c9","Blau"],["#c8322a","Rot"],["#1f8a4c","Grün"]].map((c,k)=>`<button class="dcol ${k===0?"on":""}" data-dcol="${c[0]}" style="--dc:${c[0]}" aria-label="${c[1]}"></button>`).join("")}<button class="btn" data-dtool="erase">Radierer</button><button class="btn" data-dtool="undo">Rückgängig</button><button class="btn ghost" data-dtool="clear">Leeren</button></div><canvas class="draw" width="1000" height="620" data-dk="${key}"></canvas>`;
+    h+=`<div class="small muted">${kind==="code"?"Dein Code":"Deine Antwort"}</div>${kind==="text"&&s==="mathe"?mathBar(key):""}<textarea class="wta ${kind}" data-wk="${key}" rows="${Math.max(kind==="code"?8:5,lines+1)}" spellcheck="${kind==="code"?"false":"true"}" autocomplete="off" placeholder="${kind==="code"?"Hier deinen Java-Code schreiben":s==="mathe"?"Hier rechnen, z. B. AB = B − A = (3|4|0), |AB| = √(9+16) = 5":"Hier schreiben"}">${esc(val)}</textarea>`;
   }
-  const can=SAMPLE&&(kind!=="draw"||SAMPLE_IMG);
-  h+=`<div class="row">${can?`<button class="btn" data-wcheck="${s}|${p.id}|${i}">Von Claude prüfen lassen</button>`:""}<span class="small muted wstat">${w.v?(db?"gespeichert, Claude sieht es":"gespeichert auf diesem Gerät"):SNAPSHOT?"Arbeiten am besten am Laptop, hier wird nur auf diesem Gerät gespeichert.":""}</span></div>`;
+  else if(kind==="uml") h+=umlBox(key,st);
+  else if(kind==="struk") h+=strukBox(key,st);
+  else if(kind==="kurve") h+=kurveBox(key,st);
+  else h+=drawBox(key,st,w);
+  const mode=dmode(w), needImg=kind==="draw"&&mode!=="text";
+  const can=SAMPLE&&(!needImg||SAMPLE_IMG);
+  const has=hasWork(key,st);
+  h+=`<div class="row">${can?`<button class="btn" data-wcheck="${s}|${p.id}|${i}">Von Claude prüfen lassen</button>`:""}<span class="small muted wstat">${has?(db?"gespeichert, Claude sieht es":"gespeichert auf diesem Gerät"):SNAPSHOT?"Arbeiten am besten am Laptop, hier wird nur auf diesem Gerät gespeichert.":""}</span></div>`;
   h+=`<div class="wfb" ${w.fb?"":"hidden"}><div class="eyebrow">Rückmeldung von Claude</div><div class="wfbt">${w.fb?esc(w.fb):""}</div></div></div>`;
   return h;
 }
@@ -1290,16 +1320,17 @@ function plain(html){const d=document.createElement("div");d.innerHTML=String(ht
 async function workCheck(btn){
   const [s,pidv,i]=btn.dataset.wcheck.split("|"); const key=wkey(s,pidv,i), st=stepOf(s,pidv,i), p=pidv==="m"?{title:"Kurz-Mission: "+st.t}:P[s].find(x=>x.id===pidv);
   const box=btn.closest(".work"), fb=box.querySelector(".wfb"), out=box.querySelector(".wfbt"), w=W[key]||{};
-  if(!w.v||(st.start&&w.v.trim()===st.start.trim())){fb.hidden=false;out.textContent="Trag zuerst etwas ein, dann kann Claude es prüfen.";return;}
+  if(!hasWork(key,st)){fb.hidden=false;out.textContent="Trag zuerst etwas ein, dann kann Claude es prüfen.";return;}
+  const wc=await workContent(key,st,box);
   const lk=/Leistungskurs/.test(SUBJ[s].k);
-  const kindTxt=st.w==="code"?"Java-Code":st.w==="draw"?"Zeichnung (als Bild angehängt)":"Antwort";
+  const kindTxt=wc.kind;
   let prompt=`Du bist ein freundlicher Lerncoach für einen Schüler der 12. Klasse in Mecklenburg-Vorpommern, Fach ${SUBJ[s].n} (${lk?"Leistungskurs-Niveau":"Grundkurs-Niveau"}). Sein eigenes Niveau in diesem Fach: ${LVP[lvlOf(s)||2]} Er bereitet sich auf eine Klausur vor und hat in „${p.title}“ diese Aufgabe bearbeitet:
 
 AUFGABE: ${st.t}
 ${plain(st.x)}
 ${st.code&&st.w!=="code"?"\nCODE ZUR AUFGABE:\n"+st.code+"\n":""}${st.sol?"\nMUSTERLÖSUNG (nur für dich, nicht komplett verraten):\n"+plain(st.sol)+"\n":""}
 SEIN ERGEBNIS (${kindTxt}):
-${st.w==="draw"?"(siehe Bild)":w.v}
+${wc.text}
 
 Gib eine kurze Rückmeldung auf Deutsch in der Du-Form, höchstens 130 Wörter, als schlichter Text ohne Markdown-Zeichen wie * oder #. Aufbau:
 Das passt: 1 bis 3 kurze Punkte.
@@ -1308,7 +1339,7 @@ ${st.w==="code"?"Ausgabe: Was würde der Code ausgeben oder welcher Compilerfehl
   const opts={modelTier:"default",cache:false,onText:({text})=>{out.textContent=text;}};
   btn.disabled=true; fb.hidden=false; out.textContent="Claude schaut sich das an …";
   try{
-    if(st.w==="draw"){const cv=box.querySelector("canvas"); const blob=await new Promise(r=>{const c=document.createElement("canvas");c.width=cv.width;c.height=cv.height;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(cv,0,0);c.toBlob(r,"image/png");}); opts.images=[blob];}
+    if(wc.blob) opts.images=[wc.blob];
     const {text}=await SAMPLE(prompt,opts);
     out.textContent=text; W[key]=Object.assign({},W[key],{fb:text,kind:st.w}); wSave(key);
   }catch(e){
@@ -1363,14 +1394,17 @@ async function joinCopy(btn){
 }
 document.addEventListener("input",e=>{
   const ta=e.target.closest("textarea.wta"); if(!ta) return;
-  const key=ta.dataset.wk; W[key]=Object.assign({},W[key],{v:ta.value,kind:ta.classList.contains("code")?"code":"text"});
+  const key=ta.dataset.wk, fld=ta.dataset.field||"v";
+  W[key]=Object.assign({},W[key],{[fld]:ta.value},fld==="v"?{kind:ta.dataset.build||(ta.classList.contains("code")?"code":"text")}:{});
+  if(ta.dataset.build==="struk"){const p=document.querySelector(`[data-skp="${key}"]`);if(p)p.innerHTML=strukHtml(strukParse(ta.value));}
+  if(ta.dataset.build==="kurve"){const p=document.querySelector(`[data-kp="${key}"]`);if(p)p.innerHTML=kurveSvg(kurveParse(ta.value));}
   ta.style.height="auto"; ta.style.height=ta.scrollHeight+"px";
   const el=ta.closest(".work").querySelector(".wstat"); if(el) el.textContent="wird gespeichert …";
   clearTimeout(wTimers["l"+key]); wTimers["l"+key]=setTimeout(()=>wSave(key),500);
 });
 document.addEventListener("keydown",e=>{
   const ta=e.target.closest&&e.target.closest("textarea.wta.code"); if(!ta||e.key!=="Tab"||e.shiftKey) return;
-  e.preventDefault(); const a=ta.selectionStart,b=ta.selectionEnd; ta.value=ta.value.slice(0,a)+"    "+ta.value.slice(b); ta.selectionStart=ta.selectionEnd=a+4; ta.dispatchEvent(new Event("input",{bubbles:true}));
+  e.preventDefault(); const sp=ta.dataset.build==="struk"?"  ":"    "; const a=ta.selectionStart,b=ta.selectionEnd; ta.value=ta.value.slice(0,a)+sp+ta.value.slice(b); ta.selectionStart=ta.selectionEnd=a+sp.length; ta.dispatchEvent(new Event("input",{bubbles:true}));
 });
 
 /* ============ KURZ-MISSIONEN: 10–20 Minuten, je Klausur 5 Stück ============
@@ -1862,6 +1896,129 @@ document.addEventListener("click",e=>{
   if(h){helpClick(h);return;}
   if(l){const [s,k]=l.dataset.lvl.split("|");S.lvl=S.lvl||{};S.lvl[s]=Number(k);Object.keys(HS).forEach(x=>{if(x.startsWith(s+"-"))delete HS[x];});persist();render();}
 });
+
+/* ============ BAUKÄSTEN: eintippen statt zeichnen ============
+   uml: Klassendiagramm aus Formularfeldern, struk: Struktogramm aus eingerückten Zeilen, kurve: Fieberkurve aus Zeilen „Jahr | Ereignis | Wert“.
+   Zeichenfelder haben drei Wege: zeichnen, beschreiben oder ein Foto vom Papier hochladen. */
+function umlState(key,st){const w=W[key]||{};try{if(w.v)return JSON.parse(w.v);}catch(e){} try{if(st.start)return JSON.parse(st.start);}catch(e){} return {classes:[{n:"",a:"",m:""},{n:"",a:"",m:""}],rel:{a:0,b:1,ka:"1",kb:"n"}};}
+function umlText(o){if(!o)return "";return o.classes.map(c=>`Klasse ${c.n||"(ohne Name)"}\n  Attribute: ${(c.a||"").split("\n").filter(x=>x.trim()).join("; ")||"keine"}\n  Methoden: ${(c.m||"").split("\n").filter(x=>x.trim()).join("; ")||"keine"}`).join("\n")+(o.rel&&o.classes[o.rel.a]&&o.classes[o.rel.b]?`\nBeziehung: ${o.classes[o.rel.a].n} ${o.rel.ka} —— ${o.rel.kb} ${o.classes[o.rel.b].n}`:"");}
+function umlPreview(o){
+  const box=c=>`<div class="umlc"><div class="umln">${esc(c.n||"Klassenname")}</div><div class="umla">${(c.a||"").split("\n").filter(x=>x.trim()).map(x=>`<div>${esc(x)}</div>`).join("")||"<div class=\"muted\">Attribute</div>"}</div><div class="umlm">${(c.m||"").split("\n").filter(x=>x.trim()).map(x=>`<div>${esc(x)}</div>`).join("")||"<div class=\"muted\">Methoden</div>"}</div></div>`;
+  const r=o.rel||{}; const A=o.classes[r.a],B=o.classes[r.b];
+  let h=`<div class="umlrow">`;
+  if(A&&B&&r.a!==r.b){h+=box(A)+`<div class="umll"><span>${esc(r.ka)}</span><i></i><span>${esc(r.kb)}</span></div>`+box(B); o.classes.forEach((c,k)=>{if(k!==r.a&&k!==r.b)h+=box(c);});}
+  else o.classes.forEach(c=>h+=box(c));
+  return h+`</div>`;
+}
+function umlBox(key,st){
+  const o=umlState(key,st);
+  const sel=(f,v)=>`<select data-uml="${key}" data-f="${f}">${o.classes.map((c,k)=>`<option value="${k}" ${v===k?"selected":""}>${esc(c.n||"Klasse "+(k+1))}</option>`).join("")}</select>`;
+  const card=["1","n","0..1","1..n"];
+  const ksel=(f,v)=>`<select data-uml="${key}" data-f="${f}">${card.map(c=>`<option ${v===c?"selected":""}>${c}</option>`).join("")}</select>`;
+  return `<div class="small muted">Klassendiagramm-Baukasten: einfach eintippen, das Diagramm entsteht rechts von selbst.</div>
+   <div class="umlb"><div class="umlf">${o.classes.map((c,k)=>`<fieldset><legend>Klasse ${k+1}</legend>
+     <label>Name<input data-uml="${key}" data-f="n${k}" value="${esc(c.n)}" placeholder="z. B. Song"></label>
+     <label>Attribute, eins pro Zeile<textarea data-uml="${key}" data-f="a${k}" rows="3" placeholder="- titel: String&#10;- dauerSek: int">${esc(c.a)}</textarea></label>
+     <label>Methoden, eine pro Zeile<textarea data-uml="${key}" data-f="m${k}" rows="4" placeholder="+ Song(pTitel: String, pDauerSek: int)&#10;+ getTitel(): String">${esc(c.m)}</textarea></label></fieldset>`).join("")}
+     <div class="row small">Beziehung: ${sel("ra",o.rel.a)} ${ksel("ka",o.rel.ka)} —— ${ksel("kb",o.rel.kb)} ${sel("rb",o.rel.b)}</div>
+     <div class="row"><button class="btn ghost" data-umladd="${key}">+ weitere Klasse</button></div>
+     <div class="small muted">Tipp: <code>-</code> = private, <code>+</code> = public. Bei Methoden ohne Rückgabe kein „: Typ“ dahinter.</div></div>
+   <div class="umlp" data-umlp="${key}">${umlPreview(o)}</div></div>`;
+}
+/* Struktogramm: Einrückung mit 2 Leerzeichen = innen. für/solange/wiederhole = Schleife, wenn = Verzweigung, sonst = Nein-Zweig */
+function strukParse(txt){
+  const lines=String(txt||"").split("\n").filter(l=>l.trim()).map(l=>{const m=l.match(/^(\s*)(.*)$/);return {d:m[1].replace(/\t/g,"  ").length,t:m[2].trim()};});
+  let i=0;
+  function block(d){const out=[];while(i<lines.length&&lines[i].d>=d){const L=lines[i];if(L.d>d){out.push(...block(L.d));continue;}i++;
+    const low=L.t.toLowerCase();
+    if(/^(für|fuer|solange|wiederhole|for|while)\b/.test(low)){out.push({k:"loop",t:L.t,b:(i<lines.length&&lines[i].d>d)?block(lines[i].d):[]});}
+    else if(/^(wenn|falls|if)\b/.test(low)){const node={k:"if",t:L.t.replace(/^(wenn|falls|if)\s*/i,""),y:(i<lines.length&&lines[i].d>d)?block(lines[i].d):[],n:[]};
+      if(i<lines.length&&lines[i].d===d&&/^(sonst|else)\b/i.test(lines[i].t)){i++;node.n=(i<lines.length&&lines[i].d>d)?block(lines[i].d):[];}out.push(node);}
+    else if(/^(sonst|else)\b/i.test(low)){/* verirrtes sonst */ out.push({k:"st",t:L.t});}
+    else out.push({k:"st",t:L.t});}
+    return out;}
+  return block(0);
+}
+function strukHtml(nodes){
+  if(!nodes.length) return `<div class="sk st muted">–</div>`;
+  return nodes.map(n=>n.k==="loop"?`<div class="sk loop"><div class="skh">${esc(n.t)}</div><div class="skb">${strukHtml(n.b)}</div></div>`
+    :n.k==="if"?`<div class="sk if"><div class="skh"><span>ja</span><b>${esc(n.t)} ?</b><span>nein</span></div><div class="sky"><div>${strukHtml(n.y)}</div><div>${strukHtml(n.n)}</div></div></div>`
+    :`<div class="sk st">${esc(n.t)}</div>`).join("");
+}
+function strukBox(key,st){
+  const w=W[key]||{}, val=w.v!=null?w.v:(st.start||"");
+  return `<div class="small muted">Struktogramm-Baukasten: Zeilen eintippen, das Struktogramm entsteht rechts von selbst. Eingerückt (2 Leerzeichen oder Tab) heißt: steht innen drin.</div>
+   <div class="row">${[["Anweisung","summe = 0"],["Schleife","für i von 0 bis liste.size() − 1\n  "],["Verzweigung","wenn bedingung\n  ja-Anweisung\nsonst\n  nein-Anweisung"],["Rückgabe","gib summe zurück"]].map(([n,t])=>`<button class="btn" data-skins="${key}" data-t="${esc(t)}">+ ${n}</button>`).join("")}</div>
+   <div class="umlb"><textarea class="wta code" data-wk="${key}" data-build="struk" rows="${Math.max(7,String(val).split("\n").length+1)}" spellcheck="false" placeholder="summe = 0&#10;für i von 0 bis liste.size() − 1&#10;  summe = summe + liste.get(i)&#10;gib summe zurück">${esc(val)}</textarea><div class="skp" data-skp="${key}">${strukHtml(strukParse(val))}</div></div>`;
+}
+/* Fieberkurve: „1923 | Hyperinflation | -3“ */
+function kurveParse(txt){return String(txt||"").split("\n").map(l=>l.split("|").map(x=>x.trim())).filter(a=>a.length>=3&&a[0]&&!isNaN(parseFloat(a[2].replace(",","."))) ).map(a=>({j:a[0],e:a[1],v:Math.max(-3,Math.min(3,parseFloat(a[2].replace(",","."))))}));}
+function kurveSvg(pts){
+  if(pts.length<2) return `<div class="small muted">Sobald du zwei Zeilen hast, erscheint hier deine Kurve.</div>`;
+  const W0=Math.max(560,pts.length*70),H=260,pad=40,x=i=>pad+i*(W0-2*pad)/(pts.length-1),y=v=>H/2-v*(H/2-pad)/3;
+  return `<svg viewBox="0 0 ${W0} ${H+60}" class="kurve" role="img" aria-label="Fieberkurve"><line x1="${pad}" y1="${H/2}" x2="${W0-pad}" y2="${H/2}" class="k0"/><text x="4" y="${pad}" class="kl">stabil</text><text x="4" y="${H-pad+10}" class="kl">Krise</text>
+   <polyline points="${pts.map((p,i)=>x(i)+","+y(p.v)).join(" ")}" class="kp"/>${pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.v)}" r="5" class="${p.v<0?"kneg":"kpos"}"><title>${esc(p.j+": "+p.e)}</title></circle><text x="${x(i)}" y="${H+14}" class="kj" text-anchor="middle">${esc(p.j)}</text><text x="${x(i)}" y="${H+30}" class="ke" text-anchor="middle">${esc(p.e.slice(0,14))}</text>`).join("")}</svg>`;
+}
+function kurveBox(key,st){
+  const w=W[key]||{}, val=w.v!=null?w.v:(st.start||"");
+  return `<div class="small muted">Fieberkurve-Baukasten: pro Zeile <code>Jahr | Ereignis | Wert</code>. Der Wert geht von −3 (schwere Krise) bis +3 (sehr stabil).</div>
+   <textarea class="wta code" data-wk="${key}" data-build="kurve" rows="${Math.max(6,String(val).split("\n").length+1)}" spellcheck="false" placeholder="1918 | Novemberrevolution | -1&#10;1919 | Versailler Vertrag | -2&#10;1923 | Hyperinflation | -3">${esc(val)}</textarea><div class="kwrap" data-kp="${key}">${kurveSvg(kurveParse(val))}</div>`;
+}
+/* Zeichenfeld mit drei Wegen */
+function dmode(w){return w.mode||(w.v?"draw":"text");}
+function drawBox(key,st,w){
+  const mode=dmode(w);
+  const tabs=[["text","⌨️ Beschreiben"],["foto","📷 Foto vom Papier"],["draw","✏️ Zeichnen"]];
+  let h=`<div class="row dmode" role="group" aria-label="Wie willst du arbeiten?">${tabs.map(([k,l])=>`<button class="btn ${mode===k?"primary":""}" data-dmode="${key}|${k}" aria-pressed="${mode===k}">${l}</button>`).join("")}</div>`;
+  if(mode==="text") h+=`<div class="small muted">Beschreib, was du zeichnen würdest: was wohin kommt, welche Beschriftungen, welche Farben. Das zählt genauso.</div><textarea class="wta text" data-wk="${key}" data-field="t" rows="6" placeholder="z. B. Bild 1: … / Oben steht … / Die Kurve steigt …">${esc(w.t||"")}</textarea>`;
+  else if(mode==="foto") h+=`<div class="small muted">Zeichne auf Papier, fotografier es (Handy oder Laptop-Kamera) und lade das Foto hier hoch.</div><label class="btn" style="justify-self:start">Foto auswählen<input type="file" accept="image/*" data-photo="${key}" hidden></label>${w.img?`<img class="wimg" src="${w.img}" alt="Dein hochgeladenes Foto">`:""}`;
+  else h+=`<div class="small muted">Zeichenbrett (mit Maus oder Stift am besten, mit dem Touchpad mühsam)</div><div class="dtools" role="toolbar" aria-label="Zeichenwerkzeuge">${[["#1c2230","Schwarz"],["#2445c9","Blau"],["#c8322a","Rot"],["#1f8a4c","Grün"]].map((c,k)=>`<button class="dcol ${k===0?"on":""}" data-dcol="${c[0]}" style="--dc:${c[0]}" aria-label="${c[1]}"></button>`).join("")}<button class="btn" data-dtool="erase">Radierer</button><button class="btn" data-dtool="undo">Rückgängig</button><button class="btn ghost" data-dtool="clear">Leeren</button></div><canvas class="draw" width="1000" height="620" data-dk="${key}"></canvas>`;
+  return h;
+}
+function hasWork(key,st){const w=W[key]||{};
+  if(st.w==="draw"){const m=dmode(w);return m==="text"?!!(w.t&&w.t.trim()):m==="foto"?!!w.img:!!w.v;}
+  if(st.w==="uml"){const o=umlState(key,st);return o.classes.some(c=>(c.a||"").trim()||(c.m||"").trim());}
+  return !!(w.v&&(!st.start||w.v.trim()!==st.start.trim()));}
+/* Inhalt für die Prüfung durch Claude */
+async function workContent(key,st,box){
+  const w=W[key]||{};
+  if(st.w==="uml") return {kind:"Klassendiagramm (als Text)",text:umlText(umlState(key,st))};
+  if(st.w==="struk") return {kind:"Struktogramm (als eingerückte Zeilen: eingerückt = innen, für/solange = Schleife, wenn/sonst = Verzweigung)",text:w.v};
+  if(st.w==="kurve") return {kind:"Fieberkurve (Zeilen: Jahr | Ereignis | Wert von −3 Krise bis +3 stabil)",text:w.v};
+  if(st.w==="draw"){const m=dmode(w);
+    if(m==="text") return {kind:"Beschreibung seiner Zeichnung",text:w.t};
+    if(m==="foto"){const blob=dataBlob(w.img);return {kind:"Foto seiner Zeichnung auf Papier (als Bild angehängt)",text:"(siehe Bild)",blob};}
+    const cv=box.querySelector("canvas"); const blob=await new Promise(r=>{const c=document.createElement("canvas");c.width=cv.width;c.height=cv.height;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(cv,0,0);c.toBlob(r,"image/png");});
+    return {kind:"Zeichnung (als Bild angehängt)",text:"(siehe Bild)",blob};}
+  return {kind:st.w==="code"?"Java-Code":"Antwort",text:w.v};
+}
+function mathBar(key){return `<div class="mbar" role="toolbar" aria-label="Mathe-Zeichen">${["√","²","³","·","|","≈","°","⊥","→","( | | )"].map(c=>`<button class="btn" data-mins="${key}" data-t="${esc(c)}">${esc(c)}</button>`).join("")}</div>`;}
+function insertAt(ta,t){const a=ta.selectionStart??ta.value.length,b=ta.selectionEnd??a;ta.value=ta.value.slice(0,a)+t+ta.value.slice(b);ta.focus();ta.selectionStart=ta.selectionEnd=a+t.length;ta.dispatchEvent(new Event("input",{bubbles:true}));}
+document.addEventListener("click",e=>{
+  const ins=e.target.closest("[data-skins],[data-mins]"), dm=e.target.closest("[data-dmode]"), ua=e.target.closest("[data-umladd]");
+  if(ins){const key=ins.dataset.skins||ins.dataset.mins;const ta=document.querySelector(`.work[data-w="${key}"] textarea.wta`);if(!ta)return;let t=ins.dataset.t;if(ins.dataset.skins&&ta.value&&!ta.value.endsWith("\n"))t="\n"+t;insertAt(ta,t);return;}
+  if(dm){const [key,m]=dm.dataset.dmode.split("|");W[key]=Object.assign({},W[key],{mode:m,kind:"draw"});wSave(key);render();return;}
+  if(ua){const key=ua.dataset.umladd;const st=WST[key]||{};const o=umlState(key,st);o.classes.push({n:"",a:"",m:""});W[key]=Object.assign({},W[key],{v:JSON.stringify(o),kind:"uml"});wSave(key);render();}
+});
+function umlInput(el){
+  const key=el.dataset.uml,f=el.dataset.f; const o=umlState(key,WST[key]||{});
+  if(f==="ra")o.rel.a=Number(el.value);else if(f==="rb")o.rel.b=Number(el.value);else if(f==="ka")o.rel.ka=el.value;else if(f==="kb")o.rel.kb=el.value;
+  else{const k=Number(f.slice(1));o.classes[k][f[0]]=el.value;}
+  W[key]=Object.assign({},W[key],{v:JSON.stringify(o),kind:"uml"});
+  const p=document.querySelector(`[data-umlp="${key}"]`); if(p) p.innerHTML=umlPreview(o);
+  clearTimeout(wTimers["l"+key]); wTimers["l"+key]=setTimeout(()=>wSave(key),500);
+}
+document.addEventListener("input",e=>{const u=e.target.closest("[data-uml]");if(u)umlInput(u);});
+document.addEventListener("change",e=>{
+  const u=e.target.closest("select[data-uml]"); if(u){umlInput(u);return;}
+  const f=e.target.closest("input[data-photo]"); if(!f||!f.files[0]) return;
+  const key=f.dataset.photo, img=new Image(), url=URL.createObjectURL(f.files[0]);
+  img.onload=()=>{const sc=Math.min(1,1400/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    W[key]=Object.assign({},W[key],{img:c.toDataURL("image/jpeg",.8),mode:"foto",kind:"draw"});URL.revokeObjectURL(url);wSave(key);render();};
+  img.src=url;
+});
+
+function dataBlob(u){try{const [h,d]=u.split(",");const mime=h.match(/:(.*?);/)[1];const bin=atob(d);const a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:mime});}catch(e){return null;}}
 
 /* ============ HILFEN ============ */
 const WD=["So","Mo","Di","Mi","Do","Fr","Sa"], WDL=["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
