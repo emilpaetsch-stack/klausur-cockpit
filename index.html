@@ -300,6 +300,55 @@ tr:last-child td{border-bottom:0}
 .dmode{gap:6px}
 .wimg{max-width:100%;border-radius:8px;border:1px solid var(--line)}
 .mbar{display:flex;flex-wrap:wrap;gap:4px}.mbar .btn{padding:4px 10px;font-family:var(--f-mono)}
+/* Puzzle */
+.work.puzzle{gap:10px}
+.pz{font:inherit;font-size:.88rem;line-height:1.3;text-align:left;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;max-width:100%;overflow-wrap:anywhere;box-shadow:0 1px 0 var(--line)}
+.pz:hover{border-color:var(--accent)}
+.pz:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pz.sel{border-color:var(--accent);background:var(--accent);color:var(--card)}
+.pz.good{border-color:var(--ok);background:var(--ok-soft)}
+.pz.bad{border-color:var(--red);background:var(--red-soft)}
+.pz.lifting{opacity:.35}
+.pz.ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-60%) rotate(-2deg);box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:.95;max-width:260px}
+.zone{display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;min-height:46px;padding:8px;border:2px dashed var(--line);border-radius:10px;background:var(--card);min-width:0;transition:border-color .12s,background .12s}
+.zone .zl{flex:1 0 100%;font-size:.78rem;font-weight:700;color:var(--muted)}
+.zone.armed{border-color:var(--accent);cursor:pointer}
+.zone.over{border-color:var(--accent);background:var(--accent-soft);border-style:solid}
+.zone.ztray{background:transparent;border-style:solid;border-color:var(--accent)}
+.zone.zx{background:var(--red-soft);border-color:var(--red)}
+.pzbuckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.zone.zb{min-height:90px}
+.pzslots{display:grid;gap:6px}
+.slotrow{display:grid;grid-template-columns:minmax(90px,190px) 1fr;gap:8px;align-items:center}
+.slotl{font-weight:700;font-size:.88rem}
+.zone.zslot{min-height:42px;padding:4px}
+@media (max-width:560px){.slotrow{grid-template-columns:1fr;gap:3px}.pzbuckets{grid-template-columns:1fr}}
+.pzgap{line-height:2.4;font-size:.95rem}
+.pzgap p{margin:0 0 .4em}
+.pzgap .fl{margin:4px 0}
+.zone.zgap{display:inline-flex;vertical-align:middle;min-width:110px;min-height:36px;padding:2px 4px;margin:2px 0;line-height:1.3}
+.pzfig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px;color:var(--ink)}
+.pzfig svg{display:block;width:100%;height:auto;max-height:320px}
+.pzuml{display:grid;gap:0;max-width:520px}
+.pzc{border:2px solid var(--ink);border-radius:4px;background:var(--card);display:grid}
+.pzn{font-weight:700;text-align:center;padding:6px;border-bottom:2px solid var(--ink)}
+.pzc .zone{border-radius:0;border-width:0 0 2px;border-style:solid;border-color:var(--line);min-height:56px}
+.pzc .zone.zm{border-bottom:0}
+.pzc .zone.over{border-color:var(--accent)}
+.pzlink{display:grid;grid-template-columns:1fr;justify-items:center;gap:0;padding:0}
+.pzlink i{display:block;width:2px;height:22px;background:var(--ink)}
+.pzlink .zone.zk{min-width:90px;min-height:38px;justify-content:center}
+.pzstruk{display:grid;border:2px solid var(--ink);max-width:560px;background:var(--card)}
+.pzstruk>.zone,.pzloop>.zone{border-radius:0;border-width:0 0 2px;border-style:solid;border-color:var(--ink)}
+.pzstruk>.zone:last-child{border-bottom:0}
+.pzloop{display:grid;border-bottom:2px solid var(--ink)}
+.pzbody{margin-left:28px;border-left:2px solid var(--ink)}
+.pzbody .zone{border:0;border-radius:0;min-height:70px}
+.pzres{border-radius:10px;padding:10px 12px;font-size:.92rem}
+.pzres ul{margin:.4em 0;padding-left:1.2em}
+.pzres.good{background:var(--ok-soft);border:1px solid var(--ok)}
+.pzres.bad{background:var(--red-soft);border:1px solid var(--red)}
+.mcard.mpz{border-left-style:dashed}
 
 .how dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 14px;margin:0}
 .how dt{font-weight:700;font-size:.9rem}
@@ -736,6 +785,33 @@ C.relp={
    effort (grobe Größe, frei einteilbar), steps (abhakbar), check (Abschlusscheck im Klausurformat), show (optional: vorzeigen) */
 const P={};
 
+/* ============ BAUSTEIN-PUZZLES: je Klausur 3 Puzzle-Missionen (m6–m8) ============
+   Inhalte nur aus deinen Unterlagen (Spickzettel). Gelöst wird sofort im Cockpit, ohne Claude, auch auf dem iPad. */
+const PZC=["Puzzle komplett richtig gelöst (wird beim Prüfen automatisch abgehakt)","Ich kann bei drei Bausteinen erklären, warum sie dorthin gehören"];
+function pzMark(n,x,y){return `<circle cx="${x}" cy="${y}" r="13" fill="var(--accent)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">${n}</text>`;}
+const PZ_FIG_SK=`<svg viewBox="0 0 600 282" role="img" aria-label="Superkompensationsmodell mit sieben Nummern"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M50 250 V14 M50 250 H588"/></g><path d="M44 22 L50 10 L56 22 Z M580 244 L592 250 L580 256 Z" fill="currentColor"/>
+<path d="M50 130 H588" stroke="var(--muted)" stroke-width="2" stroke-dasharray="7 6" fill="none"/>
+<path d="M50 130 H140 C170 130 175 205 210 205 C245 205 255 130 290 130 C320 130 335 80 370 80 C410 80 430 130 480 130 H586" stroke="var(--accent)" stroke-width="3.5" fill="none"/>
+<path d="M150 72 V116" stroke="currentColor" stroke-width="3"/><path d="M143 112 L157 112 L150 126 Z" fill="currentColor"/>
+${pzMark(1,560,110)}${pzMark(2,150,56)}${pzMark(3,210,228)}${pzMark(4,297,168)}${pzMark(5,370,56)}${pzMark(6,78,24)}${pzMark(7,562,268)}</svg>`;
+const PZ_FIG_TOL=`<svg viewBox="0 0 600 292" role="img" aria-label="Toleranzkurve mit acht Nummern"><rect x="100" y="180" width="72" height="65" fill="var(--accent)" opacity=".13"/><rect x="458" y="180" width="72" height="65" fill="var(--accent)" opacity=".13"/>
+<g fill="none" stroke="currentColor" stroke-width="2"><path d="M50 245 V14 M50 245 H588 M100 239 V251 M530 239 V251"/></g><path d="M44 22 L50 10 L56 22 Z M580 239 L592 245 L580 251 Z" fill="currentColor"/>
+<path d="M100 245 C200 245 235 45 315 45 C395 45 430 245 530 245" stroke="var(--accent)" stroke-width="3.5" fill="none"/>
+<path d="M104 270 H526" stroke="currentColor" stroke-width="2"/><path d="M112 264 L100 270 L112 276 Z M518 264 L530 270 L518 276 Z" fill="currentColor"/>
+${pzMark(1,100,220)}${pzMark(2,530,220)}${pzMark(3,315,22)}${pzMark(4,132,190)}${pzMark(5,498,190)}${pzMark(6,315,270)}${pzMark(7,78,24)}${pzMark(8,566,226)}</svg>`;
+const PZ_NUM=["①","②","③","④","⑤","⑥","⑦","⑧"];
+
+/* Projekt-Schritte als Puzzle (Religion a, Schritt 3 und Geschichte c, Schritt 3) */
+const PZ_RA2={layout:"buckets",intro:"Zieh jede Bibelstelle zu der Quelle, aus der sie stammt. Oder tipp sie an und dann das Feld.",
+ zones:[["mk","Markusstoff: steht bei Mk, Mt und Lk"],["q","Spruchquelle Q: nur bei Mt und Lk"],["smt","Sondergut Matthäus"],["slk","Sondergut Lukas"]],
+ done:"Schritt abgehakt. So arbeiten die Ermittler: Was bei allen drei Synoptikern steht, stammt von Markus. Was nur Matthäus und Lukas haben, aus Q. Was nur einer hat, ist sein Sondergut.",
+ pieces:[{t:"Taufe Jesu",z:"mk"},{t:"Heilung des Gelähmten",z:"mk"},{t:"Kreuzigung Jesu",z:"mk"},{t:"Vaterunser",z:"q"},{t:"Seligpreisungen",z:"q"},{t:"Gleichnis vom verlorenen Schaf",z:"q"},{t:"Die Weisen aus dem Morgenland",z:"smt"},{t:"Gleichnis von den Arbeitern im Weinberg",z:"smt"},{t:"Gleichnis vom verlorenen Sohn",z:"slk"},{t:"Der barmherzige Samariter",z:"slk"},{t:"Die Hirten auf dem Feld",z:"slk"}]};
+const PZ_GC2={layout:"buckets",intro:"Zieh jede Regel zum richtigen Artikel der Weimarer Verfassung.",
+ zones:[["a25","Art. 25"],["a48","Art. 48"],["a54","Art. 54"]],
+ done:"Schritt abgehakt. Zusammen ergibt das den Teufelskreis der Präsidialkabinette: Notverordnung (Art. 48), der Reichstag widerspricht (Art. 54), der Präsident löst ihn auf (Art. 25), dann 60 Tage Regieren ohne Parlament. Bonus für die Klausur: Erklär das mit „Lieber selbst eintippen“ in drei Sätzen, Claude prüft es.",
+ pieces:[{t:"Der Reichspräsident kann den Reichstag auflösen",z:"a25"},{t:"Neuwahlen spätestens nach 60 Tagen",z:"a25"},{t:"Notverordnungen, wenn Sicherheit und Ordnung gefährdet sind",z:"a48"},{t:"Grundrechte dürfen vorübergehend außer Kraft gesetzt werden",z:"a48"},{t:"Reichskanzler und Minister brauchen das Vertrauen des Reichstags",z:"a54"},{t:"Der Reichstag kann den Kanzler durch ein Misstrauensvotum stürzen",z:"a54"},
+  {t:"Der Reichstag wählt den Reichspräsidenten",z:"x",why:"Der Reichspräsident wurde direkt vom Volk gewählt, für sieben Jahre. Genau das machte ihn so mächtig."},{t:"Deutschland trägt die Kriegsschuld",z:"x",why:"Das ist Art. 231 des Versailler Vertrags, nicht die Verfassung."}]};
+const PZ_A0={"layout": "uml2", "names": ["Playlist", "Song"], "done": "Genau so sieht das Klassendiagramm aus. Schritt 1 ist abgehakt.", "pieces": [{"t": "- name: String", "z": "0a"}, {"t": "- songs: ArrayList<Song>", "z": "0a"}, {"t": "+ Playlist(pName: String)", "z": "0m"}, {"t": "+ gesamtdauer(): int", "z": "0m"}, {"t": "+ laengsterSong(): Song", "z": "0m"}, {"t": "- titel: String", "z": "1a"}, {"t": "- dauerSek: int", "z": "1a"}, {"t": "+ Song(pTitel: String, pDauerSek: int)", "z": "1m"}, {"t": "+ getTitel(): String", "z": "1m"}, {"t": "+ getDauerSek(): int", "z": "1m"}, {"t": "+ setDauerSek(pDauerSek: int)", "z": "1m"}, {"t": "1", "z": "k0"}, {"t": "n", "z": "k1"}, {"t": "+ void Song(pTitel: String)", "z": "x", "why": "Ein Konstruktor hat keinen Rückgabetyp, auch kein void."}, {"t": "+ titel: String", "z": "x", "why": "Attribute sind privat (−), sonst ist die Datenkapselung verletzt."}, {"t": "- songs: Song", "z": "x", "why": "Für viele Songs (n) braucht die Playlist eine Liste: ArrayList<Song>."}]},PZ_A3={"layout": "struk", "done": "Das Struktogramm stimmt. Schritt 4 ist abgehakt.", "pieces": [{"t": "summe = 0", "z": "s1"}, {"t": "für i von 0 bis songs.size() − 1", "z": "h"}, {"t": "summe = summe + songs.get(i).getDauerSek()", "z": "b"}, {"t": "gib summe zurück", "z": "s2"}, {"t": "für i von 1 bis songs.size()", "z": "x", "why": "Die Liste beginnt bei Index 0, der letzte Index ist size() − 1."}, {"t": "summe = summe + 1", "z": "x", "why": "Das würde nur zählen, wie viele Songs es gibt, statt die Dauer zu addieren."}]},PZ_C1={"layout": "uml2", "names": ["Kino", "Ticket"], "done": "Richtig! Jetzt kannst du es aufs Poster übertragen.", "pieces": [{"t": "- name: String", "z": "0a"}, {"t": "- tickets: ArrayList<Ticket>", "z": "0a"}, {"t": "+ Kino(pName: String)", "z": "0m"}, {"t": "+ umsatz(): double", "z": "0m"}, {"t": "- film: String", "z": "1a"}, {"t": "- preis: double", "z": "1a"}, {"t": "+ Ticket(pFilm: String, pPreis: double)", "z": "1m"}, {"t": "+ getPreis(): double", "z": "1m"}, {"t": "+ setPreis(pPreis: double)", "z": "1m"}, {"t": "1", "z": "k0"}, {"t": "n", "z": "k1"}, {"t": "+ void Kino(pName: String)", "z": "x", "why": "Ein Konstruktor hat keinen Rückgabetyp, auch kein void."}, {"t": "- preis: int", "z": "x", "why": "Preise haben Nachkommastellen, also double statt int."}, {"t": "+ getPreis(): void", "z": "x", "why": "Ein Getter gibt einen Wert zurück, hier double, nicht void."}]},PZ_C3={"layout": "struk", "done": "Richtig! Jetzt aufs Poster damit.", "pieces": [{"t": "summe = 0", "z": "s1"}, {"t": "für i von 0 bis tickets.size() − 1", "z": "h"}, {"t": "summe = summe + tickets.get(i).getPreis()", "z": "b"}, {"t": "gib summe zurück", "z": "s2"}, {"t": "für i von 0 bis tickets.size()", "z": "x", "why": "Das läuft einen Schritt zu weit, der letzte Index ist size() − 1."}, {"t": "summe = tickets.get(i).getPreis()", "z": "x", "why": "So wird die Summe jedes Mal überschrieben statt erhöht."}]};
 P.info=[
  {id:"a",type:"bauen",title:"Deine eigene Playlist-App",pitch:"Du baust eine Mini-App, die genau die Bausteine der Klausur enthält. Statt Bücher in einer Bibliothek verwaltest du Songs in einer Playlist.",
   trains:"Klassen mit Konstruktor und Kapselung selbst schreiben, eine 1 : n-Beziehung als Liste umsetzen und eine Schleife als Struktogramm darstellen.",
@@ -745,7 +821,7 @@ P.info=[
    ergebnis:"Ein Blatt mit Klassendiagramm, deinem Java-Code für zwei Klassen und einem Struktogramm. Optional ein Programm, das wirklich läuft.",
    zeigen:"Was du hier einträgst, sieht Claude automatisch. Schreib im Chat „Feedback Info“, dann bekommst du eine Rückmeldung wie in der Klausur. Auf Papier gearbeitet? Dann schick ein Foto."},
   steps:[
-   {w:"uml",start:"{\"classes\": [{\"n\": \"Song\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Playlist\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 1, \"b\": 0, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Klassendiagramm erstellen",x:"<p>Ein Klassendiagramm hat pro Klasse drei Fächer: oben der Name, in der Mitte die Attribute, unten die Methoden. Trag alles unten im Baukasten ein, das Diagramm entsteht rechts von selbst. In der Klausur zeichnest du es genauso von Hand.</p><ul><li><b>Song</b>: <code>- titel: String</code>, <code>- dauerSek: int</code>, darunter <code>+ Song(pTitel: String, pDauerSek: int)</code>, <code>+ getTitel(): String</code>, <code>+ getDauerSek(): int</code>, <code>+ setDauerSek(pDauerSek: int)</code></li><li><b>Playlist</b>: <code>- name: String</code>, <code>- songs: ArrayList&lt;Song&gt;</code>, darunter <code>+ Playlist(pName: String)</code>, <code>+ gesamtdauer(): int</code>, <code>+ laengsterSong(): Song</code></li></ul><p>Bei „Beziehung“ steht schon: Playlist <b>1</b> —— <b>n</b> Song. Bedeutet: Eine Playlist verwaltet viele Songs.</p><p class=\"small muted\">Merke: − heißt privat, + heißt öffentlich. Bei setDauerSek steht kein Rückgabetyp, also void.</p>"},
+   {w:"sort",alt:"uml",pz:PZ_A0,altStart:"{\"classes\": [{\"n\": \"Song\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Playlist\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 1, \"b\": 0, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Klassendiagramm erstellen",x:"<p>Ein Klassendiagramm hat pro Klasse drei Fächer: oben der Name, in der Mitte die Attribute, unten die Methoden. Unten liegen alle Bausteine bereit. Zieh jeden an die richtige Stelle.</p><p><b>Darauf kommt es an:</b></p><ul><li><code>−</code> heißt privat, <code>+</code> heißt öffentlich. Attribute sind privat, Methoden öffentlich.</li><li>Der Konstruktor heißt wie die Klasse und hat keinen Rückgabetyp.</li><li>An die Linie gehören die Kardinalitäten: Eine Playlist verwaltet viele Songs.</li><li>Drei Bausteine haben einen typischen Klausurfehler. Die kommen in die Fehler-Ablage.</li></ul><p class=\"small muted\">In der Klausur zeichnest du das von Hand. Das Puzzle hilft dir, den Aufbau zu verstehen.</p>"},
    {w:"code",start:"class Song {\n    \n}",t:"Klasse Song schreiben",x:"<p>Schreib die Klasse unten in den Code-Editor. Orientiere dich am Merkblatt (Klasse Buch). Diese Teile brauchst du:</p><ol><li>Zwei <b>private</b> Attribute.</li><li>Den <b>Konstruktor</b>: gleicher Name wie die Klasse, <b>kein void</b>, er übernimmt die Parameter in die Attribute.</li><li>Zwei <b>Getter</b>, die den Wert zurückgeben.</li><li>Einen <b>Setter</b> <code>setDauerSek</code>, der den Wert nur übernimmt, wenn er größer als 0 ist. Das ist Robustheit.</li></ol><p>Erst selbst versuchen, dann aufklappen und vergleichen.</p>",
     sol:`class Song {
     private String titel;
@@ -796,7 +872,7 @@ P.info=[
         return best;
     }
 }`},
-   {w:"struk",t:"Struktogramm für gesamtdauer() erstellen",x:"<p>Ein Struktogramm ist ein Kasten, in dem die Befehle von oben nach unten stehen. Tipp die drei Teile unten in den Baukasten, mit den Knöpfen „+ Anweisung“, „+ Schleife“ und „+ Rückgabe“ geht es noch schneller:</p><ol><li>Einen Balken: <code>summe = 0</code></li><li>Einen Schleifenkasten mit Kopf: <code>für i von 0 bis songs.size() − 1</code>. Rechts ist der Kasten eingerückt, dort steht der Befehl, der wiederholt wird: <code>summe = summe + songs.get(i).getDauerSek()</code></li><li>Einen letzten Balken: <code>gib summe zurück</code></li></ol><p class=\"small muted\">Vergleiche mit dem Arbeitsblatt Struktogramm aus deinem Info-Ordner.</p>"},
+   {w:"sort",alt:"struk",pz:PZ_A3,t:"Struktogramm für gesamtdauer() erstellen",x:"<p>Ein Struktogramm zeigt die Befehle von oben nach unten. Eine Schleife ist ein Kasten mit Kopf (wie oft?) und eingerücktem Körper (was wird wiederholt?).</p><p>Die Methode <code>gesamtdauer()</code> soll die Dauer aller Songs addieren. Zieh die Bausteine an die richtige Stelle. Zwei sind fehlerhaft.</p>"},
    {join:{"// Hier deine Klasse Song einfügen":1,"// Hier deine Klasse Playlist einfügen":2},t:"Optional: Code wirklich laufen lassen",x:"<p>Claude kann deinen Code schon im Cockpit prüfen. Wenn du ihn trotzdem wirklich laufen lassen willst, geht das so, ganz ohne Vorwissen:</p><ol><li>Öffne <a href=\"https://www.programiz.com/java-programming/online-compiler/\" target=\"_blank\" rel=\"noopener\">programiz.com/java-programming/online-compiler</a>. Wenn ein Cookie-Hinweis kommt, wähle „Ablehnen“ oder nur Notwendige.</li><li>Links steht Beispielcode. Klick hinein, drück <b>Strg + A</b> und dann <b>Entf</b>. Das Feld ist jetzt leer.</li><li>Klick unten auf „Alles zusammen kopieren“ und füge den Code links mit <b>Strg + V</b> ein.</li><li>Der Knopf „Alles zusammen kopieren“ setzt deine Klassen aus Schritt 2 und 3 automatisch in die Vorlage ein.</li><li>Klick oben auf den blauen Knopf <b>Run</b>. Rechts erscheint die Ausgabe. Richtig ist: <code>Gesamtdauer: 900 Sekunden</code> und <code>Laengster Song: Track 5</code>.</li><li>Steht rechts eine rote Fehlermeldung? Meist fehlt ein <code>;</code> oder eine <code>}</code>. Die Meldung nennt die Zeile. Kommst du nicht weiter, kopier die Meldung in den Chat zu Claude.</li></ol>",
     code:`import java.util.ArrayList;
 
@@ -858,7 +934,7 @@ if (genre == "Krimi") { ... }`,sol:"<p><code>double</code>, <code>boolean</code>
    zeigen:"Foto vom Poster an Claude mit „Feedback Info“. Was du im Cockpit einträgst, sieht Claude automatisch."},
   steps:[
    {t:"Blatt einteilen",x:"Mit Bleistift: ein großes Feld in der Mitte, links ein Streifen, rechts ein Streifen, unten ein Streifen. Oben die Überschrift „Java auf einen Blick: Kino“."},
-   {w:"uml",start:"{\"classes\": [{\"n\": \"Kino\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Ticket\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 0, \"b\": 1, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Mitte: Klassendiagramm",x:"<p class=\"small muted\">Im Cockpit über den Baukasten unten, auf dem Poster dann von Hand abzeichnen.</p><ul><li><b>Kino</b>: <code>- name: String</code>, <code>- tickets: ArrayList&lt;Ticket&gt;</code>, <code>+ Kino(pName: String)</code>, <code>+ umsatz(): double</code></li><li><b>Ticket</b>: <code>- film: String</code>, <code>- preis: double</code>, <code>+ Ticket(pFilm: String, pPreis: double)</code>, <code>+ getPreis(): double</code>, <code>+ setPreis(pPreis: double)</code></li></ul><p>Linie dazwischen, 1 bei Kino, n bei Ticket. Daneben in Farbe: „1 : n wird in Java als ArrayList umgesetzt.“</p>"},
+   {w:"sort",alt:"uml",pz:PZ_C1,altStart:"{\"classes\": [{\"n\": \"Kino\", \"a\": \"\", \"m\": \"\"}, {\"n\": \"Ticket\", \"a\": \"\", \"m\": \"\"}], \"rel\": {\"a\": 0, \"b\": 1, \"ka\": \"1\", \"kb\": \"n\"}}",t:"Mitte: Klassendiagramm",x:"<p>Leg das Klassendiagramm für den Kino-Kartenverkauf mit den Bausteinen unten. Danach überträgst du es aufs Poster: in die Mitte, mit 1 und n an der Linie und daneben der Satz „1 : n wird in Java als ArrayList umgesetzt“.</p>"},
    {t:"Links: drei Code-Schnipsel",x:"Schreib ab und markiere farbig, was Konstruktor, Getter und Setter ist.",code:`public Kino(String pName) {
     name = pName;
     tickets = new ArrayList<Ticket>();
@@ -879,7 +955,7 @@ public double umsatz() {
     }
     return summe;
 }`},
-   {w:"struk",t:"Rechts: Struktogramm für umsatz()",x:"Im Baukasten unten eintippen, dann aufs Poster übertragen. Drei Teile untereinander: Balken <code>summe = 0</code>, Schleifenkasten <code>für i von 0 bis tickets.size() − 1</code> mit eingerücktem <code>summe = summe + tickets.get(i).getPreis()</code>, Balken <code>gib summe zurück</code>."},
+   {w:"sort",alt:"struk",pz:PZ_C3,t:"Rechts: Struktogramm für umsatz()",x:"<p>Leg das Struktogramm für <code>umsatz()</code> mit den Bausteinen unten und übertrag es dann aufs Poster.</p>"},
    {w:"text",t:"Unten: Theorie-Ecke",x:"Je ein Satz zu: imperativ vs. objektorientiert, die 5 Eigenschaften eines Algorithmus, die 4 Qualitätskriterien von Software, die Generationen der Programmiersprachen. Die Sätze findest du im Spickzettel, schreib sie in deinen eigenen Worten."},
    {t:"Laut erklären",x:"Nimm mit der Sprachmemo-App deines Handys auf, wie du das Poster in 3 Minuten erklärst. Hör es dir an. Wo du stockst, ergänzt du das Poster."}],
   check:{t:"Aufgabenblatt Softwareprojekt + Checkliste",x:"Das Blatt „Aufgabenblatt_Softwareprojekt_GK“ aus deinem Info-Ordner lösen, besonders die Theoriefragen. Danach die Checkliste ankreuzen und das Info-Quiz."}}
@@ -1060,7 +1136,7 @@ P.religion=[
   steps:[
    {w:"text",t:"Zeugenkarten",x:"Josephus, Tacitus, Plinius, Talmud: Wann, wer, was sagt er, wie glaubwürdig (ein Christ oder ein Gegner)?"},
    {w:"text",t:"Die vier Reporter",x:"Markus, Matthäus, Lukas, Johannes: Wann geschrieben, für wen, mit welcher Absicht (Lk 1,1–4, Joh 20,30f.)?"},
-   {w:"text",t:"Wer hat von wem abgeschrieben?",x:"Die Zwei-Quellen-Theorie als Ermittlungsskizze: Markus, Q, Sondergut, Matthäus, Lukas."},
+   {w:"sort",alt:"text",pz:PZ_RA2,t:"Wer hat von wem abgeschrieben?",x:"<p>Die Zwei-Quellen-Theorie als Ermittlung: Ordne die Bibelstellen den Quellen zu (Markus, Q, Sondergut). So siehst du, wer von wem abgeschrieben hat.</p><p class=\"small muted\">Lieber eine eigene Ermittlungsskizze schreiben? Tipp auf „Lieber selbst eintippen“.</p>"},
    {w:"text",t:"Ermittlungsgeschichte",x:"Wie haben Forscher gesucht? Liberale Theologie, Bultmann, New Quest, Third Quest, je ein Satz."},
    {w:"text",t:"Abschlussbericht",x:"Zwei Spalten: historisch gesichert und Glaubensaussage. Dazu der Merksatz: Ostern verändert die Deutung, nicht die Vergangenheit."}],
   check:{w:"text",t:"Klausurfrage + Quiz",x:"„Erläutern Sie den Unterschied zwischen historischem Jesus und Christus des Glaubens.“ Eine halbe Seite. Dann das Quiz."}},
@@ -1116,7 +1192,7 @@ P.geschichte=[
   steps:[
    {w:"text",t:"Entscheidungskarten",x:"1919 Versailles unterschreiben? 1920 Kapp-Putsch, 1923 Ruhrkampf und Inflation, 1930 Brüning und Art. 48, Januar 1933 Hitler ernennen? Je zwei Optionen mit Folgen.<p class=\"small muted\">Spannender mit Claude: Schreib im Chat „Rette die Republik“. Claude spielt den Reichspräsidenten und fragt dich an jedem Wendepunkt um Rat.</p>"},
    {w:"text",t:"Realitätscheck",x:"Was geschah wirklich, und was waren die Folgen? Mit Daten."},
-   {w:"text",t:"Verfassungskarten",x:"Art. 25, 48, 54: wie sie zusammenwirkten und warum das gefährlich war."},
+   {w:"sort",alt:"text",pz:PZ_GC2,t:"Verfassungskarten",x:"<p>Art. 25, 48, 54: Ordne zuerst die Regeln den Artikeln zu. Danach erklärst du, wie sie zusammenwirkten und warum das gefährlich war.</p><p class=\"small muted\">Für die Erklärung tippst du auf „Lieber selbst eintippen“. Dein gelöstes Puzzle bleibt gespeichert.</p>"},
    {w:"text",t:"Nach 1933: Gleichschaltung",x:"Fünf Schritte als Zeitstrahl: Reichstagsbrandverordnung, Ermächtigungsgesetz, Länder, Gewerkschaften, Parteienverbot. Dazu eine Ideologie-Kartei (Führerprinzip, Volksgemeinschaft, Rassismus, Lebensraum)."},
    {w:"text",t:"Gutachten",x:"Warum scheiterte Weimar? Mindestens 4 Ursachen, gewichtet, mit Sachurteil und offengelegtem Werturteil."}],
   check:{t:"Quiz + Fehlerliste",x:"Quiz bis 9 von 10, dann die Fehlerliste aus den Klausurtipps einmal laut lesen."}}
@@ -1216,7 +1292,7 @@ const SEM=SEMS[0];
 const LEARN=ORDER.filter(s=>SUBJ[s].kind==="Klausur"), LEIST=ORDER.filter(s=>SUBJ[s].kind!=="Klausur");
 const TYPES={zeichnen:"Zeichnen und Visualisieren",spiel:"Rätsel und Spiele bauen",schreiben:"Schreiben",sprechen:"Sprechen und Rollen",anwenden:"An echten Beispielen anwenden",bauen:"Programmieren und Bauen",ueben:"Gezielt üben"};
 /* Für die Website-Version (iPad) wird hier beim Übertragen ein Abzug des Stands eingesetzt. */
-const SNAPSHOT={"at": "2026-10-25T18:06:20.394515Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
+const SNAPSHOT={"at": "2026-10-25T18:36:35.899147Z", "stand": {"choice": {"info": "a"}, "done": {}, "quiz": {}, "rate": {}, "updated": "2026-10-25T17:25:59.680Z"}, "claude": {"feedback": {}, "mitschriften": {}, "updated": "2026-10-25T16:35:00Z"}};
 
 /* ============ ZUSTAND ============
    done: Häkchen, quiz: beste Ergebnisse, choice: gewähltes Projekt je Klausur, rate: deine Bewertung nach einem Projekt.
@@ -1294,10 +1370,17 @@ function wLoad(byId){
   render();}catch(e){}})();
 
 const WST={};
+/* Puzzle-Schritt, der gerade als Eintipp-Feld gezeigt wird */
+function effSt(st){return st.w==="sort"&&st.alt?Object.assign({},st,{w:st.alt,start:st.altStart}):st;}
 function workBox(s,p,i,st){
   if(!st.w) return "";
-  const key=wkey(s,p.id,i), w=W[key]||{}, kind=st.w; WST[key]=st;
+  const key=wkey(s,p.id,i), w=W[key]||{}; WST[key]=st;
+  if(st.w==="sort"&&!(w.mode==="tippen"&&st.alt)) return `<div class="work puzzle" data-w="${key}" data-kind="sort">${puzzleBox(key,st)}<span class="small muted wstat">${Object.keys(w.p||{}).length?(db?"gespeichert, Claude sieht es":"gespeichert auf diesem Gerät"):""}</span></div>`;
+  const tip=st.w==="sort";
+  if(tip){st=effSt(st);WST[key]=st;}
+  const kind=st.w;
   let h=`<div class="work" data-w="${key}" data-kind="${kind}">`;
+  if(tip) h+=`<div class="row"><span class="small muted">Du tippst selbst. Lieber puzzeln?</span><button class="btn ghost" data-pzmode="${key}|puzzle">🧩 Zurück zum Puzzle</button></div>`;
   if(kind==="code"||kind==="text"){
     const val=w.v!=null?w.v:(st.start||"");
     const lines=String(val).split("\n").length;
@@ -1318,7 +1401,7 @@ function stepOf(s,pidv,i){if(pidv==="m") return misStep(s,i); const p=P[s].find(
 function plain(html){const d=document.createElement("div");d.innerHTML=String(html||"").replace(/<\/(li|p)>/g,"\n");return d.textContent.replace(/\s+\n/g,"\n").trim();}
 
 async function workCheck(btn){
-  const [s,pidv,i]=btn.dataset.wcheck.split("|"); const key=wkey(s,pidv,i), st=stepOf(s,pidv,i), p=pidv==="m"?{title:"Kurz-Mission: "+st.t}:P[s].find(x=>x.id===pidv);
+  const [s,pidv,i]=btn.dataset.wcheck.split("|"); const key=wkey(s,pidv,i), st=effSt(stepOf(s,pidv,i)), p=pidv==="m"?{title:"Kurz-Mission: "+st.t}:P[s].find(x=>x.id===pidv);
   const box=btn.closest(".work"), fb=box.querySelector(".wfb"), out=box.querySelector(".wfbt"), w=W[key]||{};
   if(!hasWork(key,st)){fb.hidden=false;out.textContent="Trag zuerst etwas ein, dann kann Claude es prüfen.";return;}
   const wc=await workContent(key,st,box);
@@ -1410,7 +1493,7 @@ document.addEventListener("keydown",e=>{
 /* ============ KURZ-MISSIONEN: 10–20 Minuten, je Klausur 5 Stück ============
    f: Format, topic: Thema aus „Was drankommt“, sit: Ausgangslage, task: Auftrag, w: Arbeitsfeld,
    crit: Selbstkontrolle (alle abhaken = Mission geschafft), transfer: Bonusfrage, sol: Musterlösung zum Vergleichen */
-const MF={fehler:{n:"Fehlerjagd",i:"🔍"},erklaer:{n:"Erklärmission",i:"💬"},detektiv:{n:"Detektivfall",i:"🕵️"},verknuepf:{n:"Verknüpfung",i:"🔗"},challenge:{n:"Prüfungs-Challenge",i:"⚔️"}};
+const MF={fehler:{n:"Fehlerjagd",p:"Fehlerjagden",i:"🔍"},erklaer:{n:"Erklärmission",p:"Erklärmissionen",i:"💬"},detektiv:{n:"Detektivfall",p:"Detektivfälle",i:"🕵️"},verknuepf:{n:"Verknüpfung",p:"Verknüpfungen",i:"🔗"},challenge:{n:"Prüfungs-Challenge",p:"Prüfungs-Challenges",i:"⚔️"},puzzle:{n:"Baustein-Puzzle",p:"Baustein-Puzzles",i:"🧩"}};
 const M={};
 M.info=[
  {id:"m1",f:"fehler",topic:"OOP",title:"Der kaputte Konstruktor",sit:"Ein Mitschüler hat die Klasse Fahrrad geschrieben. Sein Programm läuft nicht, und er versteht nicht warum.",
@@ -1684,6 +1767,264 @@ const MH={
  englisch:{m1:{learn:["Key vocabulary"]},m2:{learn:["Thomas L. Friedman: three eras"]},m3:{learn:["DiCaprio at the UN (2016)","Speech analysis: one paragraph"]},m4:{learn:["Key vocabulary","Globalization in one sentence"]},m5:{learn:["Mediation (Sprachmittlung)"]}}
 };
 Object.entries(MH).forEach(([s,o])=>Object.entries(o).forEach(([id,h])=>{const m=(M[s]||[]).find(x=>x.id===id);if(m)Object.assign(m,h);}));
+/* ============ PUZZLE: Bausteine an die richtige Stelle ziehen ============
+   st.w="sort", st.pz={layout, pieces:[{t, z, why?}], done?, intro?, fig?}
+   layout "uml2" (Zonen 0a 0m 1a 1m k0 k1), "struk" (s1 h b s2), "buckets" (zones:[[id,Name]], mehrere Bausteine pro Fach),
+   "slots" (slots:[[id,Beschriftung]], je ein Baustein, z. B. Reihenfolge oder Nummern in einer Abbildung),
+   "gap" (text mit [[id]] als Lücke, je ein Baustein). fig: optionales SVG über dem Puzzle. z:"x" = Baustein mit Fehler, gehört in die Fehler-Ablage.
+   Gleich beschriftete Bausteine sind austauschbar. Ziehen mit Maus, Touchpad oder Finger, oder antippen und dann die Stelle antippen. */
+const PZSEL={key:null,i:null}, PZR={};
+function pzState(key){const w=W[key]||{};return w.p||{};}
+function pzSingle(pz,z){return pz.layout==="slots"||pz.layout==="gap";}
+function pzLabels(pz){
+  const n=pz.names||[], L={x:"Fehler-Ablage",tray:"Vorrat"};
+  if(pz.layout==="uml2") Object.assign(L,{"0a":n[0]+": Attribute","0m":n[0]+": Methoden","1a":n[1]+": Attribute","1m":n[1]+": Methoden",k0:"Kardinalität bei "+n[0],k1:"Kardinalität bei "+n[1]});
+  if(pz.layout==="struk") Object.assign(L,{s1:"Anweisung oben",h:"Schleifenkopf",b:"Schleifenkörper",s2:"Anweisung unten"});
+  (pz.zones||pz.slots||[]).forEach(z=>L[z[0]]=z[1]);
+  if(pz.layout==="gap") pz.pieces.forEach(p=>{if(p.z!=="x"&&!L[p.z])L[p.z]="Lücke "+p.z;});
+  return L;
+}
+/* richtig, wenn der Platz zu diesem Baustein gehört oder zu einem gleich beschrifteten */
+function pzOk(pz,i,place){const p=pz.pieces[i];return place===p.z||pz.pieces.some(q=>q.t===p.t&&q.z===place);}
+function pzAllOk(pz,pl){
+  const used={}; return pz.pieces.every((p,i)=>{const z=pl[i];if(!z||!pzOk(pz,i,z))return false;if(z!=="x"&&pzSingle(pz,z)){if(used[z])return false;used[z]=1;}return true;});
+}
+function pzHash(str){let h=7;for(let k=0;k<str.length;k++)h=(h*31+str.charCodeAt(k))%100003;return h;}
+function pzPiece(key,st,i,place){
+  const r=PZR[key], pc=st.pz.pieces[i], cls=r&&place!=="tray"?(pzOk(st.pz,i,place)?"good":"bad"):"";
+  return `<button class="pz ${cls} ${PZSEL.key===key&&PZSEL.i===i?"sel":""}" data-pz="${key}|${i}" type="button" aria-pressed="${PZSEL.key===key&&PZSEL.i===i}">${esc(pc.t)}</button>`;
+}
+function pzZone(key,st,z,label,cls){
+  const pl=pzState(key); let items=st.pz.pieces.map((p,i)=>i).filter(i=>(pl[i]||"tray")===z);
+  if(z==="tray") items.sort((a,b)=>pzHash(key+a)-pzHash(key+b));
+  const empty=!items.length&&z!=="tray";
+  return `<div class="zone ${cls||""} ${empty?"empty":""} ${PZSEL.key===key?"armed":""}" data-zone="${key}|${z}" tabindex="${PZSEL.key===key?0:-1}" role="button" aria-label="${esc(String(label||z).replace(/<[^>]*>/g,""))}">${label?`<span class="zl">${label}</span>`:""}${items.map(i=>pzPiece(key,st,i,z)).join("")}</div>`;
+}
+function puzzleBox(key,st){
+  const pz=st.pz, pl=pzState(key), tray=pz.pieces.filter((p,i)=>!pl[i]).length, hasX=pz.pieces.some(p=>p.z==="x");
+  let lay="";
+  if(pz.layout==="uml2"){
+    const cls=k=>`<div class="pzc"><div class="pzn">${esc(pz.names[k])}</div>${pzZone(key,st,k+"a","Attribute","za")}${pzZone(key,st,k+"m","Methoden","zm")}</div>`;
+    lay=`<div class="pzuml">${cls(0)}<div class="pzlink">${pzZone(key,st,"k0","","zk")}<i></i>${pzZone(key,st,"k1","","zk")}</div>${cls(1)}</div>`;
+  } else if(pz.layout==="struk"){
+    lay=`<div class="pzstruk">${pzZone(key,st,"s1","Anweisung","zs")}<div class="pzloop">${pzZone(key,st,"h","Schleifenkopf","zs")}<div class="pzbody">${pzZone(key,st,"b","Schleifenkörper (wird wiederholt)","zs")}</div></div>${pzZone(key,st,"s2","Anweisung am Ende","zs")}</div>`;
+  } else if(pz.layout==="buckets"){
+    lay=`<div class="pzbuckets">${pz.zones.map(z=>pzZone(key,st,z[0],z[1],"zb")).join("")}</div>`;
+  } else if(pz.layout==="slots"){
+    lay=`<div class="pzslots">${pz.slots.map(z=>`<div class="slotrow"><span class="slotl">${z[1]}</span>${pzZone(key,st,z[0],"","zslot")}</div>`).join("")}</div>`;
+  } else if(pz.layout==="gap"){
+    lay=`<div class="pzgap">${pz.text.replace(/\[\[([^\]]+)\]\]/g,(m,id)=>pzZone(key,st,id,"","zgap"))}</div>`;
+  }
+  const r=PZR[key];
+  let res="";
+  if(r){
+    if(pzAllOk(pz,pl)) res=`<div class="pzres good" role="status"><b>Alles richtig! 🎉</b> ${pz.done||""}</div>`;
+    else{
+      const bad=pz.pieces.map((p,i)=>({p,i})).filter(o=>pl[o.i]&&!pzOk(pz,o.i,pl[o.i]));
+      const ok=pz.pieces.filter((p,i)=>pl[i]&&pzOk(pz,i,pl[i])).length;
+      if(!Object.keys(pl).length) res=`<div class="pzres bad" role="status">Leg zuerst ein paar Bausteine ins Puzzle, dann kannst du prüfen.</div>`; else
+      res=`<div class="pzres bad" role="status"><b>${ok} von ${pz.pieces.length} richtig.</b> ${bad.length?"Die rot markierten Bausteine liegen noch falsch:":""}${bad.length?`<ul>${bad.map(o=>`<li><code>${esc(o.p.t)}</code>: ${o.p.z==="x"?esc(o.p.why||"Dieser Baustein hat einen Fehler und gehört in die Fehler-Ablage."):pl[o.i]==="x"?"Der ist eigentlich richtig. Er gehört ins Puzzle, nicht in die Ablage.":"gehört an eine andere Stelle."}</li>`).join("")}</ul>`:""}${tray?`<p class="small">Im Vorrat liegen noch ${tray===1?"ein Baustein":tray+" Bausteine"}.</p>`:""}<p class="small muted">${bad.length?"Zieh die roten Bausteine einfach woandershin und prüf noch mal. ":""}Es gibt keinen Punktabzug.</p></div>`;
+    }
+  }
+  return `<div class="small muted">${pz.intro||"Zieh jeden Baustein an die richtige Stelle, oder tipp ihn an und dann die Stelle."}${hasX?(pz.pieces.filter(p=>p.z==="x").length>1?" Achtung: Ein paar Bausteine sind fehlerhaft":" Achtung: Ein Baustein ist fehlerhaft")+" und gehört in die Fehler-Ablage.".replace("gehört",pz.pieces.filter(p=>p.z==="x").length>1?"gehören":"gehört"):""}</div>
+   ${pz.fig?`<div class="pzfig">${pz.fig}</div>`:""}
+   ${pzZone(key,st,"tray","Vorrat"+(tray?"":" (leer, gut gemacht)"),"ztray")}
+   ${lay}
+   ${hasX?pzZone(key,st,"x","🗑️ Fehler-Ablage: Bausteine mit Fehler","zx"):""}
+   <div class="row"><button class="btn primary" data-pzcheck="${key}">Prüfen</button><button class="btn ghost" data-pzreset="${key}">Neu anfangen</button>${st.alt?`<span class="spacer"></span><button class="btn ghost" data-pzmode="${key}|tippen">Lieber selbst eintippen</button>`:""}</div>${res}`;
+}
+function pzMove(key,i,z){
+  const st=WST[key], w=W[key]=Object.assign({},W[key],{kind:"sort"}); w.p=Object.assign({},w.p||{});
+  if(z!=="tray"&&z!=="x"&&pzSingle(st.pz,z)) Object.keys(w.p).forEach(k=>{if(w.p[k]===z&&Number(k)!==i)delete w.p[k];});
+  if(z==="tray")delete w.p[i];else w.p[i]=z;
+  delete PZR[key];PZSEL.key=null;PZSEL.i=null;wSave(key);render();
+  const el=document.querySelector(`[data-pz="${key}|${i}"]`); if(el) el.focus({preventScroll:true});
+}
+function pzCheck(key){
+  const st=WST[key], pl=pzState(key); PZR[key]=true;
+  if(pzAllOk(st.pz,pl)){const [s,p,i]=key.split("-");
+    if(p==="m"){S.done["mc:"+s+":"+i+":0"]=true;} else S.done[pid(s,p,i)]=true;
+    W[key]=Object.assign({},W[key],{solved:true}); wSave(key); persist();}
+  render();
+  const el=document.querySelector(`.work[data-w="${key}"] .pzres`); if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+/* Ziehen mit Zeiger, Antippen als Alternative, Tastatur: Enter auf Baustein, dann Enter auf Stelle */
+let pzDrag=null;
+document.addEventListener("pointerdown",e=>{const b=e.target.closest(".pz");if(!b||e.button>0)return;const [key,i]=b.dataset.pz.split("|");pzDrag={key,i:Number(i),x:e.clientX,y:e.clientY,el:b,ghost:null};});
+document.addEventListener("pointermove",e=>{if(!pzDrag)return;const d=Math.hypot(e.clientX-pzDrag.x,e.clientY-pzDrag.y);
+  if(!pzDrag.ghost&&d>6){const g=pzDrag.el.cloneNode(true);g.classList.add("ghost");g.classList.remove("sel","good","bad");document.body.appendChild(g);pzDrag.ghost=g;pzDrag.el.classList.add("lifting");}
+  if(pzDrag.ghost){pzDrag.ghost.style.left=e.clientX+"px";pzDrag.ghost.style.top=e.clientY+"px";e.preventDefault();
+    document.querySelectorAll(".zone.over").forEach(z=>z.classList.remove("over"));const z=document.elementFromPoint(e.clientX,e.clientY);const zz=z&&z.closest(".zone");if(zz&&zz.dataset.zone.startsWith(pzDrag.key+"|"))zz.classList.add("over");
+    if(e.clientY<40)window.scrollBy(0,-12);else if(e.clientY>window.innerHeight-40)window.scrollBy(0,12);}},{passive:false});
+document.addEventListener("pointerup",e=>{if(!pzDrag)return;const d=pzDrag;pzDrag=null;
+  if(d.ghost){d.ghost.remove();const z=document.elementFromPoint(e.clientX,e.clientY);const zz=z&&z.closest(".zone");if(zz){const [k,zid]=zz.dataset.zone.split("|");if(k===d.key){pzMove(k,d.i,zid);return;}}render();return;}
+  const zn=d.el.closest(".zone"), zid=zn?zn.dataset.zone.split("|")[1]:"tray";
+  if(PZSEL.key===d.key&&PZSEL.i!==d.i&&zid!=="tray"){pzMove(d.key,PZSEL.i,zid);return;}
+  pzToggle(d.key,d.i);});
+document.addEventListener("pointercancel",()=>{if(pzDrag&&pzDrag.ghost)pzDrag.ghost.remove();pzDrag=null;});
+function pzToggle(key,i){if(PZSEL.key===key&&PZSEL.i===i){PZSEL.key=null;PZSEL.i=null;}else{PZSEL.key=key;PZSEL.i=i;}render();
+  const el=document.querySelector(`[data-pz="${key}|${i}"]`); if(el) el.focus({preventScroll:true});}
+document.addEventListener("click",e=>{
+  const z=e.target.closest(".zone"), c=e.target.closest("[data-pzcheck]"), r=e.target.closest("[data-pzreset]"), m=e.target.closest("[data-pzmode]"), b=e.target.closest(".pz");
+  if(c){pzCheck(c.dataset.pzcheck);return;}
+  if(r){const key=r.dataset.pzreset;W[key]=Object.assign({},W[key],{p:{}});delete PZR[key];wSave(key);render();return;}
+  if(m){const [key,mode]=m.dataset.pzmode.split("|");W[key]=Object.assign({},W[key],{mode});wSave(key);render();return;}
+  if(b&&e.detail===0){const [key,i]=b.dataset.pz.split("|");
+    if(PZSEL.key===key&&PZSEL.i!==Number(i)&&z&&z.dataset.zone.split("|")[1]!=="tray"){pzMove(key,PZSEL.i,z.dataset.zone.split("|")[1]);return;}
+    pzToggle(key,Number(i));return;}
+  if(z&&!b&&PZSEL.key){const [k,zid]=z.dataset.zone.split("|");if(k===PZSEL.key)pzMove(k,PZSEL.i,zid);}
+});
+document.addEventListener("keydown",e=>{const z=e.target.closest&&e.target.closest(".zone");if(!z||e.target.closest(".pz")||(e.key!=="Enter"&&e.key!==" "))return;
+  if(PZSEL.key){e.preventDefault();const [k,zid]=z.dataset.zone.split("|");if(k===PZSEL.key)pzMove(k,PZSEL.i,zid);}});
+function pzText(key,st){const pl=pzState(key), L=pzLabels(st.pz);
+  return st.pz.pieces.map((p,i)=>`${p.t} → ${pl[i]?L[pl[i]]||pl[i]:"noch nicht gelegt"}`).join("\n");}
+/* Musterlösung aus den Puzzledaten */
+function pzSolHtml(pz){const L=pzLabels(pz), by={};
+  pz.pieces.forEach(p=>{(by[p.z]=by[p.z]||[]).push(p);});
+  const def=(pz.zones||pz.slots||[]).map(z=>z[0]);
+  const order=def.concat(Object.keys(by).filter(z=>!def.includes(z)&&z!=="x"));
+  let h=`<ul>${order.filter(z=>by[z]).map(z=>`<li><b>${L[z]}:</b> ${by[z].map(p=>esc(p.t)).join(" · ")}</li>`).join("")}</ul>`;
+  if(by.x) h+=`<p><b>Fehlerhaft:</b></p><ul>${by.x.map(p=>`<li><code>${esc(p.t)}</code>: ${esc(p.why||"")}</li>`).join("")}</ul>`;
+  return h;}
+/* Puzzle-Missionen: f:"puzzle", w:"sort", pz wie beim Puzzle-Baukasten. tsol = Antwort zur Bonusfrage. */
+const PZM={
+ info:[
+  {id:"m6",topic:"Grundlagen",title:"Welcher Datentyp passt?",sit:"Ein Programm speichert lauter Werte. Jeder braucht den passenden Datentyp, sonst meckert der Compiler.",
+   learn:["Datentypen"],transfer:"Was kommt in Java bei <code>7 / 2</code> heraus, wenn beide Zahlen int sind?",tsol:"3. Bei zwei int-Werten rechnet Java ganzzahlig und schneidet die Nachkommastellen ab. Für 3.5 braucht man double, z. B. <code>7.0 / 2</code>.",
+   pz:{layout:"buckets",zones:[["int","int (ganze Zahl)"],["double","double (Kommazahl)"],["boolean","boolean"],["char","char (ein Zeichen)"],["String","String (Text)"]],done:"Merke: Anführungszeichen machen alles zu Text, auch \"42\". Einfache Hochkommas stehen für genau ein Zeichen.",
+    pieces:[{t:"42",z:"int"},{t:"-7",z:"int"},{t:"3.14",z:"double"},{t:"0.5",z:"double"},{t:"true",z:"boolean"},{t:"false",z:"boolean"},{t:"'A'",z:"char"},{t:"'7'",z:"char"},{t:"\"Hallo\"",z:"String"},{t:"\"42\"",z:"String"},
+     {t:"'AB'",z:"x",why:"char fasst genau ein Zeichen. Zwei Zeichen brauchen einen String in doppelten Anführungszeichen."},{t:"3,14",z:"x",why:"Java schreibt Kommazahlen mit Punkt: 3.14."}]}},
+  {id:"m7",topic:"Theorie",title:"Theorie-Sortierer",sit:"In der Klausur kommt fast immer eine Theoriefrage. Hier sortierst du die drei wichtigsten Themen auseinander.",
+   learn:["Imperativ vs. objektorientiert","Qualitätskriterien"],transfer:"Nenne einen Vorteil der objektorientierten Programmierung und begründe ihn mit deiner Playlist-App.",tsol:"Wiederverwendbarkeit: Die Klasse Song kann ohne Änderung in einem anderen Programm benutzt werden. Oder Datenkapselung: private Attribute schützen vor ungültigen Werten.",
+   pz:{layout:"buckets",zones:[["imp","Imperative Programmierung"],["oop","Objektorientierte Programmierung"],["q","Qualitätskriterium für Software"]],done:"Diese Begriffe bringen in der Theoriefrage sichere Punkte.",
+    pieces:[{t:"Programm als Folge von Befehlen",z:"imp"},{t:"Daten liegen in einzelnen Variablen",z:"imp"},{t:"Beispiele: Pascal, Basic",z:"imp"},{t:"Daten und Methoden in Objekten zusammengefasst",z:"oop"},{t:"Kapselung: Attribute sind private",z:"oop"},{t:"Objekte senden sich Nachrichten",z:"oop"},{t:"Beispiel: Java",z:"oop"},{t:"Korrektheit",z:"q"},{t:"Robustheit: Fehleingaben abfangen",z:"q"},{t:"Wiederverwendbarkeit",z:"q"},{t:"Effizienz",z:"q"}]}},
+  {id:"m8",topic:"Algorithmen",title:"Was macht einen Algorithmus aus?",sit:"„Nennen Sie die Eigenschaften eines Algorithmus“ ist eine typische Einstiegsfrage. Hier lernst du sie mit Beispielen.",
+   learn:["Algorithmus"],transfer:"Welche Eigenschaft verletzt <code>while (true) { … }</code> ohne Abbruch?",tsol:"Terminiert: Die Schleife endet nie.",
+   pz:{layout:"buckets",zones:[["allg","allgemeingültig"],["aus","ausführbar"],["endl","endlich beschrieben"],["eind","eindeutig"],["term","terminiert"]],done:"Alle fünf Eigenschaften sitzen. Tipp: Merk dir zu jeder ein Beispiel, das bringt bei „erläutern“ die Punkte.",
+    pieces:[{t:"Löst eine ganze Klasse von Problemen, nicht nur eine Aufgabe",z:"allg"},{t:"gesamtdauer() klappt für jede Playlist, egal wie viele Songs",z:"allg"},{t:"Jeder Schritt kann wirklich ausgeführt werden",z:"aus"},{t:"Die Vorschrift hat eine endliche Länge",z:"endl"},{t:"Bei jedem Schritt ist klar, was als Nächstes passiert",z:"eind"},{t:"Keine ungenauen Anweisungen wie „nimm ein paar Songs“",z:"eind"},{t:"Endet nach endlich vielen Schritten",z:"term"},{t:"Die for-Schleife hört bei i < size() auf",z:"term"}]}}],
+ sport:[
+  {id:"m6",topic:"Anpassung",title:"Beschrifte die Superkompensation",sit:"Die Randnotiz in vielen Klausuren lautet: Kurve ohne Beschriftung. Hier beschriftest du das Modell, ohne zu zeichnen.",
+   learn:["Superkompensation","Homöostase"],transfer:"Was passiert, wenn die nächste Belastung schon in Phase ③ kommt?",tsol:"Die Leistung sinkt weiter. Wer das ständig macht, landet im Übertraining.",
+   pz:{layout:"slots",fig:PZ_FIG_SK,intro:"Zieh jeden Begriff zur passenden Nummer in der Kurve.",slots:[["s1","① gestrichelte Linie"],["s2","② Pfeil am Anfang"],["s3","③ das Tal"],["s4","④ der Anstieg zurück"],["s5","⑤ der Gipfel über der Linie"],["s6","⑥ senkrechte Achse"],["s7","⑦ waagerechte Achse"]],
+    done:"Genau so musst du das Modell in der Klausur beschriften. Merke: Die nächste Belastung gehört in Phase ⑤.",
+    pieces:[{t:"Ausgangsniveau",z:"s1"},{t:"Belastung (Trainingsreiz)",z:"s2"},{t:"Ermüdung",z:"s3"},{t:"Erholung",z:"s4"},{t:"Superkompensation",z:"s5"},{t:"Leistungsfähigkeit",z:"s6"},{t:"Zeit",z:"s7"},
+     {t:"Übertraining",z:"x",why:"Übertraining ist keine Phase des Modells, sondern die Folge, wenn man immer wieder zu früh belastet."}]}},
+  {id:"m7",topic:"Kraft",title:"Kraftformen-Quartett",sit:"Bei „erläutern“ reicht die Definition nicht, du brauchst immer eine Sportart dazu.",
+   learn:["Kraftformen"],transfer:"Welche Kraftform braucht ein Hochspringer beim Absprung nach dem Anlauf am meisten?",tsol:"Reaktivkraft (zusammen mit Schnellkraft): erst abbremsen, dann sofort abdrücken.",
+   pz:{layout:"buckets",zones:[["max","Maximalkraft"],["sk","Schnellkraft"],["rk","Reaktivkraft"],["ka","Kraftausdauer"]],done:"Zu jeder Kraftform eine Definition und eine Sportart: genau das will „erläutern“.",
+    pieces:[{t:"Größte Kraft, die willkürlich gegen einen Widerstand aufgebracht werden kann",z:"max"},{t:"Basis für alle anderen Kraftformen",z:"max"},{t:"Gewichtheben: einmal so schwer wie möglich",z:"max"},{t:"Widerstände mit hoher Geschwindigkeit überwinden",z:"sk"},{t:"Sprint-Start aus dem Block",z:"sk"},{t:"Speerwurf",z:"sk"},{t:"Erst abbremsen, dann sofort abdrücken",z:"rk"},{t:"Niedersprünge und Sprungläufe",z:"rk"},{t:"Ermüdungswiderstand bei vielen Kraftleistungen",z:"ka"},{t:"Rudern über 2000 m",z:"ka"},{t:"Eine lange Kletterroute",z:"ka"}]}},
+  {id:"m8",topic:"Muskel",title:"Wie arbeitet der Muskel?",sit:"Isometrisch und exzentrisch werden oft verwechselt. Mit Alltagsbeispielen bleibt es hängen.",
+   learn:["Kraft","Agonist und Antagonist"],transfer:"Beim Bizeps-Curl: Wer ist Agonist, wer Antagonist?",tsol:"Der Bizeps beugt den Arm, er ist der Agonist. Der Trizeps wirkt entgegen, er ist der Antagonist.",
+   pz:{layout:"buckets",zones:[["konz","konzentrisch: überwinden, Muskel wird kürzer"],["exz","exzentrisch: nachgeben, Muskel wird länger"],["iso","isometrisch: halten, Länge bleibt gleich"]],done:"Merke: Halten ist isometrisch, Abbremsen ist exzentrisch.",
+    pieces:[{t:"Hantel beim Curl nach oben ziehen",z:"konz"},{t:"Klimmzug: nach oben ziehen",z:"konz"},{t:"Aus der Hocke hochdrücken",z:"konz"},{t:"Hantel langsam absenken",z:"exz"},{t:"Bergab laufen: der Oberschenkel bremst",z:"exz"},{t:"Landung nach einem Sprung abfangen",z:"exz"},{t:"Unterarmstütz (Plank) halten",z:"iso"},{t:"Kletterer hält sich lange an einer Leiste",z:"iso"},{t:"Wandsitz: 60 Sekunden ohne Stuhl",z:"iso"}]}}],
+ musik:[
+  {id:"m6",topic:"Gattungen",title:"Oratorium, Oper oder beides?",sit:"Der Vergleich Oratorium und Oper ist ein Klassiker. Sortiere die Merkmale in die Tabelle.",
+   learn:["Oratorium vs. Oper"],transfer:"Was ist der Unterschied zwischen Rezitativ und Arie?",tsol:"Das Rezitativ ist Sprechgesang und treibt die Handlung voran. Die Arie kommentiert das Geschehen und zeigt Gefühle.",
+   pz:{layout:"buckets",zones:[["or","nur Oratorium"],["op","nur Oper"],["bd","beide"]],done:"Mit dieser Tabelle kannst du jeden Vergleich nach Kriterien aufbauen: Ort, Texte, Aufführung, Besetzung.",
+    pieces:[{t:"Aufführung in Kirche oder Konzertsaal",z:"or"},{t:"Geistliche Texte, meist aus der Bibel",z:"or"},{t:"Ohne Bühnenbild und Kostüme",z:"or"},{t:"Händels „Messias“",z:"or"},{t:"Aufführung im Theater",z:"op"},{t:"Weltliche Texte",z:"op"},{t:"Szenisch, mit mehreren Akten",z:"op"},{t:"Solisten, Chor und Orchester",z:"bd"},{t:"Rezitative und Arien",z:"bd"}]}},
+  {id:"m7",topic:"Instrument",title:"Lückentext: Vom Cembalo zum Steinway",sit:"Wie im Unterricht, nur ohne Stift: Zieh die Wörter in die Lücken.",
+   learn:["Geschichte des Klaviers"],transfer:"Warum war das Pianoforte für Komponisten so ein Fortschritt gegenüber dem Cembalo?",tsol:"Man kann die Lautstärke über den Anschlag stufenlos verändern. So werden Ausdruck, Crescendo und Kontraste möglich.",
+   pz:{layout:"gap",intro:"Zieh jedes Wort in die passende Lücke.",done:"Die Klaviergeschichte sitzt. Das ist genau der Lückentext aus dem Unterricht.",
+    text:"<p>Das Wort Klavier kommt vom lateinischen [[g1]] (Schlüssel, Taste). Beim [[g2]] werden die Saiten gezupft, die Lautstärke ändert sich durch den Anschlag nicht.</p><p>Um 1700 baute [[g3]] in Florenz das erste Pianoforte mit [[g4]]: Je nach Anschlag klingt es leise oder laut. [[g5]] baute deutsche Hammerflügel, auf denen Bach 1747 in Potsdam vor Friedrich II. spielte.</p><p>Johann Andreas Stein entwickelte in Augsburg die leichte [[g6]] Mechanik, Broadwood in England die schwerere englische Mechanik. 1821 erfand [[g7]] die Repetitionsmechanik, 1859 baute [[g8]] den Flügel mit Gusseisenrahmen.</p>",
+    pieces:[{t:"clavis",z:"g1"},{t:"Cembalo",z:"g2"},{t:"Cristofori",z:"g3"},{t:"Hammermechanik",z:"g4"},{t:"Silbermann",z:"g5"},{t:"Wiener",z:"g6"},{t:"Érard",z:"g7"},{t:"Steinway",z:"g8"},
+     {t:"Stradivari",z:"x",why:"Stradivari baute Geigen, keine Tasteninstrumente."},{t:"Orgel",z:"x",why:"Bei der Orgel klingen Pfeifen, keine Saiten."}]}},
+  {id:"m8",topic:"Satztechnik",title:"Halleluja-Hörprotokoll",sit:"Homophonie, Polyphonie oder Unisono? Ordne Händels Stellen und die Merkmale zu.",
+   learn:["Halleluja: Gestaltungsmittel"],transfer:"Warum setzt Händel bei „King of Kings“ Trompeten und Pauken ein?",tsol:"Trompeten und Pauken waren Instrumente der Könige. Sie zeigen königlichen Glanz und Gottes Macht.",
+   pz:{layout:"buckets",zones:[["ho","Homophonie (homo = gleich)"],["po","Polyphonie (poly = viele)"],["un","Unisono (alle einstimmig)"]],done:"Jetzt noch das Wichtigste: in der Analyse immer die Wirkung dazu nennen.",
+    pieces:[{t:"„Halleluja“ am Anfang",z:"ho"},{t:"„King of Kings“",z:"ho"},{t:"Alle Stimmen im gleichen Rhythmus, Melodie oben",z:"ho"},{t:"„And He shall reign for ever and ever“",z:"po"},{t:"Jede Stimme hat eine eigene Melodie",z:"po"},{t:"Einsätze nacheinander, kunstvoll verflochten",z:"po"},{t:"„For the Lord God omnipotent reigneth“",z:"un"},{t:"Alle singen dieselbe Melodie",z:"un"},{t:"Wirkung: ein Gott wird hörbar",z:"un"}]}}],
+ mathe:[
+  {id:"m6",topic:"Vektoren",title:"Formel-Puzzle",sit:"Ohne Formeln geht in der Klausur nichts. Hier baust du deine Formelsammlung selbst zusammen.",
+   learn:["Verbindungsvektor","Länge (Betrag)","Mittelpunkt","Skalarprodukt"],transfer:"A(1|2|3), B(4|6|3): Berechne AB und |AB|.",tsol:"AB = B − A = (3, 4, 0). |AB| = √(9 + 16 + 0) = √25 = 5 LE.",
+   pz:{layout:"gap",intro:"Zieh jede Formel in die passende Lücke.",done:"Das ist deine komplette Formelsammlung. Die fehlerhaften Bausteine waren genau die typischen Klausurfehler.",
+    text:"<div class=\"fl\">Verbindungsvektor: AB = [[f1]]</div><div class=\"fl\">Gegenvektor: BA = [[f2]]</div><div class=\"fl\">Länge: |a| = [[f3]]</div><div class=\"fl\">Mittelpunkt: M = [[f4]]</div><div class=\"fl\">Skalarprodukt: a · b = [[f5]]</div><div class=\"fl\">Orthogonal genau dann, wenn [[f6]]</div><div class=\"fl\">Kollinear, wenn [[f7]] für eine Zahl r</div><div class=\"fl\">Winkel: cos γ = [[f8]]</div>",
+    pieces:[{t:"B − A",z:"f1"},{t:"−AB",z:"f2"},{t:"√(a₁² + a₂² + a₃²)",z:"f3"},{t:"½ · (A + B)",z:"f4"},{t:"a₁b₁ + a₂b₂ + a₃b₃",z:"f5"},{t:"a · b = 0",z:"f6"},{t:"a = r · b",z:"f7"},{t:"(a · b) / (|a| · |b|)",z:"f8"},
+     {t:"a₁² + a₂² + a₃²",z:"x",why:"Wurzel vergessen: Die Länge ist die Wurzel aus der Summe der Quadrate."},{t:"A + B",z:"x",why:"Beim Mittelpunkt fehlt das ½: M = ½ · (A + B)."},{t:"a · b = 1",z:"x",why:"Orthogonal heißt: Skalarprodukt gleich 0."}]}},
+  {id:"m7",topic:"Lage",title:"Kollinear, orthogonal oder keins?",sit:"Acht Vektorpaare warten auf dich. Rechne im Kopf oder auf einem Schmierzettel und sortiere sie.",
+   learn:["Vielfache und Kollinearität","Skalarprodukt"],transfer:"Gib einen Vektor an, der zu (1, 2, 0) orthogonal ist.",tsol:"Zum Beispiel (2, −1, 0), denn 1·2 + 2·(−1) + 0·0 = 0. Auch (0, 0, 1) geht.",
+   pz:{layout:"buckets",zones:[["kol","kollinear (a = r · b)"],["ort","orthogonal (a · b = 0)"],["wed","weder noch"]],done:"Stark. Denk in der Klausur an den Antwortsatz: „Die Vektoren sind orthogonal, da …“",
+    pieces:[{t:"(2, −4, 6) und (1, −2, 3)",z:"kol"},{t:"(3, 6, 9) und (1, 2, 3)",z:"kol"},{t:"(−1, 2, 0) und (2, −4, 0)",z:"kol"},{t:"(1, 2, −1) und (3, −1, 1)",z:"ort"},{t:"(2, 1, 2) und (1, −2, 0)",z:"ort"},{t:"(4, 0, −2) und (1, 3, 2)",z:"ort"},{t:"(1, 2, 3) und (2, 4, 5)",z:"wed"},{t:"(1, 1, 1) und (1, 2, 3)",z:"wed"}]}},
+  {id:"m8",topic:"Lage",title:"Lineare Abhängigkeit in 5 Schritten",sit:"Bei „linear abhängig?“ zählt der vollständige Weg. Bring die Schritte in die richtige Reihenfolge.",
+   learn:["Lineare Abhängigkeit"],transfer:"Prüfe: Sind a = (1, 0, 0), b = (0, 1, 0) und c = (2, 3, 0) linear abhängig?",tsol:"Ansatz c = r·a + s·b. Zeile 1: r = 2, Zeile 2: s = 3, Zeile 3: 0 = 0 stimmt. Also linear abhängig (komplanar).",
+   pz:{layout:"slots",intro:"Zieh die Schritte in die richtige Reihenfolge.",slots:[["o1","1."],["o2","2."],["o3","3."],["o4","4."],["o5","5."]],done:"Genau dieser Weg bringt die vollen Punkte.",
+    pieces:[{t:"Ansatz aufschreiben: c = r · a + s · b",z:"o1"},{t:"Koordinatenweise ein Gleichungssystem mit drei Zeilen aufstellen",z:"o2"},{t:"Aus zwei Zeilen r und s bestimmen",z:"o3"},{t:"r und s in die dritte Zeile einsetzen und prüfen",z:"o4"},{t:"Antwortsatz: Probe stimmt, also linear abhängig, sonst linear unabhängig",z:"o5"},
+     {t:"Nur die erste Koordinate vergleichen",z:"x",why:"Eine Koordinate reicht nie. Erst die Probe mit der dritten Zeile entscheidet."}]}}],
+ deutsch:[
+  {id:"m6",topic:"Epochen",title:"Epochen-Sortierer",sit:"Für den Epochenbezug musst du Merkmale sicher zuordnen. Drei Epochen, zwölf Bausteine.",
+   learn:["Expressionismus (1905–1925)","Symbolismus (1880–1910)","Neue Sachlichkeit"],transfer:"Ordne Heyms „Der Gott der Stadt“ einer Epoche zu und begründe mit einem Merkmal.",tsol:"Expressionismus: Die Großstadt erscheint als bedrohlicher, zerstörerischer Götze, mit grellen, apokalyptischen Bildern.",
+   pz:{layout:"buckets",zones:[["sym","Symbolismus (1880–1910)"],["exp","Expressionismus (1905–1925)"],["ns","Neue Sachlichkeit (1919–1933)"]],done:"Jetzt kannst du jedes Gedicht begründet einordnen. Immer mit Merkmal und Textstelle.",
+    pieces:[{t:"Synästhesien und musikalische Sprache",z:"sym"},{t:"Traum, Mystik, Vergänglichkeit",z:"sym"},{t:"Stimmung statt Handlung",z:"sym"},{t:"Reihungsstil",z:"exp"},{t:"Großstadt, Krieg und Weltuntergang",z:"exp"},{t:"Ästhetik des Hässlichen",z:"exp"},{t:"Ich-Zerfall und Sehnsucht nach dem „neuen Menschen“",z:"exp"},{t:"van Hoddis: „Weltende“ (1911)",z:"exp"},{t:"Benn: „Morgue“ (1912)",z:"exp"},{t:"Nüchterne Alltagssprache, beobachtende Distanz",z:"ns"},{t:"Arbeitslosigkeit, Inflation, „Neue Frau“",z:"ns"},{t:"Kästner: „Fabian“ (1931)",z:"ns"}]}},
+  {id:"m7",topic:"Erzähltechnik",title:"Zeitraffer, Zeitlupe, Echtzeit",sit:"Zeitgestaltung bringt in jeder Prosa-Analyse Punkte, wenn du sie sicher erkennst.",
+   learn:["Zeitgestaltung"],transfer:"Wozu nutzt Kafka Zeitdehnung, als Gregor am Morgen versucht aufzustehen?",tsol:"Der Leser erlebt Gregors mühsame Versuche fast in Zeitlupe mit. So werden seine Ohnmacht und Hilflosigkeit spürbar.",
+   pz:{layout:"buckets",zones:[["dk","Zeitdeckung"],["rf","Zeitraffung"],["dh","Zeitdehnung"]],done:"In der Analyse immer: Mittel benennen, Textstelle, Wirkung.",
+    pieces:[{t:"Erzählzeit ist ungefähr so lang wie die erzählte Zeit",z:"dk"},{t:"Ein Dialog wird Wort für Wort wiedergegeben",z:"dk"},{t:"Erzählzeit ist kürzer als die erzählte Zeit",z:"rf"},{t:"„Jahre vergingen.“",z:"rf"},{t:"„Die nächsten Wochen verliefen ruhig.“",z:"rf"},{t:"Erzählzeit ist länger als die erzählte Zeit",z:"dh"},{t:"Eine Sekunde voller Gedanken über eine halbe Seite",z:"dh"},{t:"Wie in Zeitlupe, die Spannung steigt",z:"dh"}]}},
+  {id:"m8",topic:"Methode",title:"Bauplan einer Interpretation",sit:"Deine Lehrerin achtet auf den Aufbau. Bring die Teile in die richtige Reihenfolge und wirf die typischen Fehler raus.",
+   learn:["Aufbau einer Interpretation"],transfer:"Schreib einen Einleitungssatz zu „Gibs auf!“ mit Thema.",tsol:"Franz Kafkas Parabel „Gibs auf!“, entstanden 1922, thematisiert die Orientierungslosigkeit des modernen Menschen, dem selbst die Autorität keine Hilfe gibt.",
+   pz:{layout:"slots",intro:"Zieh die Teile in die richtige Reihenfolge.",slots:[["o1","1."],["o2","2."],["o3","3."],["o4","4."],["o5","5."]],done:"Der Bauplan sitzt. Achte besonders auf das Thema in der Einleitung.",
+    pieces:[{t:"Einleitung: Autor, Titel, Textsorte, Jahr, Epoche und Thema",z:"o1"},{t:"Kurze Inhaltsangabe im Präsens, ohne Zitate",z:"o2"},{t:"Analyse: Mittel benennen, Zitat mit Zeile, Wirkung",z:"o3"},{t:"Epochenbezug",z:"o4"},{t:"Schluss: Deutungshypothese bestätigen, eigene Stellungnahme",z:"o5"},
+     {t:"Das Thema erst am Schluss nennen",z:"x",why:"Das Thema gehört in die Einleitung. Genau das hat deine Lehrerin am Rand notiert."},{t:"Den Inhalt im Präteritum nacherzählen",z:"x",why:"Die Inhaltsangabe steht im Präsens und ist knapp, keine Nacherzählung."}]}}],
+ bio:[
+  {id:"m6",topic:"Toleranz",title:"Beschrifte die Toleranzkurve",sit:"In der LEK gab es hier 2 von 8 Punkten, Randnotiz: „Fachbegriffe fehlen“. Jetzt beschriftest du die Kurve komplett.",
+   learn:["Toleranzkurve"],transfer:"Wie sieht die Kurve einer stenöken Art im Vergleich aus?",tsol:"Schmal und steil: Der Toleranzbereich ist eng. Eine euryöke Art hat eine breite, flache Kurve.",
+   pz:{layout:"slots",fig:PZ_FIG_TOL,intro:"Zieh jeden Fachbegriff zur passenden Nummer in der Kurve.",slots:[["t1","① linkes Ende"],["t2","② rechtes Ende"],["t3","③ der Gipfel"],["t4","④ linker Randbereich"],["t5","⑤ rechter Randbereich"],["t6","⑥ der Doppelpfeil"],["t7","⑦ senkrechte Achse"],["t8","⑧ waagerechte Achse"]],
+    done:"Das waren genau die Fachbegriffe, die in der LEK gefehlt haben. Jetzt sitzen sie.",
+    pieces:[{t:"Minimum",z:"t1"},{t:"Maximum",z:"t2"},{t:"Optimum",z:"t3"},{t:"Pessimum",z:"t4"},{t:"Pessimum",z:"t5"},{t:"Toleranzbereich",z:"t6"},{t:"Lebensaktivität",z:"t7"},{t:"Umweltfaktor, z. B. Temperatur in °C",z:"t8"},
+     {t:"Biotop",z:"x",why:"Das Biotop ist der Lebensraum, kein Teil der Toleranzkurve."}]}},
+  {id:"m7",topic:"Proteinbiosynthese",title:"Vom Gen zum Protein in 8 Schritten",sit:"Transkription und Translation laufen in fester Reihenfolge ab. Bring sie in Ordnung.",
+   learn:["Transkription (Zellkern)","Translation (Ribosom)"],transfer:"Codogener DNA-Strang: TAC. Welches mRNA-Codon entsteht, und was bedeutet es?",tsol:"AUG: das Startcodon, es codiert Methionin.",
+   pz:{layout:"slots",intro:"Zieh die Schritte in die richtige Reihenfolge.",slots:[["o1","1. Zellkern"],["o2","2. Zellkern"],["o3","3. Zellkern"],["o4","4. Zellkern"],["o5","5. Ribosom"],["o6","6. Ribosom"],["o7","7. Ribosom"],["o8","8. Ribosom"]],done:"Die ganze Proteinbiosynthese in der richtigen Reihenfolge. Das ist die halbe Klausuraufgabe.",
+    pieces:[{t:"RNA-Polymerase bindet an den Promotor",z:"o1"},{t:"Die DNA wird entwunden, Wasserstoffbrücken werden getrennt",z:"o2"},{t:"mRNA wird komplementär zum codogenen Strang gebaut",z:"o3"},{t:"Am Terminator endet die Transkription, die mRNA löst sich",z:"o4"},{t:"mRNA wird ins Ribosom eingefädelt, Start bei AUG",z:"o5"},{t:"tRNA mit passendem Anticodon paart mit dem Codon",z:"o6"},{t:"Aminosäure wird per Peptidbindung an die Kette geknüpft",z:"o7"},{t:"Stopp bei UAA, UAG oder UGA",z:"o8"},
+     {t:"Die DNA wandert zum Ribosom",z:"x",why:"Die DNA bleibt im Zellkern. Zum Ribosom wandert nur die mRNA als Abschrift."},{t:"Die mRNA enthält Thymin",z:"x",why:"In RNA steht Uracil statt Thymin."}]}},
+  {id:"m8",topic:"Ökologie",title:"Abiotisch oder biotisch?",sit:"Die Grundbegriffe der Ökologie sind die Basis für jede Nischen- und Toleranzaufgabe.",
+   learn:["Ökologische Nische"],transfer:"Was ist der Unterschied zwischen Biotop und Biozönose?",tsol:"Biotop: der Lebensraum mit seinen unbelebten Bedingungen. Biozönose: die Lebensgemeinschaft aller Lebewesen in diesem Lebensraum.",
+   pz:{layout:"buckets",zones:[["ab","abiotisch (unbelebte Umwelt)"],["bi","biotisch (durch Lebewesen)"]],done:"Merke: Biotisch heißt immer, ein anderes Lebewesen ist beteiligt.",
+    pieces:[{t:"Temperatur",z:"ab"},{t:"Licht",z:"ab"},{t:"Bodenfeuchte",z:"ab"},{t:"pH-Wert des Bodens",z:"ab"},{t:"Wind",z:"ab"},{t:"Fressfeinde",z:"bi"},{t:"Konkurrenz um Licht zwischen Bäumen",z:"bi"},{t:"Parasiten",z:"bi"},{t:"Bestäuber",z:"bi"},{t:"Nahrungsangebot an Beutetieren",z:"bi"}]}}],
+ religion:[
+  {id:"m6",topic:"Jesus",title:"Quellen-Detektiv",sit:"Vier Quellen außerhalb der Bibel erwähnen Jesus. Ordne Zeit und Aussage der richtigen Quelle zu.",
+   learn:["Außerbiblische Quellen"],transfer:"Was belegen diese Quellen gemeinsam, und was belegen sie nicht?",tsol:"Sie belegen: Jesus hat gelebt, wurde unter Pilatus hingerichtet und hatte Anhänger. Sie belegen nicht die Auferstehung oder dass er Gottes Sohn ist, das sind Glaubensaussagen.",
+   pz:{layout:"buckets",zones:[["jos","Flavius Josephus"],["tac","Tacitus"],["pli","Plinius d. J."],["tal","Talmud"]],done:"Damit kannst du historisch Belegtes und Glaubensaussagen sauber trennen.",
+    pieces:[{t:"um 93 n. Chr.",z:"jos"},{t:"Jakobus, „Bruder Jesu, der Christus genannt wird“",z:"jos"},{t:"um 116 n. Chr.",z:"tac"},{t:"Pontius Pilatus ließ Christus hinrichten",z:"tac"},{t:"Christen unter Nero",z:"tac"},{t:"um 112 n. Chr.",z:"pli"},{t:"Christen verehren Christus „wie einen Gott“",z:"pli"},{t:"2. bis 6. Jahrhundert",z:"tal"},{t:"Hingerichtet am Vorabend des Pessachfestes",z:"tal"}]}},
+  {id:"m7",topic:"Forschung",title:"Zeitstrahl der Jesus-Forschung",sit:"Die Leben-Jesu-Forschung hat vier Phasen. Ordne sie ihrer Zeit zu.",
+   learn:["Leben-Jesu-Forschung","Historischer Jesus vs. Christus des Glaubens"],transfer:"Warum ist für Bultmann der historische Jesus für den Glauben nicht entscheidend?",tsol:"Für ihn ist das Historische kaum erreichbar. Wichtig ist der verkündigte Christus, an ihn glaubt man, nicht an eine historische Rekonstruktion.",
+   pz:{layout:"slots",intro:"Zieh jede Forschungsrichtung zu ihrer Zeit.",slots:[["o1","19. Jahrhundert"],["o2","frühes 20. Jahrhundert"],["o3","ab den 1950er-Jahren"],["o4","ab den 1970er/80er-Jahren"]],done:"Die vier Phasen sitzen. In der Klausur immer mit Kernaussage nennen.",
+    pieces:[{t:"Liberale Theologie: sucht den Menschen Jesus hinter dem Dogma",z:"o1"},{t:"Rudolf Bultmann: wichtig ist der verkündigte Christus",z:"o2"},{t:"New Quest: Anhaltspunkte im historischen Kontext",z:"o3"},{t:"Third Quest: Jesus in seinem jüdischen Umfeld",z:"o4"},
+     {t:"Third Quest: Jesus ohne jüdischen Hintergrund verstehen",z:"x",why:"Genau umgekehrt: Die Third Quest stellt Jesus in sein jüdisches Umfeld."}]}},
+  {id:"m8",topic:"Gottesbilder",title:"Fromm, Zenger oder beide?",sit:"Der Vergleich Fromm und Zenger ist sehr wahrscheinlich in der Klausur. Sortiere die Aussagen.",
+   learn:["Gottesbilder: Fromm und Zenger"],transfer:"Formuliere einen Vergleichssatz im Konjunktiv.",tsol:"Während Fromm betont, Gott sei namenlos, hebt Zenger hervor, die vielen biblischen Bilder seien gleichwertig.",
+   pz:{layout:"buckets",zones:[["fr","Erich Fromm"],["ze","Erich Zenger"],["bd","beide"]],done:"Jetzt kannst du nach Aspekten vergleichen, nicht nur nebeneinander.",
+    pieces:[{t:"„Mein Name ist Namenlos“",z:"fr"},{t:"Ein Name macht Gott greifbar wie ein Ding",z:"fr"},{t:"Gott wie ein Horizont, den man nie erreicht",z:"fr"},{t:"Warnt vor „Götzendienst in Worten“",z:"fr"},{t:"Die Bibel ist „Gotteswort in Menschenwörtern“",z:"ze"},{t:"Viele gleichwertige Bilder: Quelle, Burg, Löwe",z:"ze"},{t:"Gott ist da in Geschichte, Treue und Lebendigkeit",z:"ze"},{t:"Lehnen ein festgelegtes Gottesbild ab",z:"bd"},{t:"Deuten Ex 3,14",z:"bd"}]}}],
+ geschichte:[
+  {id:"m6",topic:"Krisen",title:"Zeitstrahl 1918–1933",sit:"Randnotiz im Test: „kein Datum“. Hier ordnest du zehn Ereignisse ihrem Datum zu.",
+   learn:["1918: Kriegsende und Revolution","Krisenjahre 1919–1923","Stabilisierung 1924–1929"],transfer:"Warum nennt man die Jahre 1924–1929 nur „scheinbar“ stabil?",tsol:"Die Wirtschaft hing an US-Krediten, und die Republikfeinde blieben stark. Mit der Weltwirtschaftskrise brach alles zusammen.",
+   pz:{layout:"slots",intro:"Zieh jedes Ereignis zu seinem Datum.",slots:[["d1","29.09.1918"],["d2","Ende Okt./Anfang Nov. 1918"],["d3","09.11.1918"],["d4","28.06.1919"],["d5","März 1920"],["d6","1922"],["d7","1923"],["d8","1925"],["d9","Oktober 1929"],["d10","30.01.1933"]],done:"Zehn Daten sicher. In jede Einleitung gehört das genaue Datum.",
+    pieces:[{t:"OHL fordert den Waffenstillstand",z:"d1"},{t:"Matrosenaufstand in Kiel",z:"d2"},{t:"Scheidemann ruft die Republik aus",z:"d3"},{t:"Versailler Vertrag unterzeichnet",z:"d4"},{t:"Kapp-Lüttwitz-Putsch",z:"d5"},{t:"Mord an Rathenau",z:"d6"},{t:"Ruhrbesetzung und Hyperinflation",z:"d7"},{t:"Vertrag von Locarno",z:"d8"},{t:"Beginn der Weltwirtschaftskrise",z:"d9"},{t:"Hindenburg ernennt Hitler zum Reichskanzler",z:"d10"}]}},
+  {id:"m7",topic:"Republik",title:"Parteien von links nach rechts",sit:"Wer die Parteien einordnen kann, versteht jede Wahlgrafik und Karikatur.",
+   learn:["Parteien"],transfer:"Welche Parteien bildeten die Weimarer Koalition, und warum war es gefährlich, dass sie 1920 die Mehrheit verlor?",tsol:"SPD, DDP und Zentrum. Ohne Mehrheit der republiktreuen Parteien wurden Regierungen instabil, und die Republikgegner gewannen Gewicht.",
+   pz:{layout:"slots",intro:"Zieh die Parteien in die Reihenfolge von links nach rechts.",slots:[["p1","1 · ganz links"],["p2","2"],["p3","3"],["p4","4 · Mitte"],["p5","5"],["p6","6"],["p7","7 · ganz rechts"]],done:"Die Parteienlandschaft sitzt. Die Weimarer Koalition sind die Plätze 2 bis 4.",
+    pieces:[{t:"KPD: Räterepublik",z:"p1"},{t:"SPD: demokratische Republik",z:"p2"},{t:"DDP: liberal",z:"p3"},{t:"Zentrum: katholisch",z:"p4"},{t:"DVP: nationalliberal, Stresemann",z:"p5"},{t:"DNVP: Monarchie, gegen die Republik",z:"p6"},{t:"NSDAP: Diktatur, Führerprinzip",z:"p7"}]}},
+  {id:"m8",topic:"NS-Staat",title:"Ideologie-Decoder",sit:"Randnotiz: „Ideologieelemente fehlen“. Hier trainierst du, sie sicher zu benennen.",
+   learn:["NS-Ideologie","Propaganda"],transfer:"Plakat-Spruch: „Ein Volk, ein Reich, ein Führer“. Welche Ideologieelemente stecken darin?",tsol:"Volksgemeinschaft (ein Volk), Nationalismus (ein Reich) und Führerprinzip (ein Führer).",
+   pz:{layout:"buckets",zones:[["fp","Führerprinzip"],["vg","Volksgemeinschaft"],["ra","Rassismus und Antisemitismus"],["na","Nationalismus"]],done:"Diese vier Begriffe gehören in jede Propaganda-Analyse.",
+    pieces:[{t:"Absoluter Gehorsam, militärische Befehlsstruktur",z:"fp"},{t:"Der Führer als „Ersatzmessias“",z:"fp"},{t:"Der Führer ersetzt die Verfassung",z:"fp"},{t:"Einheit von Volk und Staat",z:"vg"},{t:"Ausgrenzung aller, die nicht dazugehören sollen",z:"vg"},{t:"Sozialdarwinismus: „Recht des Stärkeren“",z:"ra"},{t:"Rassenhierarchie",z:"ra"},{t:"Überhöhung der eigenen Nation",z:"na"},{t:"„Lebensraum im Osten“",z:"na"},
+     {t:"Gewaltenteilung",z:"x",why:"Gewaltenteilung ist ein Prinzip der Demokratie. Der NS-Staat hat sie abgeschafft."},{t:"Meinungsfreiheit",z:"x",why:"Die NS-Diktatur unterdrückte jede freie Meinung, zum Beispiel durch Gleichschaltung der Presse."}]}}],
+ englisch:[
+  {id:"m6",topic:"Globalization",title:"Friedman’s three eras",sit:"Sort the examples into Thomas L. Friedman’s three eras of globalization.",
+   learn:["Thomas L. Friedman: three eras"],transfer:"Name one advantage and one disadvantage of Globalization 3.0 for young people.",tsol:"Advantage: you can work with people all over the world from home. Disadvantage: you compete with workers everywhere, e.g. digital shadow workers with low pay.",
+   pz:{layout:"buckets",intro:"Drag each example to the right era, or tap it and then the box.",zones:[["g1","Globalization 1.0: countries"],["g2","Globalization 2.0: companies"],["g3","Globalization 3.0: individuals"]],done:"Great! Always add one example when you explain an era.",
+    pieces:[{t:"Columbus opens a route between the Old and the New World",z:"g1"},{t:"Countries compete for colonies and trade routes",z:"g1"},{t:"Driven by muscle power, horsepower and wind power",z:"g1"},{t:"Multinational corporations look for cheap labour and new markets",z:"g2"},{t:"Steam engines and railways make transport cheaper",z:"g2"},{t:"Telephones and early computers connect companies worldwide",z:"g2"},{t:"A freelancer in India designs a logo for a company in Berlin",z:"g3"},{t:"Individuals work together via digital platforms",z:"g3"},{t:"A teenager sells self-made T-shirts worldwide on Instagram",z:"g3"}]}},
+  {id:"m7",topic:"Climate",title:"Vocabulary gap fill",sit:"Your key vocabulary in context. Drag the words into the gaps.",
+   learn:["Key vocabulary"],transfer:"Use “repercussion” in a sentence about fast fashion.",tsol:"Example: One repercussion of fast fashion is the huge amount of textile waste.",
+   pz:{layout:"gap",intro:"Drag each word into the right gap.",done:"All words in place. Try to use three of them in your next text.",
+    text:"<p>Many companies [[v1]] production to countries with lower wages. When doctors leave poor countries to work abroad, we speak of [[v2]]. Last summer’s heat wave was [[v3]]: nothing like it had ever been measured.</p><p>Climate change could [[v4]] the future of millions of people. Some damage to the oceans is already [[v5]] and cannot be undone. A long [[v6]] leads to crop failure and [[v7]]. Today all countries are [[v8]]: what happens in one affects the others.</p>",
+    pieces:[{t:"outsource",z:"v1"},{t:"brain drain",z:"v2"},{t:"unprecedented",z:"v3"},{t:"jeopardize",z:"v4"},{t:"irreversible",z:"v5"},{t:"drought",z:"v6"},{t:"malnutrition",z:"v7"},{t:"interdependent",z:"v8"},
+     {t:"biodegradable",z:"x",why:"biodegradable = biologisch abbaubar. It describes materials and fits no gap here."},{t:"tariff",z:"x",why:"tariff = Zoll. It fits no gap here."}]}},
+  {id:"m8",topic:"Skills",title:"Discussion phrase sorter",sit:"In the oral exam and in discussions you need the right phrase at the right moment.",
+   learn:["Discussion phrases"],transfer:"Write a polite reply to: “Fast fashion is great because it’s cheap.”",tsol:"Example: I see your point, but cheap clothes have a high price for the workers and for the environment.",
+   pz:{layout:"buckets",intro:"Drag each phrase to its function.",zones:[["op","Giving your opinion"],["ag","Agreeing"],["di","Disagreeing politely"],["ad","Adding a point"],["co","Concluding"]],done:"Perfect. Use at least one phrase of each kind in your next discussion.",
+    pieces:[{t:"In my view, …",z:"op"},{t:"I’m convinced that …",z:"op"},{t:"That’s a good point, and …",z:"ag"},{t:"I couldn’t agree more.",z:"ag"},{t:"I see your point, but …",z:"di"},{t:"I’m not sure I agree, because …",z:"di"},{t:"What’s more, …",z:"ad"},{t:"Apart from that, …",z:"ad"},{t:"All in all, …",z:"co"},{t:"To sum up, …",z:"co"},
+     {t:"You’re totally wrong.",z:"x",why:"Too rude for a discussion. Use “I see your point, but …”."}]}}]
+};
+Object.entries(PZM).forEach(([s,arr])=>arr.forEach(m=>{(M[s]=M[s]||[]).push(Object.assign({f:"puzzle",w:"sort",crit:PZC,task:"<p>Wenn alles liegt, tipp auf „Prüfen“. Du siehst sofort, was stimmt, und kannst beliebig oft neu legen.</p>"},m));}));
+function misSol(m){return (m.sol||(m.pz?pzSolHtml(m.pz):""))+(m.tsol?`<p><b>Bonusfrage:</b> ${m.tsol}</p>`:"");}
 
 /* ============ SPIEL: XP, Level, Sterne, Abzeichen, Missionen ============
    XP werden immer aus dem Stand berechnet (nie gespeichert), so kann nichts doppelt zählen oder verloren gehen.
@@ -1722,11 +2063,12 @@ function badges(){
    {id:"code",i:"💻",n:"Code-Knacker",how:"Alle 5 Info-Missionen geschafft.",got:(M.info||[]).every(m=>misDone("info",m.id))},
    {id:"fehler",i:"🔍",n:"Fehlerjäger",how:"5 Fehlerjagden in beliebigen Fächern.",got:cnt("fehler")>=5},
    {id:"detektiv",i:"🕵️",n:"Meisterdetektiv",how:"5 Detektivfälle gelöst.",got:cnt("detektiv")>=5},
-   {id:"allround",i:"🎲",n:"Allrounder",how:"Alle 5 Missionsarten mindestens einmal.",got:fmts.size>=5},
+   {id:"allround",i:"🎲",n:"Allrounder",how:"Alle 6 Missionsarten mindestens einmal.",got:fmts.size>=6},
    {id:"breit",i:"🧭",n:"Breit aufgestellt",how:"Missionen in 3 verschiedenen Fächern.",got:subs.size>=3},
    {id:"boss",i:"⚔️",n:"Boss besiegt",how:"Den ersten Boss-Kampf (Abschlusscheck) geschafft.",got:boss},
    {id:"quiz",i:"🎯",n:"Volltreffer",how:"Ein Quiz komplett richtig.",got:quizFull},
    {id:"stern",i:"🌟",n:"Themen-Meister",how:"In einem Fach alle Themen mit 3 Sternen.",got:topicMaster},
+   {id:"puzzle",i:"🧩",n:"Puzzle-Profi",how:"5 Baustein-Puzzles gelöst.",got:cnt("puzzle")>=5},
    {id:"lv5",i:"🏆",n:"Stratege",how:"Level 5 erreichen.",got:lv>=5}
   ];
 }
@@ -1751,7 +2093,7 @@ function toast(msgs,big){
 
 /* Missionen eines Fachs */
 const openMis={};
-function misStep(s,id){const m=M[s].find(x=>x.id===id);return {w:m.w,t:m.title,x:`<p>${m.sit}</p>${m.task}`,sol:m.sol,start:m.start};}
+function misStep(s,id){const m=M[s].find(x=>x.id===id);return {w:m.w,t:m.title,x:`<p>${m.sit}</p>${m.task}`,sol:misSol(m),start:m.start,pz:m.pz,alt:m.alt,altStart:m.altStart};}
 function viewMissionen(s){
   const ms=M[s]||[]; if(!ms.length) return `<div class="coach">Für dieses Fach gibt es noch keine Missionen.</div>`;
   const id=openMis[s];
@@ -1760,20 +2102,23 @@ function viewMissionen(s){
     const allc=m.crit.every((_,k)=>S.done["mc:"+s+":"+id+":"+k]);
     let h=`<button class="btn ghost" data-mopen="${s}|" style="justify-self:start;padding-left:0">‹ alle Missionen</button>
       <div class="card prose mission ${dn?"won":""}"><div class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"geschafft ✓":"+"+XP.mission+" XP"}</span></div>
-      <h3>${esc(m.title)}</h3><p class="sit">${m.sit}</p><div class="small muted">Thema: ${esc(m.topic)} · etwa 10–20 Minuten, ganz ohne Druck</div></div>
+      <h3>${esc(m.title)}</h3><p class="sit">${m.sit}</p><div class="small muted">Thema: ${esc(m.topic)} · ${m.f==="puzzle"?"etwa 5–10 Minuten":"etwa 10–20 Minuten"}, ganz ohne Druck</div></div>
       ${learnBox(s,m)}
       <div class="step"><div></div><div class="body"><div class="small muted">Dein Auftrag</div><div>${m.task}</div>${workBox(s,{id:"m"},id,st)}${helpBox(s,wkey(s,"m",id),st,m)}</div></div>
       <div class="card stack"><div class="eyebrow">Selbstkontrolle: Hast du das drin?</div><div class="crit">${m.crit.map((c,k)=>{const cid="mc:"+s+":"+id+":"+k;return `<label class="critrow"><input type="checkbox" class="check" data-id="${cid}" ${S.done[cid]?"checked":""}> <span>${esc(c)}</span></label>`;}).join("")}</div>
       <details class="sol" ${lvlOf(s)===3?"open":""}><summary>${lvlOf(s)===3?"Profi-Bonus":"Bonusfrage"} (Transfer)</summary><p>${m.transfer}</p></details>
-      <details class="sol"><summary>Musterlösung zum Vergleichen</summary>${m.sol}</details></div>`;
+      <details class="sol"><summary>Musterlösung zum Vergleichen</summary>${misSol(m)}</details></div>`;
     if(dn){const c=(S.mis[s+":"+id]||{}).conf||0;h+=`<div class="coach win">Mission geschafft! Deine Einschätzung bei <b>${esc(m.topic)}</b>: ${STARW[c]} ${starHtml(c)}. Du kannst sie unten jederzeit ändern.</div>`;}
     h+=`<div class="card stack"><div class="eyebrow">${dn?"Wie sicher bist du jetzt?":"Mission abschließen"}</div>${allc||dn?`<p class="small">Wie sicher fühlst du dich jetzt bei <b>${esc(m.topic)}</b>?</p><div class="row">${[1,2,3].map(c=>`<button class="btn ${dn&&(S.mis[s+":"+id]||{}).conf===c?"primary":""}" data-mwin="${s}|${id}|${c}">${starHtml(c)} ${STARW[c]}</button>`).join("")}</div>`:`<p class="small muted">Hak oben alle Punkte der Selbstkontrolle ab. Dann kannst du die Mission abschließen und bekommst ${XP.mission} XP.</p>`}</div>`;
     return h;
   }
   const best=bestFmt();
-  let h=`<div class="coach">Kurz-Missionen dauern 10 bis 20 Minuten. Sie sind perfekt für Tage mit wenig Lust oder als Aufwärmen vor dem Projekt. Jede bringt <b>${XP.mission} XP</b>.${best?` Bei dir laufen <b>${MF[best].n}en</b> bisher am besten.`:""}</div><div class="mgrid">`;
-  ms.forEach(m=>{const dn=misDone(s,m.id),st=stars(s,m.topic);
-    h+=`<button class="mcard ${dn?"won":""}" data-mopen="${s}|${m.id}"><span class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"✓":"+"+XP.mission+" XP"}</span></span><b>${esc(m.title)}</b><span class="small muted">${esc(m.topic)} ${starHtml(st)}</span></button>`;});
+  let h=`<div class="coach">Kurz-Missionen dauern 10 bis 20 Minuten, Puzzles nur 5 bis 10. Sie sind perfekt für Tage mit wenig Lust oder als Aufwärmen vor dem Projekt. Jede bringt <b>${XP.mission} XP</b>.${best?` Bei dir laufen <b>${MF[best].p}</b> bisher am besten.`:""}</div>`;
+  const card=m=>{const dn=misDone(s,m.id),st=stars(s,m.topic);
+    return `<button class="mcard ${dn?"won":""} ${m.f==="puzzle"?"mpz":""}" data-mopen="${s}|${m.id}"><span class="row"><span class="mfmt">${MF[m.f].i} ${MF[m.f].n}</span><span class="spacer"></span><span class="xp">${dn?"✓":"+"+XP.mission+" XP"}</span></span><b>${esc(m.title)}</b><span class="small muted">${esc(m.topic)} ${starHtml(st)}</span></button>`;};
+  const pz=ms.filter(m=>m.f==="puzzle"), rest=ms.filter(m=>m.f!=="puzzle");
+  if(pz.length) h+=`<div class="eyebrow">🧩 Puzzles: Bausteine ziehen statt tippen</div><div class="mgrid">${pz.map(card).join("")}</div><div class="eyebrow">✍️ Missionen mit eigenen Worten</div>`;
+  h+=`<div class="mgrid">${rest.map(card).join("")}`;
   return h+`</div>`;
 }
 function bestFmt(){const r={};Object.entries(S.mis||{}).forEach(([k,v])=>{const [s,id]=k.split(":");const m=(M[s]||[]).find(x=>x.id===id);if(!m)return;(r[m.f]=r[m.f]||[]).push(v.conf||2);});
@@ -1873,7 +2218,7 @@ Erkläre ihm die Aufgabe in einfachen Worten:
 Verrate die Lösung nicht. Höchstens 150 Wörter, Du-Form, schlichter Text ohne Markdown-Zeichen wie * oder #.`;
   else p+=`
 Bisherige Tipps: ${HS[key].out.filter(o=>o.k==="tip").map(o=>o.x).join(" | ")||"keine"}
-Seine bisherige Antwort: ${w.v&&w.kind!=="draw"?w.v:"(noch nichts geschrieben)"}
+Seine bisherige Antwort: ${st.w==="sort"&&st.pz?"(Puzzle, Baustein → Platz)\n"+pzText(key,st):w.v&&w.kind!=="draw"?w.v:"(noch nichts geschrieben)"}
 
 Gib Tipp Nummer ${n}. Die Tipps werden gestuft immer konkreter: Tipp 1 lenkt nur die Aufmerksamkeit auf das Wichtige, Tipp 2 nennt den Lösungsweg, ab Tipp 3 darf ein Teil der Lösung als Beispiel vorkommen. Höchstens 60 Wörter, Du-Form, schlichter Text ohne Markdown.`;
   return p;
@@ -1976,12 +2321,14 @@ function drawBox(key,st,w){
   return h;
 }
 function hasWork(key,st){const w=W[key]||{};
+  if(st.w==="sort"){if(w.mode==="tippen"&&st.alt)return hasWork(key,effSt(st));return Object.keys(w.p||{}).length>0;}
   if(st.w==="draw"){const m=dmode(w);return m==="text"?!!(w.t&&w.t.trim()):m==="foto"?!!w.img:!!w.v;}
   if(st.w==="uml"){const o=umlState(key,st);return o.classes.some(c=>(c.a||"").trim()||(c.m||"").trim());}
   return !!(w.v&&(!st.start||w.v.trim()!==st.start.trim()));}
 /* Inhalt für die Prüfung durch Claude */
 async function workContent(key,st,box){
   const w=W[key]||{};
+  if(st.w==="sort") return {kind:"Puzzle (Baustein → Platz)",text:pzText(key,st)};
   if(st.w==="uml") return {kind:"Klassendiagramm (als Text)",text:umlText(umlState(key,st))};
   if(st.w==="struk") return {kind:"Struktogramm (als eingerückte Zeilen: eingerückt = innen, für/solange = Schleife, wenn/sonst = Verzweigung)",text:w.v};
   if(st.w==="kurve") return {kind:"Fieberkurve (Zeilen: Jahr | Ereignis | Wert von −3 Krise bis +3 stabil)",text:w.v};
